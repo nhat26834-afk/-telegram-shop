@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minh Phuc Store - Admin Dynamic Edition</title>
+    <title>Huy Bảo Shop - Secure Admin Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -41,7 +41,7 @@
         .btn-action { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; }
         .btn-green { background: rgba(0, 230, 118, 0.1); color: #00e676; border: 1px solid rgba(0, 230, 118, 0.2); }
         .btn-gold { background: rgba(234, 179, 8, 0.1); color: #eab308; border: 1px solid #eab308; }
-        .btn-danger { background: #mx; background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; }
+        .btn-danger { background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; }
 
         /* GRID APPS VIEW */
         .grid-apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -49,7 +49,7 @@
         .app-item img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 8px; }
         .app-name { font-size: 11px; font-weight: 600; color: #f3f4f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* SUB-PRODUCTS LIST VIEW (ẢNH 29) */
+        /* SUB-PRODUCTS LIST VIEW */
         .sub-product-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
         .sub-product-item { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
         .sub-left { display: flex; align-items: center; gap: 12px; }
@@ -58,7 +58,7 @@
         .sub-info .sub-desc { font-size: 11px; color: #64748b; margin-top: 4px; }
         .sub-info .sub-note { font-size: 10px; color: #00e676; margin-top: 2px; }
 
-        /* PACKAGE DETAIL DETAIL (ẢNH 28) */
+        /* PACKAGE DETAIL */
         .package-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
         .package-option { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .package-option.selected { border-color: #00e676; background: rgba(0,230,118,0.02); }
@@ -96,7 +96,7 @@
 </head>
 <body class="">
 
-    <!-- POPUP WELCOME EDITABLE -->
+    <!-- POPUP WELCOME -->
     <div class="modal-overlay" id="welcomeModal">
         <div class="welcome-modal">
             <div class="welcome-title">Welcome</div>
@@ -111,12 +111,12 @@
             <div class="avatar-box"><img src="https://i.imgur.com/w1A4Mwb.png" alt="Avatar"></div>
             <div class="user-meta">
                 <div class="name">Huy Bảo Ci...</div>
-                <div class="uid">ID: 8692475970</div>
+                <div class="uid" id="displayUserUid">ID: Đang tải...</div>
             </div>
         </div>
         <div class="wallet-section">
             <div class="wallet-vnd" id="userBalanceView">0đ</div>
-            <!-- BẤM VÀO ĐÂY ĐỂ ĐỔI QUYỀN ADMIN / THÀNH VIÊN NHANH -->
+            <!-- NÚT CHUYỂN QUYỀN ĐÃ KHÓA MẬT KHẨU -->
             <div class="role-badge" id="roleBadge" onclick="toggleAdminRole()">CUSTOMER (Bấm đổi quyền)</div>
         </div>
     </div>
@@ -124,11 +124,23 @@
     <!-- MAIN BODY PANELS -->
     <div class="content-container">
 
-        <!-- ADMIN GLOBAL CONFIGS -->
-        <div class="admin-only" style="border-color: #ef4444; background: rgba(220,38,38,0.05);">
-            <div style="font-size: 12px; font-weight: bold; color: #f87171; margin-bottom: 8px;"><i class="fa-solid fa-screwdriver-wrench"></i> Quản Lý Thông Báo Hệ Thống</div>
-            <textarea id="adminWelcomeInput" style="width: 100%; background: #090d14; border: 1px solid #ef4444; color: #fff; padding: 8px; border-radius: 6px; font-size: 12px; height: 8px; min-height: 70px; outline: none; resize: vertical;"></textarea>
-            <button class="btn-action btn-green" style="padding: 6px; font-size: 11px; margin-top: 6px;" onclick="saveWelcomeText()">Cập nhật thông báo</button>
+        <!-- CHỈ ADMIN MỚI THẤY: CỘNG TIỀN CHO KHÁCH HÀNG -->
+        <div class="admin-only" style="border-color: #eab308; background: rgba(234,179,8,0.06);">
+            <div style="font-size: 12px; font-weight: bold; color: #eab308; margin-bottom: 8px;">
+                <i class="fa-solid fa-coins"></i> HỆ THỐNG CỘNG TIỀN THÀNH VIÊN
+            </div>
+            <div class="admin-input-row">
+                <input type="text" id="adminTargetUid" placeholder="Nhập ID tài khoản khách cần cộng">
+                <input type="number" id="adminMoneyAmount" placeholder="Nhập số tiền muốn cộng (VND)">
+            </div>
+            <button class="btn-action btn-gold" style="padding: 7px; font-size: 11px;" onclick="adminAddMoneyProcess()">Xác nhận cộng tiền</button>
+        </div>
+
+        <!-- CHỈ ADMIN MỚI THẤY: CẤU HÌNH WELCOME -->
+        <div class="admin-only" style="border-color: #ef4444; background: rgba(220,38,38,0.03);">
+            <div style="font-size: 11px; font-weight: bold; color: #f87171; margin-bottom: 6px;"><i class="fa-solid fa-envelope"></i> Sửa thông báo Popup mở đầu</div>
+            <textarea id="adminWelcomeInput" style="width: 100%; background: #090d14; border: 1px solid #ef4444; color: #fff; padding: 8px; border-radius: 6px; font-size: 12px; height: 60px; outline: none; resize: none;"></textarea>
+            <button class="btn-action btn-green" style="padding: 6px; font-size: 11px; margin-top: 6px;" onclick="saveWelcomeText()">Lưu thông báo mới</button>
         </div>
 
         <!-- ================= TAB 1: MUA KEY ================= -->
@@ -136,12 +148,11 @@
             
             <!-- VIEW LEVEL 1: GRID APPS -->
             <div id="view-apps">
-                <!-- Admin thêm danh mục app -->
                 <div class="admin-only">
-                    <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Thêm Ứng Dụng Mới:</div>
+                    <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Thêm Danh Mục Ứng Dụng Mới:</div>
                     <div class="admin-input-row">
                         <input type="text" id="newAppName" placeholder="Tên ứng dụng (Ví dụ: Free Fire)">
-                        <input type="text" id="newAppIcon" placeholder="Link ảnh icon hoặc icon mẫu">
+                        <input type="text" id="newAppIcon" placeholder="Link ảnh icon hoặc để trống">
                     </div>
                     <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="addApp()">Thêm Danh Mục</button>
                 </div>
@@ -152,16 +163,15 @@
                 </div>
             </div>
 
-            <!-- VIEW LEVEL 2: SUB PRODUCTS (ẢNH 29) -->
+            <!-- VIEW LEVEL 2: SUB PRODUCTS -->
             <div id="view-subproducts" style="display: none;">
                 <button class="back-btn" onclick="showAppsView()"><i class="fa-solid fa-arrow-left"></i> Quay lại danh mục</button>
                 
-                <!-- Admin thêm loại hack/bản hack cụ thể -->
                 <div class="admin-only">
                     <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Thêm Bản Hack Mới Vào Mục Này:</div>
                     <div class="admin-input-row">
                         <input type="text" id="newSubTitle" placeholder="Tên bản (Ví dụ: Fluorite - Free Fire)">
-                        <input type="text" id="newSubDesc" placeholder="Mô tả hỗ trợ (Ví dụ: Hỗ Trợ Lên Đến iOS 27...)">
+                        <input type="text" id="newSubDesc" placeholder="Mô tả hỗ trợ...">
                     </div>
                     <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="addSubProduct()">Thêm Sản Phẩm</button>
                 </div>
@@ -172,33 +182,29 @@
                 </div>
             </div>
 
-            <!-- VIEW LEVEL 3: PACKAGE DETAILS & PRICING (ẢNH 28) -->
+            <!-- VIEW LEVEL 3: PACKAGE DETAILS -->
             <div id="view-packages" style="display: none;">
                 <button class="back-btn" onclick="showSubProductsView()"><i class="fa-solid fa-arrow-left"></i> Quay lại sản phẩm</button>
                 
-                <!-- Admin chỉnh giá nhanh cho sản phẩm -->
                 <div class="admin-only">
                     <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Sửa Giá Gói Của Bản Này:</div>
                     <div class="admin-input-row">
-                        <input type="number" id="editPrice1" placeholder="Giá gói 1 ngày (VND)">
-                        <input type="number" id="editPrice7" placeholder="Giá gói 7 ngày (VND)">
-                        <input type="number" id="editPrice31" placeholder="Giá gói 31 ngày (VND)">
+                        <input type="number" id="editPrice1" placeholder="Giá gói 1 ngày">
+                        <input type="number" id="editPrice7" placeholder="Giá gói 7 ngày">
+                        <input type="number" id="editPrice31" placeholder="Giá gói 31 ngày">
                     </div>
                     <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="savePackagePrices()">Lưu Thay Đổi Giá</button>
                 </div>
 
-                <div class="card-box" id="packageDetailBox">
-                    <!-- Nội dung Render Động từ ảnh 28 hiển thị ở đây -->
-                </div>
+                <div class="card-box" id="packageDetailBox"></div>
             </div>
 
         </div>
 
-        <!-- ================= TAB 2: NẠP TIỀN (ẢNH 20 TÍCH HỢP VIETQR CHUẨN) ================= -->
+        <!-- ================= TAB 2: NẠP TIỀN ================= -->
         <div id="tab-naptien" class="tab-content">
             <div class="card-box" style="border-color: #eab308;">
                 <div class="box-title" style="color: #eab308;"><i class="fa-solid fa-money-bill-transfer"></i> Nạp tiền tự động 24/7</div>
-                <div style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 15px;">Giao dịch được xử lý qua hệ thống cổng VietQR trực tuyến.</div>
                 
                 <div class="input-group">
                     <i class="fa-solid fa-money-bill-wave"></i>
@@ -206,7 +212,6 @@
                 </div>
                 <button class="btn-action btn-gold" onclick="generateVietQR()"><i class="fa-solid fa-qrcode"></i> Tạo mã QR nạp tiền</button>
 
-                <!-- KHU VỰC HIỂN THỊ MÃ QR TỰ ĐỘNG CỦA BẠN -->
                 <div class="qr-display-box" id="qrDisplayArea">
                     <img id="qrGeneratedImg" src="" alt="VietQR Pay">
                     <div class="qr-info-text">CTK: LE HUY BAO</div>
@@ -215,13 +220,15 @@
             </div>
         </div>
 
-        <!-- ================= TAB 5: CÁ NHÂN ================= -->
+        <!-- ================= TAB 3: CÁ NHÂN ================= -->
         <div id="tab-canhan" class="tab-content">
             <div class="card-box">
-                <div class="box-title"><i class="fa-solid fa-user-shield"></i> Trạng thái phân quyền tài khoản</div>
-                <p style="font-size: 13px; color: #94a3b8; line-height: 1.6;">
-                    • Bạn có thể bấm vào thẻ trạng thái ở góc trên cùng bên phải để thay đổi nhanh giữa vai trò quyền **Thành viên (Customer)** và quyền **Admin quản trị** hệ thống điều hành cấu hình shop.
-                </p>
+                <div class="box-title"><i class="fa-solid fa-user-shield"></i> THÔNG TIN TÀI KHOẢN</div>
+                <div style="font-size:13px; line-height: 2; color:#b3c2cb;">
+                    • Tên người dùng: <span style="color:#fff; font-weight:bold;">Huy Bảo Client</span><br>
+                    • ID Hệ Thống: <span style="color:#eab308; font-weight:bold;" id="myProfileUid">...</span><br>
+                    • Nhóm quyền: <span style="color:#00e676;" id="myProfileRole">Thành Viên (Customer)</span>
+                </div>
             </div>
         </div>
 
@@ -234,63 +241,134 @@
         <div class="nav-item" onclick="navigationTab('canhan', this)"><i class="fa-solid fa-user"></i> Cá Nhân</div>
     </div>
 
-    <!-- LOGIC XỬ LÝ TOÀN BỘ CƠ CHẾ ADMIN & ĐĂNG SẢN PHẨM -->
+    <!-- LOGIC KHÓA MẬT KHẨU ADMIN VÀ PHÂN CHIA ID ĐỘC NHẤT -->
     <script>
-        // Khởi tạo cơ sở dữ liệu mẫu ban đầu để lưu vào localStorage
-        const defaultApps = [
-            { id: "ff", name: "Free Fire", icon: "https://i.imgur.com/Xbe6S6p.png" },
-            { id: "lq", name: "Liên Quân", icon: "https://i.imgur.com/K6q64A2.png" },
-            { id: "8ball", name: "8 Ball Pool", icon: "https://i.imgur.com/UoYm8Z3.png" }
-        ];
+        // MẬT KHẨU ĐỂ LÊN ADMIN (BẠN CÓ THỂ ĐỔI CHỮ "bao2026" THÀNH MẬT KHẨU KHÁC TÙY Ý)
+        const ADMIN_SECRET_PASSWORD = "bao2026";
+        const OWNER_ID = "8692475970";
 
+        // Khởi tạo hệ thống ID Độc nhất cho từng thiết bị
+        let clientUid = localStorage.getItem('user_uid');
+        if (!clientUid) {
+            // Nếu là lần đầu trang web chạy, cấp ID ngẫu nhiên, hoặc cấp ID của bạn nếu chưa có ai nhận
+            let isFirstConfig = localStorage.getItem('shop_installed');
+            if(!isFirstConfig) {
+                clientUid = OWNER_ID; // Máy đầu tiên cài đặt (là bạn) mặc định nhận ID của bạn
+                localStorage.setItem('shop_installed', 'true');
+            } else {
+                clientUid = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+            }
+            localStorage.setItem('user_uid', clientUid);
+        }
+
+        // Tạo cơ sở dữ liệu số dư giả lập lưu theo ID trên localStorage
+        let globalUsersDb = JSON.parse(localStorage.getItem('shop_users_db')) || {};
+        if (!globalUsersDb[clientUid]) {
+            globalUsersDb[clientUid] = { balance: 0 };
+            localStorage.setItem('shop_users_db', JSON.stringify(globalUsersDb));
+        }
+
+        // Khởi tạo sản phẩm mẫu ban đầu
+        const defaultApps = [
+            { id: "ff", name: "Free Fire", icon: "https://i.imgur.com/Xbe6S6p.png" }
+        ];
         const defaultSubProducts = [
-            { id: "sub1", appId: "ff", title: "Fluorite - Free Fire", desc: "Hỗ Trợ Lên Đến iOS 27, Dễ Cài Đặt Và Dễ Sử Dụng.", icon: "https://i.imgur.com/Xbe6S6p.png", p1: 80000, p7: 210000, p31: 310000 },
-            { id: "sub2", appId: "ff", title: "Migul Lite - Vietnam Version", desc: "Bản hack nhẹ ổn định bypass các loại trận đấu.", icon: "https://i.imgur.com/Xbe6S6p.png", p1: 50000, p7: 150000, p31: 250000 },
-            { id: "sub3", appId: "lq", title: "Mod Map Sáng Liên Quân Mobile", desc: "Nhìn bản đồ toàn vị trí địch siêu mượt.", icon: "https://i.imgur.com/K6q64A2.png", p1: 30000, p7: 90000, p31: 180000 }
+            { id: "sub1", appId: "ff", title: "Fluorite - Free Fire", desc: "Hỗ Trợ Lên Đến iOS 27, Dễ Cài Đặt Và Dễ Sử Dụng.", icon: "https://i.imgur.com/Xbe6S6p.png", p1: 80000, p7: 210000, p31: 310000 }
         ];
 
         let apps = JSON.parse(localStorage.getItem('shop_apps')) || defaultApps;
         let subProducts = JSON.parse(localStorage.getItem('shop_subs')) || defaultSubProducts;
-        let welcomeText = localStorage.getItem('shop_welcome') || "Hỗ Trợ Liên Hệ Telegram: @phucminhn, Zalo: 0333.46.0102\nKênh Chính Thông Báo/Share Hack: @minhphucxiters\n\nCảm Ơn Quý Khách Đã Ủng Hộ Shop!";
+        let welcomeText = localStorage.getItem('shop_welcome') || "Hỗ Trợ Liên Hệ Telegram: @phucminhn\nKênh Thông Báo: @minhphucxiters";
         
         let currentRole = "CUSTOMER"; 
         let currentSelectedAppId = "";
         let currentSelectedSubId = "";
 
-        // Chạy lần đầu tiên load trang
         window.onload = function() {
+            document.getElementById('displayUserUid').innerText = "ID: " + clientUid;
+            document.getElementById('myProfileUid').innerText = clientUid;
             document.getElementById('welcomeTextContent').innerText = welcomeText;
             document.getElementById('adminWelcomeInput').value = welcomeText;
+            updateBalanceDisplay();
             renderApps();
         };
+
+        function updateBalanceDisplay() {
+            let db = JSON.parse(localStorage.getItem('shop_users_db')) || {};
+            let myBalance = db[clientUid] ? db[clientUid].balance : 0;
+            document.getElementById('userBalanceView').innerText = myBalance.toLocaleString('vi-VN') + "đ";
+        }
 
         function closeWelcomeModal() {
             document.getElementById('welcomeModal').style.display = 'none';
         }
 
-        // Đổi quyền Admin / Thành viên
+        // CƠ CHẾ KHÓA MẬT KHẨU ADMIN TỐI CAO
         function toggleAdminRole() {
             if(currentRole === "CUSTOMER") {
-                currentRole = "ADMIN";
-                document.getElementById('roleBadge').innerText = "ADMIN PANEL";
-                document.getElementById('roleBadge').classList.add('admin-mode');
-                document.body.classList.add('admin-active');
+                let checkPass = prompt("Mục bảo mật! Nhập mật khẩu để kích hoạt quyền Admin tối cao:");
+                if(checkPass === ADMIN_SECRET_PASSWORD) {
+                    currentRole = "ADMIN";
+                    document.getElementById('roleBadge').innerText = "ADMIN CONTROL";
+                    document.getElementById('roleBadge').classList.add('admin-mode');
+                    document.body.classList.add('admin-active');
+                    document.getElementById('myProfileRole').innerText = "Chủ Cửa Hàng (Admin Tối Cao)";
+                    document.getElementById('myProfileRole').style.color = "#ef4444";
+                    alert("Xác thực quyền Admin thành công!");
+                    renderApps(); 
+                } else if(checkPass !== null) {
+                    alert("Sai mật khẩu! Quyền truy cập bị từ chối.");
+                }
             } else {
                 currentRole = "CUSTOMER";
                 document.getElementById('roleBadge').innerText = "CUSTOMER (Bấm đổi quyền)";
                 document.getElementById('roleBadge').classList.remove('admin-mode');
                 document.body.classList.remove('admin-active');
+                document.getElementById('myProfileRole').innerText = "Thành Viên (Customer)";
+                document.getElementById('myProfileRole').style.color = "#00e676";
+                renderApps();
             }
+        }
+
+        // TÍNH NĂNG ADMIN CỘNG TIỀN CHO ID THÀNH VIÊN
+        function adminAddMoneyProcess() {
+            let targetId = document.getElementById('adminTargetUid').value.trim();
+            let amount = parseInt(document.getElementById('adminMoneyAmount').value);
+
+            if(!targetId || !amount || amount <= 0) {
+                return alert("Vui lòng điền đúng ID khách hàng và số tiền hợp lệ!");
+            }
+
+            let db = JSON.parse(localStorage.getItem('shop_users_db')) || {};
+            
+            // Nếu ID này chưa tồn tại trong danh sách dữ liệu thì khởi tạo mới luôn
+            if(!db[targetId]) {
+                db[targetId] = { balance: 0 };
+            }
+
+            // Tiến hành cộng tiền vào ví của ID đó
+            db[targetId].balance += amount;
+            localStorage.setItem('shop_users_db', JSON.stringify(db));
+
+            alert(`Đã cộng thành công ${amount.toLocaleString('vi-VN')}đ vào tài khoản ID: ${targetId}`);
+            
+            // Cập nhật lại số dư trên màn hình hiển thị nếu bạn tự cộng tiền cho chính mình
+            if(targetId === clientUid) {
+                updateBalanceDisplay();
+            }
+
+            document.getElementById('adminTargetUid').value = "";
+            document.getElementById('adminMoneyAmount').value = "";
         }
 
         function saveWelcomeText() {
             let txt = document.getElementById('adminWelcomeInput').value;
             localStorage.setItem('shop_welcome', txt);
             document.getElementById('welcomeTextContent').innerText = txt;
-            alert("Đã cập nhật thông báo hệ thống!");
+            alert("Đã cập nhật thông báo!");
         }
 
-        // RENDER DANH MỤC ỨNG DỤNG
+        // RENDER APPS
         function renderApps() {
             const container = document.getElementById('appsGridContainer');
             container.innerHTML = "";
@@ -298,7 +376,7 @@
                 let count = subProducts.filter(s => s.appId === app.id).length;
                 container.innerHTML += `
                     <div class="app-item" onclick="selectApp('${app.id}', '${app.name}')">
-                        ${currentRole === 'ADMIN' ? `<span onclick="deleteApp('${app.id}', event)" style="position:absolute; top:2px; right:5px; color:#ef4444; font-size:12px; font-weight:bold;">X</span>` : ''}
+                        ${currentRole === 'ADMIN' ? `<span onclick="deleteApp('${app.id}', event)" style="position:absolute; top:2px; right:6px; color:#ef4444; font-size:12px; font-weight:bold;">X</span>` : ''}
                         <img src="${app.icon}" onerror="this.src='https://i.imgur.com/Xbe6S6p.png'">
                         <div class="app-name">${app.name}</div>
                         <div style="font-size:10px; color:#64748b; margin-top:2px;">${count} mục</div>
@@ -310,7 +388,7 @@
         function addApp() {
             let name = document.getElementById('newAppName').value;
             let icon = document.getElementById('newAppIcon').value || "https://i.imgur.com/Xbe6S6p.png";
-            if(!name) return alert("Vui lòng điền tên danh mục ứng dụng!");
+            if(!name) return alert("Điền tên danh mục!");
             let id = "app_" + Date.now();
             apps.push({ id, name, icon });
             localStorage.setItem('shop_apps', JSON.stringify(apps));
@@ -320,15 +398,12 @@
 
         function deleteApp(id, e) {
             e.stopPropagation();
-            if(!confirm("Bạn có chắc chắn muốn xoá danh mục này và các sản phẩm bên trong không?")) return;
+            if(!confirm("Xoá danh mục này?")) return;
             apps = apps.filter(a => a.id !== id);
-            subProducts = subProducts.filter(s => s.appId !== id);
             localStorage.setItem('shop_apps', JSON.stringify(apps));
-            localStorage.setItem('shop_subs', JSON.stringify(subProducts));
             renderApps();
         }
 
-        // CHỌN XEM CHI TIẾT SẢN PHẨM TRONG APP (ẢNH 29)
         function selectApp(appId, appName) {
             currentSelectedAppId = appId;
             document.getElementById('view-apps').style.display = 'none';
@@ -348,7 +423,7 @@
             container.innerHTML = "";
             let list = subProducts.filter(s => s.appId === currentSelectedAppId);
             if(list.length === 0) {
-                container.innerHTML = `<p style="font-size:12px; color:#475569; text-align:center; padding:15px;">Chưa có sản phẩm nào trong mục này.</p>`;
+                container.innerHTML = `<p style="font-size:12px; color:#475569; text-align:center; padding:15px;">Chưa có sản phẩm.</p>`;
             }
             list.forEach(sub => {
                 container.innerHTML += `
@@ -373,12 +448,10 @@
         function addSubProduct() {
             let title = document.getElementById('newSubTitle').value;
             let desc = document.getElementById('newSubDesc').value;
-            if(!title) return alert("Vui lòng điền tên sản phẩm hack!");
-            
+            if(!title) return alert("Điền tên bản hack!");
             let targetApp = apps.find(a => a.id === currentSelectedAppId);
             let icon = targetApp ? targetApp.icon : "https://i.imgur.com/Xbe6S6p.png";
             let id = "sub_" + Date.now();
-            
             subProducts.push({ id, appId: currentSelectedAppId, title, desc, icon, p1: 80000, p7: 210000, p31: 310000 });
             localStorage.setItem('shop_subs', JSON.stringify(subProducts));
             renderSubProducts();
@@ -388,18 +461,16 @@
 
         function deleteSubProduct(id, e) {
             e.stopPropagation();
-            if(!confirm("Xoá sản phẩm này?")) return;
+            if(!confirm("Xoá sản phẩm?")) return;
             subProducts = subProducts.filter(s => s.id !== id);
             localStorage.setItem('shop_subs', JSON.stringify(subProducts));
             renderSubProducts();
         }
 
-        // XEM CHI TIẾT GÓI CỦA SẢN PHẨM (ẢNH 28)
         function selectSubProduct(subId) {
             currentSelectedSubId = subId;
             document.getElementById('view-subproducts').style.display = 'none';
             document.getElementById('view-packages').style.display = 'block';
-            
             let item = subProducts.find(s => s.id === subId);
             if(item) {
                 document.getElementById('editPrice1').value = item.p1;
@@ -419,14 +490,13 @@
             let p1 = parseInt(document.getElementById('editPrice1').value) || 0;
             let p7 = parseInt(document.getElementById('editPrice7').value) || 0;
             let p31 = parseInt(document.getElementById('editPrice31').value) || 0;
-            
             let idx = subProducts.findIndex(s => s.id === currentSelectedSubId);
             if(idx !== -1) {
                 subProducts[idx].p1 = p1;
                 subProducts[idx].p7 = p7;
                 subProducts[idx].p31 = p31;
                 localStorage.setItem('shop_subs', JSON.stringify(subProducts));
-                alert("Cập nhật bảng giá thành công!");
+                alert("Đã cập nhật giá mới!");
                 renderPackageDetailView();
             }
         }
@@ -442,46 +512,29 @@
                     <strong>${item.title}</strong><br>
                     <span style="color:#64748b;">${item.desc}</span>
                 </div>
-
                 <div class="package-container">
                     <div class="package-option selected" id="pkg-1" onclick="changeSelectedPkg(1, ${item.p1})">
-                        <div class="pkg-left">
-                            <div class="pkg-duration">1 Ngày</div>
-                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
-                        </div>
+                        <div class="pkg-left"><div class="pkg-duration">1 Ngày</div><div class="pkg-stock">Kho: <span style="color:#00e676;">Sẵn hàng</span></div></div>
                         <div class="pkg-price">${item.p1.toLocaleString('vi-VN')}đ</div>
                     </div>
                     <div class="package-option" id="pkg-7" onclick="changeSelectedPkg(7, ${item.p7})">
-                        <div class="pkg-left">
-                            <div class="pkg-duration">7 Ngày</div>
-                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
-                        </div>
+                        <div class="pkg-left"><div class="pkg-duration">7 Ngày</div><div class="pkg-stock">Kho: <span style="color:#00e676;">Sẵn hàng</span></div></div>
                         <div class="pkg-price">${item.p7.toLocaleString('vi-VN')}đ</div>
                     </div>
                     <div class="package-option" id="pkg-31" onclick="changeSelectedPkg(31, ${item.p31})">
-                        <div class="pkg-left">
-                            <div class="pkg-duration">31 Ngày</div>
-                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
-                        </div>
+                        <div class="pkg-left"><div class="pkg-duration">31 Ngày</div><div class="pkg-stock">Kho: <span style="color:#00e676;">Sẵn hàng</span></div></div>
                         <div class="pkg-price">${item.p31.toLocaleString('vi-VN')}đ</div>
                     </div>
                 </div>
-
                 <div class="qty-box">
-                    <div style="font-size:13px; font-weight:bold;"><i class="fa-solid fa-layer-group"></i> Số lượng</div>
+                    <div style="font-size:13px; font-weight:bold;">Số lượng</div>
                     <div class="qty-controls">
                         <button class="qty-btn" onclick="updateQuantity(-1)">-</button>
                         <span id="buyQty" style="font-weight:bold; font-size:14px;">1</span>
                         <button class="qty-btn" onclick="updateQuantity(1)">+</button>
                     </div>
                 </div>
-
-                <div class="input-group" style="margin-top:10px;">
-                    <i class="fa-solid fa-tags"></i>
-                    <input type="text" class="main-input" placeholder="Nhập mã voucher giảm giá (nếu có)">
-                </div>
-
-                <button class="btn-action btn-green" style="margin-top:15px;" onclick="processBuyKey()"><i class="fa-solid fa-cart-shopping"></i> THANH TOÁN NGAY</button>
+                <button class="btn-action btn-green" style="margin-top:15px;" onclick="processBuyKey()">THANH TOÁN NGAY</button>
             `;
             window.currentSelectedCost = item.p1;
         }
@@ -494,8 +547,7 @@
 
         function updateQuantity(val) {
             let el = document.getElementById('buyQty');
-            let current = parseInt(el.innerText);
-            current += val;
+            let current = parseInt(el.innerText) + val;
             if(current < 1) current = 1;
             el.innerText = current;
         }
@@ -503,33 +555,34 @@
         function processBuyKey() {
             let qty = parseInt(document.getElementById('buyQty').innerText);
             let total = window.currentSelectedCost * qty;
-            alert("Số dư tài khoản không đủ để thanh toán " + total.toLocaleString('vi-VN') + "đ. Vui lòng chuyển sang tab Nạp Tiền!");
+            
+            let db = JSON.parse(localStorage.getItem('shop_users_db')) || {};
+            let myBalance = db[clientUid] ? db[clientUid].balance : 0;
+
+            if(myBalance < total) {
+                alert(`Bạn không đủ tiền. Cần ${total.toLocaleString('vi-VN')}đ nhưng ví hiện tại chỉ có ${myBalance.toLocaleString('vi-VN')}đ. Vui lòng nạp thêm!`);
+            } else {
+                db[clientUid].balance -= total;
+                localStorage.setItem('shop_users_db', JSON.stringify(db));
+                updateBalanceDisplay();
+                alert(`Mua khoá thành công! Hệ thống đã trừ ${total.toLocaleString('vi-VN')}đ.`);
+            }
         }
 
-        // TẠO MÃ VIETQR QUÉT TỰ ĐỘNG THEO THÔNG TIN ẢNH 27 CỦA BẠN
         function generateVietQR() {
             let amount = document.getElementById('depositAmount').value;
-            if(!amount || amount < 2000) {
-                return alert("Vui lòng điền số tiền nạp hợp lệ (Tối thiểu 2.000đ)");
-            }
-            
-            // Sử dụng API VietQR mở để map tài khoản MB của bạn
+            if(!amount || amount < 2000) return alert("Tối thiểu nạp 2.000đ");
             let bankId = "MB";
             let accountNo = "2660566922";
-            let template = "qr_only";
-            let description = "NAP STORE HACK " + Math.floor(1000 + Math.random() * 9000);
-            
-            let apiUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(description)}&accountName=LE%20HUY%20BAO`;
-            
+            let description = `NAP ${clientUid}`; // Tự động điền nội dung kèm ID của khách để bạn biết ai nạp tiền
+            let apiUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-qr_only.png?amount=${amount}&addInfo=${encodeURIComponent(description)}&accountName=LE%20HUY%20BAO`;
             document.getElementById('qrGeneratedImg').src = apiUrl;
             document.getElementById('qrDisplayArea').style.display = "block";
         }
 
-        // CHUYỂN ĐỔI TAB GIAO DIỆN CHÍNH
         function navigationTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
         }
