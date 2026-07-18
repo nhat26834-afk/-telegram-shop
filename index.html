@@ -3,167 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huy Bảo Shop</title>
-    <!-- Thêm thư viện icon fontawesome -->
+    <title>Minh Phuc Store - Admin Dynamic Edition</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: #0b110e; color: #ffffff; padding-bottom: 80px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #070b12; color: #ffffff; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* Header người dùng */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: linear-gradient(180deg, #111a16, #0b110e); border-bottom: 1px solid #1a2922; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #00e676; }
-        .username { font-weight: bold; font-size: 15px; }
-        .role-tag { background-color: rgba(0, 230, 118, 0.1); color: #00e676; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: bold; margin-top: 3px; display: inline-block; }
-        .balance-box { text-align: right; }
-        .balance-vnd { color: #00e676; font-weight: bold; font-size: 18px; }
-        .balance-usdt { color: #888; font-size: 12px; }
+        /* MODAL THÔNG BÁO WELCOME */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .welcome-modal { background: #0b1519; border: 1px solid #00e676; border-radius: 20px; width: 100%; max-width: 350px; padding: 25px; text-align: center; box-shadow: 0 0 20px rgba(0, 230, 118, 0.2); }
+        .welcome-title { color: #00e676; font-size: 24px; font-weight: bold; margin-bottom: 15px; }
+        .welcome-text { font-size: 13px; color: #b3c2cb; line-height: 1.8; margin-bottom: 20px; white-space: pre-line; }
+        .btn-close-modal { width: 100%; background: linear-gradient(90deg, #00f2fe, #4facfe); border: none; padding: 14px; border-radius: 12px; color: #000; font-weight: bold; font-size: 14px; cursor: pointer; text-transform: uppercase; }
 
-        /* Banner Mua Key */
-        .banner-buy-key { margin: 15px; padding: 15px; background: #121e19; border-radius: 12px; display: flex; align-items: center; gap: 15px; border: 1px solid #1a2d24; }
-        .key-icon { background: rgba(0, 230, 118, 0.1); color: #00e676; padding: 12px; border-radius: 10px; font-size: 20px; }
+        /* HEADER CHUẨN MINI APP */
+        .header { background-color: #0b111a; padding: 15px; border-bottom: 1px solid #162232; display: flex; justify-content: space-between; align-items: center; }
+        .user-section { display: flex; align-items: center; gap: 10px; }
+        .avatar-box { width: 45px; height: 45px; border-radius: 12px; overflow: hidden; border: 1px solid #233549; }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+        .user-meta .name { font-weight: bold; font-size: 14px; color: #fff; }
+        .user-meta .uid { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .wallet-section { text-align: right; }
+        .wallet-vnd { color: #00e676; font-weight: bold; font-size: 16px; }
+        .role-badge { background: #1e293b; color: #94a3b8; font-size: 9px; padding: 2px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-top: 3px; cursor: pointer; }
+        .role-badge.admin-mode { background: #ef4444; color: #fff; }
+
+        /* CONTAINER CHUNG */
+        .content-container { padding: 15px; }
+        .card-box { background: #0f1724; border: 1px solid #1e293b; border-radius: 16px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .box-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 15px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+        .box-title i { color: #00e676; }
+
+        /* INPUTS & BUTTONS */
+        .input-group { position: relative; margin-bottom: 12px; }
+        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 14px; }
+        .main-input { width: 100%; background: #090d14; border: 1px solid #1e293b; padding: 12px 12px 12px 38px; border-radius: 10px; color: #fff; font-size: 13px; outline: none; }
+        .btn-action { width: 100%; border: none; padding: 12px; border-radius: 10px; font-weight: bold; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; text-transform: uppercase; }
+        .btn-green { background: rgba(0, 230, 118, 0.1); color: #00e676; border: 1px solid rgba(0, 230, 118, 0.2); }
+        .btn-gold { background: rgba(234, 179, 8, 0.1); color: #eab308; border: 1px solid #eab308; }
+        .btn-danger { background: #mx; background-color: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; font-size: 11px; border-radius: 6px; cursor: pointer; }
+
+        /* GRID APPS VIEW */
+        .grid-apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .app-item { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 12px 5px; text-align: center; cursor: pointer; position: relative; }
+        .app-item img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 8px; }
+        .app-name { font-size: 11px; font-weight: 600; color: #f3f4f6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        /* Danh mục game */
-        .section-title { margin: 15px; font-size: 14px; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
-        .grid-apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 15px; }
-        .app-card { background: #121e19; padding: 12px 5px; border-radius: 12px; text-align: center; border: 1px solid #1a2d24; cursor: pointer; }
-        .app-card img { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; margin-bottom: 8px; }
-        .app-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .app-count { font-size: 10px; color: #888; margin-top: 3px; }
+        /* SUB-PRODUCTS LIST VIEW (ẢNH 29) */
+        .sub-product-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .sub-product-item { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 12px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .sub-left { display: flex; align-items: center; gap: 12px; }
+        .sub-icon { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
+        .sub-info .sub-title { font-size: 13px; font-weight: bold; color: #fff; }
+        .sub-info .sub-desc { font-size: 11px; color: #64748b; margin-top: 4px; }
+        .sub-info .sub-note { font-size: 10px; color: #00e676; margin-top: 2px; }
 
-        /* Vùng nội dung các Tab */
+        /* PACKAGE DETAIL DETAIL (ẢNH 28) */
+        .package-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .package-option { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .package-option.selected { border-color: #00e676; background: rgba(0,230,118,0.02); }
+        .pkg-left .pkg-duration { font-size: 14px; font-weight: bold; }
+        .pkg-left .pkg-stock { font-size: 11px; color: #64748b; margin-top: 4px; }
+        .pkg-price { background: #1f2937; padding: 8px 12px; border-radius: 8px; font-weight: bold; font-size: 13px; color: #fff; }
+
+        /* SỐ LƯỢNG SELECTOR */
+        .qty-box { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 10px 0; border-top: 1px solid #1e293b; }
+        .qty-controls { display: flex; align-items: center; gap: 15px; background: #111827; padding: 6px 12px; border-radius: 8px; border: 1px solid #1f2937; }
+        .qty-btn { background: none; border: none; color: #fff; font-size: 16px; cursor: pointer; width: 20px; }
+        
+        /* ADMIN PANEL INTERFACE */
+        .admin-only { display: none; background: #1e1b4b; border: 1px dashed #6366f1; border-radius: 12px; padding: 12px; margin-bottom: 15px; }
+        body.admin-active .admin-only { display: block; }
+        .admin-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .admin-input-row input, .admin-input-row select { flex: 1; background: #090d14; border: 1px solid #4338ca; padding: 8px; border-radius: 6px; color: #fff; font-size: 12px; }
+
+        /* TAB MANAGEMENT */
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .back-btn { background: #1f2937; border: none; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 5px; }
 
-        /* Giao diện Nạp Tiền */
-        .deposit-container { padding: 20px; text-align: center; }
-        .bank-card { background: #121e19; border: 1px solid #1a2d24; padding: 20px; border-radius: 15px; margin-top: 15px; text-align: left; }
-        .bank-info { margin-bottom: 12px; font-size: 15px; }
-        .bank-info span { color: #00e676; font-weight: bold; }
-        .qr-code { width: 200px; max-width: 100%; margin: 20px auto; display: block; border-radius: 10px; }
+        /* QR DISPLAY BOX */
+        .qr-display-box { text-align: center; padding: 15px; background: #fff; border-radius: 14px; margin-top: 15px; display: none; width: 220px; margin-left: auto; margin-right: auto; }
+        .qr-display-box img { width: 100%; height: auto; display: block; }
+        .qr-info-text { font-size: 11px; color: #000; font-weight: bold; margin-top: 8px; }
 
-        /* Thanh điều hướng dưới cùng (Bottom Nav) */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #0c1411; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #1a2922; }
-        .nav-item { text-align: center; color: #666; font-size: 10px; font-weight: bold; cursor: pointer; flex: 1; }
-        .nav-item i { font-size: 20px; margin-bottom: 4px; display: block; }
+        /* BOTTOM NAV */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #090f17; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #162232; z-index: 999; }
+        .nav-item { text-align: center; color: #475569; font-size: 9px; font-weight: bold; cursor: pointer; flex: 1; text-transform: uppercase; }
+        .nav-item i { font-size: 18px; margin-bottom: 5px; display: block; }
         .nav-item.active { color: #00e676; }
     </style>
 </head>
-<body>
+<body class="">
 
-    <!-- HEADER CHUNG -->
+    <!-- POPUP WELCOME EDITABLE -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="welcome-modal">
+            <div class="welcome-title">Welcome</div>
+            <div class="welcome-text" id="welcomeTextContent">Đang tải cấu hình thông báo...</div>
+            <button class="btn-close-modal" onclick="closeWelcomeModal()">TẤT THÔNG BÁO</button>
+        </div>
+    </div>
+
+    <!-- HEADER SYSTEM -->
     <div class="header">
-        <div class="user-info">
-            <!-- Thay link ảnh avatar của bạn vào đây -->
-            <img src="https://via.placeholder.com/150" class="avatar">
-            <div>
-                <div class="username">Huy Bảo Customer</div>
-                <span class="role-tag">CUSTOMER</span>
+        <div class="user-section">
+            <div class="avatar-box"><img src="https://i.imgur.com/w1A4Mwb.png" alt="Avatar"></div>
+            <div class="user-meta">
+                <div class="name">Huy Bảo Ci...</div>
+                <div class="uid">ID: 8692475970</div>
             </div>
         </div>
-        <div class="balance-box">
-            <div class="balance-vnd">0đ</div>
-            <div class="balance-usdt">$0.00 USDT</div>
-        </div>
-    </div>
-
-    <!-- TAB 1: MUA KEY -->
-    <div id="tab-muakey" class="tab-content active">
-        <div class="banner-buy-key">
-            <div class="key-icon"><i class="fa-solid fa-key"></i></div>
-            <div>
-                <h4 style="font-size: 16px;">Mua Key</h4>
-                <p style="font-size: 12px; color: #888;">Hệ thống tự động cấp Key</p>
-            </div>
-        </div>
-
-        <div class="section-title"><i class="fa-solid fa-gamepad"></i> Chọn ứng dụng</div>
-        
-        <div class="grid-apps">
-            <!-- Các ô game lẻ -->
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="FF">
-                <div class="app-name">Free Fire</div>
-                <div class="app-count">11 mục</div>
-            </div>
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="LQ">
-                <div class="app-name">Liên Quân</div>
-                <div class="app-count">1 mục</div>
-            </div>
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="8Ball">
-                <div class="app-name">8 Ball Pool</div>
-                <div class="app-count">3 mục</div>
-            </div>
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="PUBG">
-                <div class="app-name">PUBG Mobile</div>
-                <div class="app-count">1 mục</div>
-            </div>
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="PT">
-                <div class="app-name">Play Together</div>
-                <div class="app-count">1 mục</div>
-            </div>
-            <div class="app-card">
-                <img src="https://via.placeholder.com/100" alt="Zing">
-                <div class="app-name">Zing Speed</div>
-                <div class="app-count">1 mục</div>
-            </div>
+        <div class="wallet-section">
+            <div class="wallet-vnd" id="userBalanceView">0đ</div>
+            <!-- BẤM VÀO ĐÂY ĐỂ ĐỔI QUYỀN ADMIN / THÀNH VIÊN NHANH -->
+            <div class="role-badge" id="roleBadge" onclick="toggleAdminRole()">CUSTOMER (Bấm đổi quyền)</div>
         </div>
     </div>
 
-    <!-- TAB 2: NẠP TIỀN -->
-    <div id="tab-naptien" class="tab-content">
-        <div class="deposit-container">
-            <h3>HỆ THỐNG NẠP TIỀN TỰ ĐỘNG</h3>
-            <p style="color: #888; font-size: 13px; margin-top: 5px;">Vui lòng chuyển khoản đúng nội dung để được cộng tiền tự động sau 1-3 phút.</p>
+    <!-- MAIN BODY PANELS -->
+    <div class="content-container">
+
+        <!-- ADMIN GLOBAL CONFIGS -->
+        <div class="admin-only" style="border-color: #ef4444; background: rgba(220,38,38,0.05);">
+            <div style="font-size: 12px; font-weight: bold; color: #f87171; margin-bottom: 8px;"><i class="fa-solid fa-screwdriver-wrench"></i> Quản Lý Thông Báo Hệ Thống</div>
+            <textarea id="adminWelcomeInput" style="width: 100%; background: #090d14; border: 1px solid #ef4444; color: #fff; padding: 8px; border-radius: 6px; font-size: 12px; height: 8px; min-height: 70px; outline: none; resize: vertical;"></textarea>
+            <button class="btn-action btn-green" style="padding: 6px; font-size: 11px; margin-top: 6px;" onclick="saveWelcomeText()">Cập nhật thông báo</button>
+        </div>
+
+        <!-- ================= TAB 1: MUA KEY ================= -->
+        <div id="tab-muakey" class="tab-content active">
             
-            <div class="bank-card">
-                <div class="bank-info">Ngân hàng: <span>MB BANK (QUÂN ĐỘI)</span></div>
-                <div class="bank-info">Số tài khoản: <span>0987654321</span></div>
-                <div class="bank-info">Chủ tài khoản: <span>NGUYEN HUY BAO</span></div>
-                <div class="bank-info">Nội dung CK: <span>NAP HUYBAO 869247</span></div>
+            <!-- VIEW LEVEL 1: GRID APPS -->
+            <div id="view-apps">
+                <!-- Admin thêm danh mục app -->
+                <div class="admin-only">
+                    <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Thêm Ứng Dụng Mới:</div>
+                    <div class="admin-input-row">
+                        <input type="text" id="newAppName" placeholder="Tên ứng dụng (Ví dụ: Free Fire)">
+                        <input type="text" id="newAppIcon" placeholder="Link ảnh icon hoặc icon mẫu">
+                    </div>
+                    <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="addApp()">Thêm Danh Mục</button>
+                </div>
+
+                <div class="card-box">
+                    <div class="box-title"><i class="fa-solid fa-gamepad"></i> Chọn ứng dụng</div>
+                    <div class="grid-apps" id="appsGridContainer"></div>
+                </div>
             </div>
 
-            <!-- Mã QR nạp tiền mẫu, sau này bạn có thể đổi link QR VietQR của bạn vào đây -->
-            <img src="https://via.placeholder.com/300x300?text=QR+Nạp+Tiền" class="qr-code">
+            <!-- VIEW LEVEL 2: SUB PRODUCTS (ẢNH 29) -->
+            <div id="view-subproducts" style="display: none;">
+                <button class="back-btn" onclick="showAppsView()"><i class="fa-solid fa-arrow-left"></i> Quay lại danh mục</button>
+                
+                <!-- Admin thêm loại hack/bản hack cụ thể -->
+                <div class="admin-only">
+                    <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Thêm Bản Hack Mới Vào Mục Này:</div>
+                    <div class="admin-input-row">
+                        <input type="text" id="newSubTitle" placeholder="Tên bản (Ví dụ: Fluorite - Free Fire)">
+                        <input type="text" id="newSubDesc" placeholder="Mô tả hỗ trợ (Ví dụ: Hỗ Trợ Lên Đến iOS 27...)">
+                    </div>
+                    <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="addSubProduct()">Thêm Sản Phẩm</button>
+                </div>
+
+                <div class="card-box">
+                    <div class="box-title" id="subProductsTitle">Sản phẩm hệ thống</div>
+                    <div class="sub-product-list" id="subProductsContainer"></div>
+                </div>
+            </div>
+
+            <!-- VIEW LEVEL 3: PACKAGE DETAILS & PRICING (ẢNH 28) -->
+            <div id="view-packages" style="display: none;">
+                <button class="back-btn" onclick="showSubProductsView()"><i class="fa-solid fa-arrow-left"></i> Quay lại sản phẩm</button>
+                
+                <!-- Admin chỉnh giá nhanh cho sản phẩm -->
+                <div class="admin-only">
+                    <div style="font-size: 11px; font-weight: bold; color: #818cf8; margin-bottom: 6px;">Sửa Giá Gói Của Bản Này:</div>
+                    <div class="admin-input-row">
+                        <input type="number" id="editPrice1" placeholder="Giá gói 1 ngày (VND)">
+                        <input type="number" id="editPrice7" placeholder="Giá gói 7 ngày (VND)">
+                        <input type="number" id="editPrice31" placeholder="Giá gói 31 ngày (VND)">
+                    </div>
+                    <button class="btn-action btn-green" style="padding: 6px; font-size: 11px;" onclick="savePackagePrices()">Lưu Thay Đổi Giá</button>
+                </div>
+
+                <div class="card-box" id="packageDetailBox">
+                    <!-- Nội dung Render Động từ ảnh 28 hiển thị ở đây -->
+                </div>
+            </div>
+
         </div>
+
+        <!-- ================= TAB 2: NẠP TIỀN (ẢNH 20 TÍCH HỢP VIETQR CHUẨN) ================= -->
+        <div id="tab-naptien" class="tab-content">
+            <div class="card-box" style="border-color: #eab308;">
+                <div class="box-title" style="color: #eab308;"><i class="fa-solid fa-money-bill-transfer"></i> Nạp tiền tự động 24/7</div>
+                <div style="font-size: 12px; color: #64748b; margin-top: -10px; margin-bottom: 15px;">Giao dịch được xử lý qua hệ thống cổng VietQR trực tuyến.</div>
+                
+                <div class="input-group">
+                    <i class="fa-solid fa-money-bill-wave"></i>
+                    <input type="number" id="depositAmount" class="main-input" placeholder="Nhập số tiền cần nạp (Tối thiểu 2.000đ)">
+                </div>
+                <button class="btn-action btn-gold" onclick="generateVietQR()"><i class="fa-solid fa-qrcode"></i> Tạo mã QR nạp tiền</button>
+
+                <!-- KHU VỰC HIỂN THỊ MÃ QR TỰ ĐỘNG CỦA BẠN -->
+                <div class="qr-display-box" id="qrDisplayArea">
+                    <img id="qrGeneratedImg" src="" alt="VietQR Pay">
+                    <div class="qr-info-text">CTK: LE HUY BAO</div>
+                    <div style="font-size: 10px; color: #666;">NH: MB BANK - STK: 2660566922</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 5: CÁ NHÂN ================= -->
+        <div id="tab-canhan" class="tab-content">
+            <div class="card-box">
+                <div class="box-title"><i class="fa-solid fa-user-shield"></i> Trạng thái phân quyền tài khoản</div>
+                <p style="font-size: 13px; color: #94a3b8; line-height: 1.6;">
+                    • Bạn có thể bấm vào thẻ trạng thái ở góc trên cùng bên phải để thay đổi nhanh giữa vai trò quyền **Thành viên (Customer)** và quyền **Admin quản trị** hệ thống điều hành cấu hình shop.
+                </p>
+            </div>
+        </div>
+
     </div>
 
-    <!-- THANH ĐIỀU HƯỚNG DƯỚI CÙNG -->
+    <!-- BOTTOM SYSTEM NAVIGATION BAR -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('muakey', this)">
-            <i class="fa-solid fa-key"></i> MUA KEY
-        </div>
-        <div class="nav-item" onclick="switchTab('naptien', this)">
-            <i class="fa-solid fa-wallet"></i> NẠP TIỀN
-        </div>
-        <div class="nav-item" onclick="alert('Tính năng đang phát triển!')">
-            <i class="fa-solid fa-trophy"></i> TOP NẠP
-        </div>
-        <div class="nav-item" onclick="alert('Tính năng đang phát triển!')">
-            <i class="fa-solid fa-user"></i> CÁ NHÂN
-        </div>
+        <div class="nav-item active" onclick="navigationTab('muakey', this)"><i class="fa-solid fa-key"></i> Mua Key</div>
+        <div class="nav-item" onclick="navigationTab('naptien', this)"><i class="fa-solid fa-wallet"></i> Nạp Tiền</div>
+        <div class="nav-item" onclick="navigationTab('canhan', this)"><i class="fa-solid fa-user"></i> Cá Nhân</div>
     </div>
 
-    <!-- JAVASCRIPT CHUYỂN TAB -->
+    <!-- LOGIC XỬ LÝ TOÀN BỘ CƠ CHẾ ADMIN & ĐĂNG SẢN PHẨM -->
     <script>
-        function switchTab(tabId, element) {
-            // Ẩn tất cả các tab
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
+        // Khởi tạo cơ sở dữ liệu mẫu ban đầu để lưu vào localStorage
+        const defaultApps = [
+            { id: "ff", name: "Free Fire", icon: "https://i.imgur.com/Xbe6S6p.png" },
+            { id: "lq", name: "Liên Quân", icon: "https://i.imgur.com/K6q64A2.png" },
+            { id: "8ball", name: "8 Ball Pool", icon: "https://i.imgur.com/UoYm8Z3.png" }
+        ];
+
+        const defaultSubProducts = [
+            { id: "sub1", appId: "ff", title: "Fluorite - Free Fire", desc: "Hỗ Trợ Lên Đến iOS 27, Dễ Cài Đặt Và Dễ Sử Dụng.", icon: "https://i.imgur.com/Xbe6S6p.png", p1: 80000, p7: 210000, p31: 310000 },
+            { id: "sub2", appId: "ff", title: "Migul Lite - Vietnam Version", desc: "Bản hack nhẹ ổn định bypass các loại trận đấu.", icon: "https://i.imgur.com/Xbe6S6p.png", p1: 50000, p7: 150000, p31: 250000 },
+            { id: "sub3", appId: "lq", title: "Mod Map Sáng Liên Quân Mobile", desc: "Nhìn bản đồ toàn vị trí địch siêu mượt.", icon: "https://i.imgur.com/K6q64A2.png", p1: 30000, p7: 90000, p31: 180000 }
+        ];
+
+        let apps = JSON.parse(localStorage.getItem('shop_apps')) || defaultApps;
+        let subProducts = JSON.parse(localStorage.getItem('shop_subs')) || defaultSubProducts;
+        let welcomeText = localStorage.getItem('shop_welcome') || "Hỗ Trợ Liên Hệ Telegram: @phucminhn, Zalo: 0333.46.0102\nKênh Chính Thông Báo/Share Hack: @minhphucxiters\n\nCảm Ơn Quý Khách Đã Ủng Hộ Shop!";
+        
+        let currentRole = "CUSTOMER"; 
+        let currentSelectedAppId = "";
+        let currentSelectedSubId = "";
+
+        // Chạy lần đầu tiên load trang
+        window.onload = function() {
+            document.getElementById('welcomeTextContent').innerText = welcomeText;
+            document.getElementById('adminWelcomeInput').value = welcomeText;
+            renderApps();
+        };
+
+        function closeWelcomeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        }
+
+        // Đổi quyền Admin / Thành viên
+        function toggleAdminRole() {
+            if(currentRole === "CUSTOMER") {
+                currentRole = "ADMIN";
+                document.getElementById('roleBadge').innerText = "ADMIN PANEL";
+                document.getElementById('roleBadge').classList.add('admin-mode');
+                document.body.classList.add('admin-active');
+            } else {
+                currentRole = "CUSTOMER";
+                document.getElementById('roleBadge').innerText = "CUSTOMER (Bấm đổi quyền)";
+                document.getElementById('roleBadge').classList.remove('admin-mode');
+                document.body.classList.remove('admin-active');
+            }
+        }
+
+        function saveWelcomeText() {
+            let txt = document.getElementById('adminWelcomeInput').value;
+            localStorage.setItem('shop_welcome', txt);
+            document.getElementById('welcomeTextContent').innerText = txt;
+            alert("Đã cập nhật thông báo hệ thống!");
+        }
+
+        // RENDER DANH MỤC ỨNG DỤNG
+        function renderApps() {
+            const container = document.getElementById('appsGridContainer');
+            container.innerHTML = "";
+            apps.forEach(app => {
+                let count = subProducts.filter(s => s.appId === app.id).length;
+                container.innerHTML += `
+                    <div class="app-item" onclick="selectApp('${app.id}', '${app.name}')">
+                        ${currentRole === 'ADMIN' ? `<span onclick="deleteApp('${app.id}', event)" style="position:absolute; top:2px; right:5px; color:#ef4444; font-size:12px; font-weight:bold;">X</span>` : ''}
+                        <img src="${app.icon}" onerror="this.src='https://i.imgur.com/Xbe6S6p.png'">
+                        <div class="app-name">${app.name}</div>
+                        <div style="font-size:10px; color:#64748b; margin-top:2px;">${count} mục</div>
+                    </div>
+                `;
             });
-            // Gỡ active ở thanh điều hướng
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
+        }
+
+        function addApp() {
+            let name = document.getElementById('newAppName').value;
+            let icon = document.getElementById('newAppIcon').value || "https://i.imgur.com/Xbe6S6p.png";
+            if(!name) return alert("Vui lòng điền tên danh mục ứng dụng!");
+            let id = "app_" + Date.now();
+            apps.push({ id, name, icon });
+            localStorage.setItem('shop_apps', JSON.stringify(apps));
+            renderApps();
+            document.getElementById('newAppName').value = "";
+        }
+
+        function deleteApp(id, e) {
+            e.stopPropagation();
+            if(!confirm("Bạn có chắc chắn muốn xoá danh mục này và các sản phẩm bên trong không?")) return;
+            apps = apps.filter(a => a.id !== id);
+            subProducts = subProducts.filter(s => s.appId !== id);
+            localStorage.setItem('shop_apps', JSON.stringify(apps));
+            localStorage.setItem('shop_subs', JSON.stringify(subProducts));
+            renderApps();
+        }
+
+        // CHỌN XEM CHI TIẾT SẢN PHẨM TRONG APP (ẢNH 29)
+        function selectApp(appId, appName) {
+            currentSelectedAppId = appId;
+            document.getElementById('view-apps').style.display = 'none';
+            document.getElementById('view-subproducts').style.display = 'block';
+            document.getElementById('subProductsTitle').innerText = "Danh mục: " + appName;
+            renderSubProducts();
+        }
+
+        function showAppsView() {
+            document.getElementById('view-apps').style.display = 'block';
+            document.getElementById('view-subproducts').style.display = 'none';
+            renderApps();
+        }
+
+        function renderSubProducts() {
+            const container = document.getElementById('subProductsContainer');
+            container.innerHTML = "";
+            let list = subProducts.filter(s => s.appId === currentSelectedAppId);
+            if(list.length === 0) {
+                container.innerHTML = `<p style="font-size:12px; color:#475569; text-align:center; padding:15px;">Chưa có sản phẩm nào trong mục này.</p>`;
+            }
+            list.forEach(sub => {
+                container.innerHTML += `
+                    <div class="sub-product-item" onclick="selectSubProduct('${sub.id}')">
+                        <div class="sub-left">
+                            <img class="sub-icon" src="${sub.icon}">
+                            <div class="sub-info">
+                                <div class="sub-title">${sub.title}</div>
+                                <div class="sub-desc">${sub.desc}</div>
+                                <div class="sub-note"><i class="fa-solid fa-circle-info"></i> Nhấn để xem chi tiết gói cước</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                            <i class="fa-solid fa-chevron-right" style="color:#334155;"></i>
+                            ${currentRole === 'ADMIN' ? `<button class="btn-danger" onclick="deleteSubProduct('${sub.id}', event)">Xoá</button>` : ''}
+                        </div>
+                    </div>
+                `;
             });
+        }
+
+        function addSubProduct() {
+            let title = document.getElementById('newSubTitle').value;
+            let desc = document.getElementById('newSubDesc').value;
+            if(!title) return alert("Vui lòng điền tên sản phẩm hack!");
             
-            // Hiển thị tab được chọn
+            let targetApp = apps.find(a => a.id === currentSelectedAppId);
+            let icon = targetApp ? targetApp.icon : "https://i.imgur.com/Xbe6S6p.png";
+            let id = "sub_" + Date.now();
+            
+            subProducts.push({ id, appId: currentSelectedAppId, title, desc, icon, p1: 80000, p7: 210000, p31: 310000 });
+            localStorage.setItem('shop_subs', JSON.stringify(subProducts));
+            renderSubProducts();
+            document.getElementById('newSubTitle').value = "";
+            document.getElementById('newSubDesc').value = "";
+        }
+
+        function deleteSubProduct(id, e) {
+            e.stopPropagation();
+            if(!confirm("Xoá sản phẩm này?")) return;
+            subProducts = subProducts.filter(s => s.id !== id);
+            localStorage.setItem('shop_subs', JSON.stringify(subProducts));
+            renderSubProducts();
+        }
+
+        // XEM CHI TIẾT GÓI CỦA SẢN PHẨM (ẢNH 28)
+        function selectSubProduct(subId) {
+            currentSelectedSubId = subId;
+            document.getElementById('view-subproducts').style.display = 'none';
+            document.getElementById('view-packages').style.display = 'block';
+            
+            let item = subProducts.find(s => s.id === subId);
+            if(item) {
+                document.getElementById('editPrice1').value = item.p1;
+                document.getElementById('editPrice7').value = item.p7;
+                document.getElementById('editPrice31').value = item.p31;
+            }
+            renderPackageDetailView();
+        }
+
+        function showSubProductsView() {
+            document.getElementById('view-subproducts').style.display = 'block';
+            document.getElementById('view-packages').style.display = 'none';
+            renderSubProducts();
+        }
+
+        function savePackagePrices() {
+            let p1 = parseInt(document.getElementById('editPrice1').value) || 0;
+            let p7 = parseInt(document.getElementById('editPrice7').value) || 0;
+            let p31 = parseInt(document.getElementById('editPrice31').value) || 0;
+            
+            let idx = subProducts.findIndex(s => s.id === currentSelectedSubId);
+            if(idx !== -1) {
+                subProducts[idx].p1 = p1;
+                subProducts[idx].p7 = p7;
+                subProducts[idx].p31 = p31;
+                localStorage.setItem('shop_subs', JSON.stringify(subProducts));
+                alert("Cập nhật bảng giá thành công!");
+                renderPackageDetailView();
+            }
+        }
+
+        function renderPackageDetailView() {
+            let item = subProducts.find(s => s.id === currentSelectedSubId);
+            const container = document.getElementById('packageDetailBox');
+            if(!item) return;
+
+            container.innerHTML = `
+                <div class="box-title"><i class="fa-solid fa-box"></i> Cấu hình gói mua</div>
+                <div style="background:#111827; padding:10px; border-radius:10px; font-size:12px; margin-bottom:15px; border-left:3px solid #00e676;">
+                    <strong>${item.title}</strong><br>
+                    <span style="color:#64748b;">${item.desc}</span>
+                </div>
+
+                <div class="package-container">
+                    <div class="package-option selected" id="pkg-1" onclick="changeSelectedPkg(1, ${item.p1})">
+                        <div class="pkg-left">
+                            <div class="pkg-duration">1 Ngày</div>
+                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
+                        </div>
+                        <div class="pkg-price">${item.p1.toLocaleString('vi-VN')}đ</div>
+                    </div>
+                    <div class="package-option" id="pkg-7" onclick="changeSelectedPkg(7, ${item.p7})">
+                        <div class="pkg-left">
+                            <div class="pkg-duration">7 Ngày</div>
+                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
+                        </div>
+                        <div class="pkg-price">${item.p7.toLocaleString('vi-VN')}đ</div>
+                    </div>
+                    <div class="package-option" id="pkg-31" onclick="changeSelectedPkg(31, ${item.p31})">
+                        <div class="pkg-left">
+                            <div class="pkg-duration">31 Ngày</div>
+                            <div class="pkg-stock">Kho: <span style="color:#ef4444; font-weight:bold;">Sẵn hàng</span></div>
+                        </div>
+                        <div class="pkg-price">${item.p31.toLocaleString('vi-VN')}đ</div>
+                    </div>
+                </div>
+
+                <div class="qty-box">
+                    <div style="font-size:13px; font-weight:bold;"><i class="fa-solid fa-layer-group"></i> Số lượng</div>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="updateQuantity(-1)">-</button>
+                        <span id="buyQty" style="font-weight:bold; font-size:14px;">1</span>
+                        <button class="qty-btn" onclick="updateQuantity(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top:10px;">
+                    <i class="fa-solid fa-tags"></i>
+                    <input type="text" class="main-input" placeholder="Nhập mã voucher giảm giá (nếu có)">
+                </div>
+
+                <button class="btn-action btn-green" style="margin-top:15px;" onclick="processBuyKey()"><i class="fa-solid fa-cart-shopping"></i> THANH TOÁN NGAY</button>
+            `;
+            window.currentSelectedCost = item.p1;
+        }
+
+        function changeSelectedPkg(days, price) {
+            document.querySelectorAll('.package-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById('pkg-' + days).classList.add('selected');
+            window.currentSelectedCost = price;
+        }
+
+        function updateQuantity(val) {
+            let el = document.getElementById('buyQty');
+            let current = parseInt(el.innerText);
+            current += val;
+            if(current < 1) current = 1;
+            el.innerText = current;
+        }
+
+        function processBuyKey() {
+            let qty = parseInt(document.getElementById('buyQty').innerText);
+            let total = window.currentSelectedCost * qty;
+            alert("Số dư tài khoản không đủ để thanh toán " + total.toLocaleString('vi-VN') + "đ. Vui lòng chuyển sang tab Nạp Tiền!");
+        }
+
+        // TẠO MÃ VIETQR QUÉT TỰ ĐỘNG THEO THÔNG TIN ẢNH 27 CỦA BẠN
+        function generateVietQR() {
+            let amount = document.getElementById('depositAmount').value;
+            if(!amount || amount < 2000) {
+                return alert("Vui lòng điền số tiền nạp hợp lệ (Tối thiểu 2.000đ)");
+            }
+            
+            // Sử dụng API VietQR mở để map tài khoản MB của bạn
+            let bankId = "MB";
+            let accountNo = "2660566922";
+            let template = "qr_only";
+            let description = "NAP STORE HACK " + Math.floor(1000 + Math.random() * 9000);
+            
+            let apiUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-${template}.png?amount=${amount}&addInfo=${encodeURIComponent(description)}&accountName=LE%20HUY%20BAO`;
+            
+            document.getElementById('qrGeneratedImg').src = apiUrl;
+            document.getElementById('qrDisplayArea').style.display = "block";
+        }
+
+        // CHUYỂN ĐỔI TAB GIAO DIỆN CHÍNH
+        function navigationTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
             document.getElementById('tab-' + tabId).classList.add('active');
-            // Thêm active cho nút vừa bấm
             element.classList.add('active');
         }
     </script>
