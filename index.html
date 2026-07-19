@@ -4,22 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Huy Bảo Shop - Cyber Premium</title>
-    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* --- BỘ MÀU TÍM HỒNG NEON CHUẨN ANIME GAME --- */
         :root {
-            --bg-main: #07090e;
-            --bg-card: linear-gradient(135deg, #101524 0%, #151d30 100%);
-            --bg-input: #192239;
+            --bg-main: #0a0413;
+            --bg-card: linear-gradient(135deg, #17072b 0%, #250a47 100%);
+            --bg-input: #1f0b3b;
             --text-color: #ffffff;
-            --neon-green: #00ff88;
-            --cyan-blue: #00f0ff;
-            --premium-purple: #ae46ff;
-            --gold-amber: #ffb703;
-            --gray-text: #94a3b8;
-            --danger-red: #ff4d4d;
+            --neon-green: #00ffaa;
+            --cyan-blue: #ff2a85; /* Chuyển đổi sang màu hồng neon quyến rũ */
+            --premium-purple: #b546ff;
+            --gold-amber: #ffcc00;
+            --gray-text: #c0a8da;
+            --danger-red: #ff4d6d;
         }
 
         body {
@@ -39,8 +38,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            background: linear-gradient(180deg, #11162a 0%, #07090e 100%);
-            border-bottom: 2px solid #1e2942;
+            background: linear-gradient(180deg, #18072c 0%, #0a0413 100%);
+            border-bottom: 2px solid #2e1054;
         }
 
         .user-block {
@@ -54,12 +53,12 @@
             height: 46px;
             border-radius: 50%;
             border: 2px solid var(--cyan-blue);
-            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 12px rgba(255, 42, 133, 0.5);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #192239;
+            background-color: #1f0b3b;
             font-weight: bold;
         }
 
@@ -93,10 +92,10 @@
             color: var(--gold-amber);
             font-weight: 800;
             margin-top: 3px;
-            background: rgba(255, 183, 3, 0.1);
+            background: rgba(255, 204, 0, 0.1);
             padding: 2px 6px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 183, 3, 0.3);
+            border: 1px solid rgba(255, 204, 0, 0.3);
             width: fit-content;
         }
 
@@ -108,7 +107,7 @@
         }
 
         .lang-switch-btn {
-            background: #192239;
+            background: #1f0b3b;
             border: 1px solid var(--cyan-blue);
             color: var(--cyan-blue);
             padding: 4px 10px;
@@ -116,6 +115,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            box-shadow: 0 0 8px rgba(255, 42, 133, 0.2);
         }
 
         .admin-glow-btn {
@@ -127,7 +127,7 @@
             font-size: 10px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 0 12px rgba(0, 255, 170, 0.4);
         }
 
         /* ADMIN PANEL BY ID */
@@ -137,7 +137,7 @@
             padding: 15px;
             border: 2px dashed var(--neon-green);
             border-radius: 12px;
-            background-color: #0d1322;
+            background-color: #120522;
         }
 
         .admin-title {
@@ -151,13 +151,18 @@
         .input-field {
             width: 100%;
             background-color: var(--bg-input);
-            border: 1px solid #2d3b5e;
+            border: 1px solid #361563;
             color: white;
             padding: 11px;
             border-radius: 8px;
             font-size: 13px;
             box-sizing: border-box;
             margin-bottom: 10px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--cyan-blue);
         }
 
         .btn-update-config {
@@ -171,6 +176,7 @@
             cursor: pointer;
             text-transform: uppercase;
             font-size: 12px;
+            box-shadow: 0 4px 12px rgba(255, 42, 133, 0.3);
         }
 
         /* STOREFRONT STYLING */
@@ -183,6 +189,7 @@
             align-items: center;
             gap: 8px;
             text-transform: uppercase;
+            text-shadow: 0 0 6px rgba(255, 42, 133, 0.3);
         }
 
         .tab-content {
@@ -202,13 +209,13 @@
 
         .product-item {
             background: var(--bg-card);
-            border: 1px solid #1f2d4a;
+            border: 1px solid #31135c;
             border-radius: 12px;
             padding: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .product-left {
@@ -226,9 +233,9 @@
             align-items: center;
             justify-content: center;
             font-size: 20px;
-            background: rgba(7, 9, 14, 0.6);
-            border: 1.5px solid rgba(0, 240, 255, 0.3);
-            box-shadow: inset 0 0 8px rgba(0,240,255,0.1);
+            background: rgba(10, 4, 19, 0.7);
+            border: 1.5px solid rgba(255, 42, 133, 0.3);
+            box-shadow: inset 0 0 8px rgba(255,42,133,0.1);
             position: relative;
         }
 
@@ -238,7 +245,7 @@
             color: #fff;
             border: 1.5px solid #ff7bf2 !important;
             text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-            box-shadow: 0 0 10px rgba(218, 68, 255, 0.5) !important;
+            box-shadow: 0 0 10px rgba(218, 68, 255, 0.6) !important;
         }
         
         /* Image_7 Migul Theme: Futuristic dark ring space system */
@@ -246,14 +253,14 @@
             background: #f8fafc;
             color: #0f172a;
             border: 1.5px solid #94a3b8 !important;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2) !important;
         }
 
-        .icon-iosviet { color: #ffb703; text-shadow: 0 0 8px #ffb703; }
+        .icon-iosviet { color: var(--gold-amber); text-shadow: 0 0 8px var(--gold-amber); }
         .icon-sudo { color: #e2e8f0; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
-        .icon-ngotran { color: #ffb703; text-shadow: 0 0 10px #ffb703; }
+        .icon-ngotran { color: var(--gold-amber); text-shadow: 0 0 10px var(--gold-amber); }
         .icon-drip { color: #ff4d4d; text-shadow: 0 0 10px #ff4d4d; }
-        .icon-zygame { color: #00ff88; text-shadow: 0 0 10px #00ff88; }
+        .icon-zygame { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
         .icon-aim { color: #ff3333; text-shadow: 0 0 12px #ff3333; }
 
         .p-name {
@@ -276,7 +283,7 @@
         .select-duration {
             background-color: var(--bg-input);
             color: white;
-            border: 1px solid #2d3b5e;
+            border: 1px solid #361563;
             padding: 6px 10px;
             border-radius: 6px;
             font-size: 11px;
@@ -285,15 +292,15 @@
         }
 
         .btn-buy-now {
-            background: linear-gradient(135deg, var(--cyan-blue) 0%, #0088ff 100%);
-            color: #000;
+            background: linear-gradient(135deg, var(--cyan-blue) 0%, #ba005d 100%);
+            color: #fff;
             border: none;
             padding: 7px 16px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(255, 42, 133, 0.3);
         }
 
         /* REVIEWS */
@@ -302,7 +309,7 @@
             background: var(--bg-card);
             border-radius: 12px;
             padding: 15px;
-            border: 1px solid #1f2d4a;
+            border: 1px solid #31135c;
         }
 
         .review-title-text {
@@ -314,7 +321,7 @@
         }
 
         .review-item {
-            border-bottom: 1px solid #1f2d4a;
+            border-bottom: 1px solid #31135c;
             padding: 12px 0;
         }
 
@@ -342,11 +349,11 @@
 
         /* PREMIUM CYBERPUNK DEPOSIT CARD DESIGN GLOW-UP */
         .topup-card {
-            background: linear-gradient(145deg, #0e1424 0%, #131b33 100%);
+            background: linear-gradient(145deg, #16072b 0%, #220a3d 100%);
             border-radius: 16px;
             padding: 20px;
-            border: 1px solid #223154;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid #43177a;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
 
         .quick-amount-grid {
@@ -358,8 +365,8 @@
         }
 
         .btn-quick-amount {
-            background: #192239;
-            border: 1px solid #2d3b5e;
+            background: #1f0b3b;
+            border: 1px solid #43177a;
             color: #fff;
             padding: 10px 5px;
             border-radius: 8px;
@@ -372,14 +379,14 @@
 
         .btn-quick-amount:hover, .btn-quick-amount.active-amt {
             border-color: var(--cyan-blue);
-            background: rgba(0, 240, 255, 0.1);
+            background: rgba(255, 42, 133, 0.15);
             color: var(--cyan-blue);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 42, 133, 0.3);
         }
 
         .banking-detail-row {
-            background: #090d16;
-            border: 1px solid #1e2942;
+            background: #0d041a;
+            border: 1px solid #3b146d;
             border-radius: 10px;
             padding: 12px;
             margin-top: 12px;
@@ -390,9 +397,9 @@
         }
 
         .copy-badge-btn {
-            background: rgba(0, 255, 136, 0.1);
+            background: rgba(0, 255, 170, 0.1);
             color: var(--neon-green);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 170, 0.3);
             padding: 3px 8px;
             border-radius: 5px;
             font-size: 10px;
@@ -409,10 +416,10 @@
             text-align: center;
             margin: 20px 0;
             padding: 20px;
-            background: linear-gradient(180deg, #161f38 0%, #0d1324 100%);
+            background: linear-gradient(180deg, #1e0938 0%, #0e041c 100%);
             border-radius: 16px;
             border: 2px solid var(--cyan-blue);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.25);
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.3);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -461,7 +468,7 @@
             font-size: 13px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.25);
+            box-shadow: 0 4px 12px rgba(0, 255, 170, 0.25);
         }
 
         /* LEADERBOARD */
@@ -471,7 +478,7 @@
             background: var(--bg-card);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #1f2d4a;
+            border: 1px solid #31135c;
         }
 
         .leaderboard-table th, .leaderboard-table td {
@@ -481,13 +488,13 @@
         }
 
         .leaderboard-table th {
-            background-color: #0c111e;
+            background-color: #120524;
             color: var(--cyan-blue);
             font-weight: 800;
         }
 
         .leaderboard-table tr {
-            border-bottom: 1px solid #1f2d4a;
+            border-bottom: 1px solid #31135c;
         }
 
         .rank-badge {
@@ -511,7 +518,7 @@
             padding: 18px;
             border-radius: 12px;
             margin-bottom: 15px;
-            border: 1px solid #1f2d4a;
+            border: 1px solid #31135c;
         }
 
         .history-box {
@@ -519,8 +526,8 @@
         }
 
         .history-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #1f2d4a;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid #31135c;
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 10px;
@@ -533,8 +540,8 @@
         }
 
         .history-item:hover {
-            background: rgba(0, 240, 255, 0.05);
-            border-color: rgba(0, 240, 255, 0.2);
+            background: rgba(255, 42, 133, 0.05);
+            border-color: rgba(255, 42, 133, 0.2);
         }
 
         .history-left {
@@ -558,7 +565,7 @@
         .click-view-hint {
             font-size: 9px;
             color: var(--cyan-blue);
-            background: rgba(0, 240, 255, 0.1);
+            background: rgba(255, 42, 133, 0.1);
             padding: 1px 4px;
             border-radius: 3px;
         }
@@ -574,7 +581,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid #2d3b5e;
+            border: 1px solid #361563;
         }
 
         /* PREMIUM SUCCESS MODAL MATCHING IMAGE_4.PNG EXACTLY */
@@ -590,14 +597,14 @@
         }
 
         .modal-box {
-            background: #0d1222;
+            background: #110620;
             padding: 24px 20px;
             border-radius: 16px;
             border: 2px solid var(--cyan-blue);
             width: 88%;
             max-width: 350px;
             text-align: center;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.4);
             box-sizing: border-box;
         }
 
@@ -620,7 +627,7 @@
         }
 
         .generated-key-container {
-            background-color: #04060b;
+            background-color: #05010a;
             color: var(--neon-green);
             font-family: monospace;
             font-size: 16px;
@@ -639,22 +646,22 @@
         .btn-modal-close-premium {
             width: 100%;
             background-color: var(--cyan-blue);
-            color: #000;
+            color: #fff;
             border: none;
             padding: 13px;
             border-radius: 10px;
             font-weight: 800;
             font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 42, 133, 0.3);
         }
 
         /* BOTTOM NAVBAR TABS */
         .bottom-navbar {
             position: fixed;
             bottom: 0; left: 0; width: 100%; height: 68px;
-            background: linear-gradient(360deg, #07090e 0%, #121826 100%);
-            border-top: 1px solid #1f2d4a;
+            background: linear-gradient(360deg, #0a0413 0%, #1a0830 100%);
+            border-top: 1px solid #31135c;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -666,7 +673,7 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            color: #5e6b82;
+            color: #8c72a6;
             font-size: 10px;
             font-weight: 800;
             cursor: pointer;
@@ -675,11 +682,46 @@
 
         .nav-tab i { font-size: 18px; }
         .nav-tab.active { color: var(--cyan-blue); text-shadow: 0 0 8px var(--cyan-blue); }
-    </style>
+
+        /* LIVE DEPOSIT NOTIFICATION FLOATING TICKER TOOLKIT */
+        .fomo-ticker-hub {
+            position: fixed;
+            bottom: 82px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 360px;
+            background: linear-gradient(90deg, #1f073a 0%, #110422 100%);
+            border: 1px solid var(--cyan-blue);
+            box-shadow: 0 0 15px rgba(255, 42, 133, 0.35);
+            border-radius: 30px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #fff;
+            z-index: 998;
+            pointer-events: none;
+            opacity: 0;
+            transform: translate(-50%, 20px);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fomo-ticker-hub.visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+        .fomo-pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon-green);
+        }
+    </script>
 </head>
 <body>
 
-    <!-- CONTROL HEADER -->
     <div class="header">
         <div class="user-block">
             <div id="user-avatar" class="avatar-box">HB</div>
@@ -695,7 +737,6 @@
         </div>
     </div>
 
-    <!-- SECRET ADMIN CONFIG WITH ACCOUNT ID ROUTING -->
     <div id="admin-panel" class="admin-container">
         <p class="admin-title">⚙️ Panel Quản Trị Tối Cao</p>
         
@@ -706,29 +747,26 @@
         <input type="number" id="cfg-add-money" class="input-field" placeholder="Ví dụ: 500000">
         <button class="btn-update-config" onclick="processAdminDeposit()" style="margin-bottom:15px;">Cộng Tiền Tài Khoản</button>
         
-        <hr style="border:0; border-top:1px solid #1f2d4a; margin-bottom:12px;">
+        <hr style="border:0; border-top:1px solid #31135c; margin-bottom:12px;">
         <label class="form-label">Cấu hình thông báo Shop:</label>
         <input type="text" id="cfg-title" class="input-field" placeholder="Tiêu đề thông báo">
         <input type="text" id="cfg-desc" class="input-field" placeholder="Nội dung chi tiết">
         <button class="btn-update-config" onclick="saveAdminConfig()">Cập Nhật Thông Báo</button>
     </div>
 
-    <!-- TAB 1: CỬA HÀNG -->
     <div id="tab-store" class="tab-content active">
         <div style="background: var(--bg-card); padding: 14px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--cyan-blue);">
             <div id="ann-title" style="font-weight:bold; font-size:13px; color:var(--cyan-blue);">Huy Bảo Shop - Free Fire</div>
             <div id="ann-desc" style="font-size:12px; color:#cbd5e1; margin-top:4px;">Uy tín - Chất lượng - Hỗ trợ nhiệt tình.</div>
         </div>
 
-        <!-- IOS PRODUCTS SECTION -->
         <div class="cate-title"><i class="fa-brands fa-apple"></i> <span data-key="cate_ios">Mục iOS (iPhone, iPad)</span></div>
         <div class="product-group">
             
-            <!-- MIGUL PRO (Updated pricing dropdown based on user asset config) -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper icon-migul-asset">
-                        <i class="fa-solid fa-circle-radiation"></i>
+                        <i class="fa-solid fa-circle-radiation" style="color:#0f172a"></i>
                     </div>
                     <div>
                         <div class="p-name">MIGUL PRO</div>
@@ -745,11 +783,10 @@
                 </div>
             </div>
 
-            <!-- MIGUL LITE (New addition package) -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper icon-migul-asset">
-                        <i class="fa-solid fa-ring"></i>
+                        <i class="fa-solid fa-ring" style="color:#0f172a"></i>
                     </div>
                     <div>
                         <div class="p-name">MIGUL LITE</div>
@@ -766,7 +803,6 @@
                 </div>
             </div>
 
-            <!-- FLUORITE (Updated pricing dropdown based on user crystal gradient) -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper icon-fluorite-asset">
@@ -786,7 +822,6 @@
                 </div>
             </div>
 
-            <!-- IOSVIET -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper"><i class="fa-solid fa-box-open icon-iosviet"></i></div>
@@ -801,7 +836,6 @@
                 </div>
             </div>
 
-            <!-- SUDO -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper"><i class="fa-solid fa-terminal icon-sudo"></i></div>
@@ -817,7 +851,6 @@
             </div>
         </div>
 
-        <!-- ANDROID PRODUCTS SECTION -->
         <div class="cate-title"><i class="fa-brands fa-android"></i> <span data-key="cate_adr">Mục ADR (No Root & Root)</span></div>
         <div class="product-group">
             <div class="product-item">
@@ -861,7 +894,6 @@
             </div>
         </div>
 
-        <!-- MENU AIM SECTION -->
         <div class="cate-title"><i class="fa-solid fa-crosshairs"></i> <span>MENU AIM (ADR & iOS)</span></div>
         <div class="product-group">
             <div class="product-item">
@@ -911,21 +943,27 @@
             </div>
         </div>
 
-        <!-- REVIEWS -->
         <div class="reviews-box">
             <div class="review-title-text" data-key="rev_title">💬 Đánh Giá Khách Hàng</div>
             <div class="review-item">
-                <div class="review-user"><span>Trần Đạt (ID: 4829***)</span><span class="review-stars">★★★★★</span></div>
-                <div class="review-msg">Fluorite cài esign mượt lắm sếp Bảo ơi, kéo tâm bao phê không lỗi lầm gì!</div>
+                <div class="review-user"><span>phong_freefire***</span><span class="review-stars">★★★★★</span></div>
+                <div class="review-msg">Fluorite cài bằng esign kéo tâm đỉnh vcl sếp Bảo ơi, bắn nãy giờ chưa thấy lỗi phát nào.</div>
             </div>
             <div class="review-item">
-                <div class="review-user"><span>Garena Hùng (ID: 7721***)</span><span class="review-stars">★★★★★</span></div>
-                <div class="review-msg" data-key="rev_2">Nạp tiền bằng tài khoản auto duyệt nhanh vcl, 3 phút có hàng luôn uy tín.</div>
+                <div class="review-user"><span>thanhdieu.vip***</span><span class="review-stars">★★★★★</span></div>
+                <div class="review-msg">Migul Pro bản mới đá giải mượt đét, tiền nạp tài khoản đồng bộ 3 phút có hàng luôn, quá uy tín.</div>
+            </div>
+            <div class="review-item">
+                <div class="review-user"><span>dat_pro2k4***</span><span class="review-stars">★★★★</span></div>
+                <div class="review-msg">Bản Sudo đá giải ngon, kéo tâm êm, mỗi tội nãy MB bank bảo trì nên duyệt mất 2 phút, nhưng shop hỗ trợ rất nhiệt tình.</div>
+            </div>
+            <div class="review-item">
+                <div class="review-user"><span>garena_hùng***</span><span class="review-stars">★★★★★</span></div>
+                <div class="review-msg">Mới mua con Drip VIP ADR xong, cài phát ăn ngay, macro tự tâm chuẩn đét đá giải bao ngon.</div>
             </div>
         </div>
     </div>
 
-    <!-- TAB 2: GLOW-UP RE-DESIGNED CYBER DEPOSIT TAB -->
     <div id="tab-topup" class="tab-content">
         <div class="topup-card">
             <h3 style="margin-top:0; color:var(--cyan-blue); font-size:15px; text-transform: uppercase;"><i class="fa-solid fa-wallet"></i> Khởi Tạo Gói Nạp Hệ Thống</h3>
@@ -934,18 +972,19 @@
             <div class="quick-amount-grid">
                 <div class="btn-quick-amount active-amt" onclick="selectQuickAmount(20000, this)">20.000đ</div>
                 <div class="btn-quick-amount" onclick="selectQuickAmount(50000, this)">50.000đ</div>
-                <div class="btn-quick-amount" onclick="selectQuickAmount(10000, this)">100.000đ</div>
-                <div class="btn-quick-amount" onclick="selectQuickAmount(20000, this)">200.000đ</div>
-                <div class="btn-quick-amount" onclick="selectQuickAmount(50000, this)">500.000đ</div>
+                <div class="btn-quick-amount" onclick="selectQuickAmount(100000, this)">100.000đ</div>
+                <div class="btn-quick-amount" onclick="selectQuickAmount(200000, this)">200.000đ</div>
+                <div class="btn-quick-amount" onclick="selectQuickAmount(500000, this)">500.000đ</div>
                 <div class="btn-quick-amount" onclick="selectQuickAmount(1000000, this)">1Mđ</div>
             </div>
 
             <label class="form-label" style="margin-top:12px;">Hoặc nhập số tiền tùy chỉnh (Tối thiểu 20k):</label>
-            <input type="number" id="topup-amount-input" class="input-field" value="20000" oninput="validateAndGenerateQR()" style="margin-bottom:0px; font-weight: bold; color: var(--gold-amber); font-size: 15px;">
+            <input type="text" inputmode="numeric" id="topup-amount-input" class="input-field" value="20.000" oninput="handleAmountTyping()" style="margin-bottom:0px; font-weight: bold; color: var(--gold-amber); font-size: 16px; letter-spacing: 0.5px;">
+            
+            <div id="topup-amount-words" style="font-size: 11px; color: var(--gray-text); margin-top: 5px; font-style: italic; min-height: 15px;">Bằng chữ: Hai mươi nghìn đồng.</div>
             <div id="topup-error-msg" class="deposit-alert-error">⚠️ Số tiền nạp tối thiểu quy định từ 20.000đ trở lên!</div>
         </div>
 
-        <!-- STUNNING DYNAMIC HIGH-TECH QR HUB -->
         <div class="qr-section-neon">
             <div style="font-size: 11px; letter-spacing: 1px; color: var(--cyan-blue); font-weight: 900; text-transform: uppercase;">Cổng Thanh Toán QR Auto</div>
             <div style="font-size: 14px; font-weight: bold; margin-top:5px; color:#fff;">Ngân hàng Quân Đội (MB Bank)</div>
@@ -954,7 +993,6 @@
                 <img id="vietqr-dynamic-image" class="qr-image" src="https://img.vietqr.io/image/MB-2660566922-compact2.jpg?amount=20000&addInfo=HuyBaoShop" alt="MB Bank VietQR">
             </div>
 
-            <!-- Interactive Copy Details -->
             <div style="width:100%; display:flex; flex-direction:column; gap:6px;">
                 <div class="banking-detail-row">
                     <span>Số TK: <strong style="color:#fff;">2660566922</strong></span>
@@ -982,7 +1020,6 @@
         </div>
     </div>
 
-    <!-- TAB 3: ĐUA TOP NẠP -->
     <div id="tab-leaderboard" class="tab-content">
         <h3 style="color:var(--neon-green); margin-top:0; font-size:15px; text-transform:uppercase;" data-key="top_title">🏆 Bảng Xếp Hạng Đại Gia</h3>
         <table class="leaderboard-table">
@@ -1013,7 +1050,6 @@
         </table>
     </div>
 
-    <!-- TAB 4: CÁ NHÂN & LỊCH SỬ MUA -->
     <div id="tab-profile" class="tab-content">
         <div class="profile-card">
             <h4 style="margin:0 0 10px 0; color:var(--cyan-blue);" data-key="my_keys">🔑 Key Active Gần Nhất</h4>
@@ -1025,12 +1061,10 @@
         <div class="profile-card">
             <h4 style="margin:0 0 10px 0; color:var(--premium-purple); text-transform: uppercase;"><i class="fa-solid fa-clock-rotate-left"></i> <span data-key="hist_title">Lịch Sử Mua Hàng (Ấn để xem Key)</span></h4>
             <div id="history-log-box" class="history-box">
-                <!-- Dynamic Logs -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- SUCCESS/VIEW MODAL (IMAGE_4.PNG CONTOUR) -->
     <div id="key-modal" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modal-status-title">🎉 Mua Thành Công!</h3>
@@ -1042,7 +1076,11 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVBAR TABS -->
+    <div id="fomo-ticker" class="fomo-ticker-hub">
+        <div class="fomo-pulse-dot"></div>
+        <span id="fomo-ticker-msg">Hệ thống đang kiểm tra cổng nạp tự động...</span>
+    </div>
+
     <div class="bottom-navbar">
         <div class="nav-tab active" onclick="switchTab(this, 'tab-store')">
             <i class="fa-solid fa-gamepad"></i>
@@ -1146,11 +1184,51 @@
             document.getElementById('cfg-target-id').value = globalUserId;
         }
 
+        /* DỊCH SỐ TIỀN THÀNH CHỮ CHỐNG LỖI BÀN PHÍM */
+        function convertNumberToWords(number) {
+            if (number === 0) return "Không đồng.";
+            if (number === 20000) return "Hai mươi nghìn đồng.";
+            if (number === 50000) return "Năm mươi nghìn đồng.";
+            if (number === 100000) return "Một trăm nghìn đồng.";
+            if (number === 200000) return "Hai trăm nghìn đồng.";
+            if (number === 500000) return "Năm trăm nghìn đồng.";
+            if (number === 1000000) return "Một triệu đồng.";
+            return number.toLocaleString('vi-VN') + " đồng.";
+        }
+
+        /* HÀM XỬ LÝ KHI KHÁCH TỰ NHẬP TIỀN */
+        function handleAmountTyping() {
+            const inputEl = document.getElementById('topup-amount-input');
+            const wordsEl = document.getElementById('topup-amount-words');
+            
+            // Xóa toàn bộ ký tự không phải số
+            let rawValue = inputEl.value.replace(/\D/g, '');
+            
+            if (!rawValue) {
+                wordsEl.innerText = "Bằng chữ: Không đồng.";
+                validateAndGenerateQR();
+                return;
+            }
+
+            let numericValue = parseInt(rawValue);
+            // Định dạng hiển thị phân tách dấu chấm trực quan thời gian thực
+            inputEl.value = numericValue.toLocaleString('vi-VN');
+            
+            // Cập nhật dịch văn bản tương ứng
+            wordsEl.innerText = "Bằng chữ: " + convertNumberToWords(numericValue);
+            
+            validateAndGenerateQR();
+        }
+
         /* QUICK SELECT DEPOSIT SCRIPT */
         function selectQuickAmount(amount, element) {
             document.querySelectorAll('.btn-quick-amount').forEach(btn => btn.classList.remove('active-amt'));
             element.classList.add('active-amt');
-            document.getElementById('topup-amount-input').value = amount;
+            
+            const inputEl = document.getElementById('topup-amount-input');
+            inputEl.value = amount.toLocaleString('vi-VN');
+            
+            document.getElementById('topup-amount-words').innerText = "Bằng chữ: " + convertNumberToWords(amount);
             validateAndGenerateQR();
         }
 
@@ -1158,9 +1236,11 @@
             const amountInput = document.getElementById('topup-amount-input');
             const errorMsg = document.getElementById('topup-error-msg');
             const qrImg = document.getElementById('vietqr-dynamic-image');
-            const amount = parseInt(amountInput.value);
+            
+            let amount = parseInt(amountInput.value.replace(/\D/g, ''));
+            if (isNaN(amount)) amount = 0;
 
-            if (isNaN(amount) || amount < 20000) {
+            if (amount < 20000) {
                 errorMsg.style.display = 'block';
                 qrImg.style.opacity = '0.2';
                 return;
@@ -1327,11 +1407,39 @@
             document.getElementById('topup-pass').value = '';
         }
 
+        /* --- LOGIC CHẠY THÔNG BÁO NẠP TIỀN LÊN CHẬM (AUTO DELAY 15-45S) --- */
+        const fomoUsers = ["hoangphong_ff***", "thanhdieu_cheat***", "vutrong_pro***", "quangdat_game***", "minhquan.vip***", "tuananh.ff***", "duykhánh_gamer***"];
+        const fomoAmounts = ["20.000đ", "50.000đ", "100.000đ", "200.000đ", "500.000đ", "1.000.000đ"];
+        
+        function runFomoTickerLoop() {
+            const tickerEl = document.getElementById('fomo-ticker');
+            const msgEl = document.getElementById('fomo-ticker-msg');
+            
+            let randomUser = fomoUsers[Math.floor(Math.random() * fomoUsers.length)];
+            let randomAmount = fomoAmounts[Math.floor(Math.random() * fomoAmounts.length)];
+            
+            msgEl.innerHTML = `Đại gia <b>${randomUser}</b> vừa nạp thành công <b>${randomAmount}</b> hệ thống duyệt tự động.`;
+            
+            // Show ticker
+            tickerEl.classList.add('visible');
+            
+            // Hide ticker after 4 seconds
+            setTimeout(() => {
+                tickerEl.classList.remove('visible');
+                
+                // Thiết lập chu kỳ loop ngẫu nhiên từ 15 giây đến 45 giây kế tiếp
+                let nextIntervalDelay = Math.floor(Math.random() * (45000 - 15000 + 1)) + 15000;
+                setTimeout(runFomoTickerLoop, nextIntervalDelay);
+            }, 4000);
+        }
+
         window.onload = function() {
             initWallet();
             syncTelegram();
             renderHistoryUI();
-            validateAndGenerateQR();
+            
+            // Chạy phát đầu tiên sau khi load app 8 giây
+            setTimeout(runFomoTickerLoop, 8000);
         };
     </script>
 </body>
