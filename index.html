@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Huy Bảo Shop - Mini App</title>
+    <title>Huy Bảo Shop - Premium Mini App</title>
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-main: #0a0c10;
-            --bg-card: #11141a;
-            --bg-input: #171b24;
+            --bg-main: #07090e;
+            --bg-card: linear-gradient(135deg, #111622 0%, #161c2d 100%);
+            --bg-input: #1a2234;
             --text-color: #ffffff;
-            --neon-green: #00ff66;
-            --cyan-blue: #00e5ff;
-            --gray-text: #8a92a6;
-            --border-glow: #00e5ff33;
+            --neon-green: #00ff88;
+            --cyan-blue: #00f0ff;
+            --premium-purple: #9d4edd;
+            --gold-amber: #ffb703;
+            --gray-text: #94a3b8;
+            --border-glow: rgba(0, 240, 255, 0.2);
         }
 
         body {
@@ -27,17 +29,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
 
-        /* HEADER & LANG TOGGLE */
+        /* HEADER & LANG TOGGLE WITH BALANCE ACCENT */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            background-color: var(--bg-card);
-            border-bottom: 1px solid #1f2430;
+            background: linear-gradient(180deg, #101424 0%, #07090e 100%);
+            border-bottom: 2px solid #1f293d;
         }
 
         .user-block {
@@ -47,15 +49,16 @@
         }
 
         .avatar-box {
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             border: 2px solid var(--cyan-blue);
+            box-shadow: 0 0 10px var(--cyan-blue);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #1f2430;
+            background-color: #1a2234;
             font-weight: bold;
         }
 
@@ -73,11 +76,20 @@
         .user-name {
             font-weight: bold;
             font-size: 14px;
+            color: #fff;
         }
 
-        .user-id {
-            font-size: 11px;
-            color: var(--gray-text);
+        .balance-badge {
+            font-size: 13px;
+            color: var(--gold-amber);
+            font-weight: 800;
+            margin-top: 2px;
+            background: rgba(255, 183, 3, 0.1);
+            padding: 1px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            display: inline-block;
+            width: fit-content;
         }
 
         .top-controls {
@@ -88,26 +100,27 @@
         }
 
         .lang-switch-btn {
-            background: #1c212c;
+            background: #1a2234;
             border: 1px solid var(--cyan-blue);
             color: var(--cyan-blue);
-            padding: 3px 8px;
+            padding: 4px 10px;
             font-size: 11px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            transition: 0.3s;
         }
 
         .admin-glow-btn {
-            background-color: var(--neon-green);
+            background: linear-gradient(90deg, var(--neon-green), #00b3ff);
             color: #000;
             border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 5px 12px;
+            border-radius: 6px;
             font-size: 10px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+            box-shadow: 0 0 12px rgba(0, 255, 136, 0.4);
         }
 
         /* ADMIN CONTAINER */
@@ -117,7 +130,7 @@
             padding: 15px;
             border: 2px dashed var(--neon-green);
             border-radius: 12px;
-            background-color: #0e1117;
+            background-color: #0d1321;
         }
 
         .admin-title {
@@ -131,9 +144,9 @@
         .input-field {
             width: 100%;
             background-color: var(--bg-input);
-            border: 1px solid #232936;
+            border: 1px solid #2d3954;
             color: white;
-            padding: 10px;
+            padding: 11px;
             border-radius: 8px;
             font-size: 13px;
             box-sizing: border-box;
@@ -142,25 +155,28 @@
 
         .btn-update-config {
             width: 100%;
-            background-color: var(--cyan-blue);
-            color: #000;
+            background: linear-gradient(90deg, var(--cyan-blue), var(--premium-purple));
+            color: white;
             border: none;
-            padding: 10px;
+            padding: 11px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
+            text-transform: uppercase;
+            font-size: 12px;
         }
 
-        /* CATEGORY LABELS MATCHING IMAGE */
+        /* PRODUCT SECTIONS WITH ENRICHED COLORS */
         .cate-title {
-            padding: 10px 15px 5px 15px;
-            font-size: 15px;
-            font-weight: bold;
+            padding: 15px 15px 5px 15px;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--cyan-blue);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .tab-content {
@@ -172,22 +188,27 @@
             display: block;
         }
 
-        /* PRODUCT CARD LAYOUT */
         .product-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 15px;
         }
 
         .product-item {
-            background-color: var(--bg-card);
-            border: 1px solid #1a202c;
-            border-radius: 10px;
-            padding: 12px;
+            background: var(--bg-card);
+            border: 1px solid #1f293d;
+            border-radius: 12px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .product-item:active {
+            transform: scale(0.98);
         }
 
         .product-left {
@@ -197,11 +218,11 @@
         }
 
         .product-icon-wrapper {
-            width: 40px;
-            height: 40px;
-            background-color: #1a202c;
-            border: 1px solid var(--cyan-blue);
-            border-radius: 8px;
+            width: 42px;
+            height: 42px;
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -209,10 +230,23 @@
             color: var(--cyan-blue);
         }
 
+        .product-group:nth-of-type(2) .product-icon-wrapper {
+            background: rgba(157, 78, 221, 0.05);
+            border-color: rgba(157, 78, 221, 0.3);
+            color: var(--premium-purple);
+        }
+
+        .product-group:nth-of-type(3) .product-icon-wrapper {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
+        }
+
         .p-name {
-            font-weight: bold;
+            font-weight: 800;
             font-size: 14px;
             margin-bottom: 2px;
+            letter-spacing: 0.3px;
         }
 
         .p-desc {
@@ -222,57 +256,57 @@
 
         .product-right {
             display: flex;
-            flex-align: center;
             align-items: center;
             gap: 10px;
         }
 
         .p-cost {
-            color: #ffb74d;
-            font-weight: bold;
+            color: var(--gold-amber);
+            font-weight: 800;
             font-size: 14px;
-            text-align: right;
         }
 
         .select-duration {
             background-color: var(--bg-input);
             color: white;
-            border: 1px solid #232936;
-            padding: 4px 6px;
+            border: 1px solid #2d3954;
+            padding: 5px 8px;
             border-radius: 6px;
             font-size: 11px;
         }
 
         .btn-buy-now {
-            background-color: var(--cyan-blue);
+            background: linear-gradient(135deg, var(--cyan-blue) 0%, #00a2ff 100%);
             color: #000;
             border: none;
-            padding: 6px 14px;
-            border-radius: 15px;
+            padding: 7px 16px;
+            border-radius: 20px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 800;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 240, 255, 0.2);
         }
 
-        /* REVIEWS SECTION */
+        /* DYNAMIC REVIEWS SECTION */
         .reviews-box {
-            margin-top: 20px;
-            background-color: var(--bg-card);
-            border-radius: 10px;
+            margin-top: 25px;
+            background: var(--bg-card);
+            border-radius: 12px;
             padding: 15px;
+            border: 1px solid #1f293d;
         }
 
         .review-title-text {
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 800;
             color: var(--neon-green);
             margin-bottom: 12px;
             text-transform: uppercase;
         }
 
         .review-item {
-            border-bottom: 1px solid #1a202c;
-            padding: 10px 0;
+            border-bottom: 1px solid #1f293d;
+            padding: 12px 0;
         }
 
         .review-item:last-child {
@@ -288,21 +322,54 @@
         }
 
         .review-stars {
-            color: #ffb74d;
+            color: var(--gold-amber);
         }
 
         .review-msg {
             font-size: 12px;
             color: #cbd5e1;
-            margin-top: 4px;
+            margin-top: 5px;
+            line-height: 1.4;
         }
 
-        /* TAB NẠP TIỀN BẰNG TÀI KHOẢN */
+        /* DEPOSIT TAB WITH VIETQR MB BANK */
         .topup-card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
+            background: var(--bg-card);
+            border-radius: 14px;
             padding: 20px;
-            border: 1px solid #1a202c;
+            border: 1px solid #1f293d;
+        }
+
+        .qr-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .qr-title {
+            color: #0a0c10;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .qr-info {
+            color: #475569;
+            font-size: 12px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .qr-image {
+            width: 200px;
+            height: auto;
+            border: 4px solid #f1f5f9;
+            border-radius: 8px;
         }
 
         .form-label {
@@ -315,70 +382,99 @@
 
         .btn-submit-topup {
             width: 100%;
-            background-color: var(--neon-green);
+            background: linear-gradient(90deg, var(--neon-green) 0%, #00ffcc 100%);
             color: #000;
             border: none;
-            padding: 12px;
+            padding: 13px;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
         }
 
-        /* TAB ĐUA TOP NẠP */
+        /* LEADERBOARD TABLE */
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
-            background-color: var(--bg-card);
-            border-radius: 10px;
+            background: var(--bg-card);
+            border-radius: 12px;
             overflow: hidden;
+            border: 1px solid #1f293d;
         }
 
         .leaderboard-table th, .leaderboard-table td {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
             font-size: 13px;
         }
 
         .leaderboard-table th {
-            background-color: #171b24;
+            background-color: #0f1422;
             color: var(--cyan-blue);
-            font-weight: bold;
+            font-weight: 800;
         }
 
         .leaderboard-table tr {
-            border-bottom: 1px solid #1a202c;
+            border-bottom: 1px solid #1f293d;
         }
 
         .rank-badge {
             display: inline-block;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             text-align: center;
-            line-height: 22px;
+            line-height: 24px;
             font-weight: bold;
             font-size: 11px;
         }
 
-        .rank-1 { background-color: #ffb74d; color: #000; }
-        .rank-2 { background-color: #b0bec5; color: #000; }
-        .rank-3 { background-color: #bcaaa4; color: #000; }
+        .rank-1 { background: linear-gradient(135deg, #ffe066, #ffb703); color: #000; }
+        .rank-2 { background: linear-gradient(135deg, #e2e8f0, #94a3b8); color: #000; }
+        .rank-3 { background: linear-gradient(135deg, #ffedd5, #bcaaa4); color: #000; }
 
-        /* TAB CÁ NHÂN */
+        /* PROFILE & PURCHASE HISTORY */
         .profile-card {
-            background-color: var(--bg-card);
-            padding: 15px;
-            border-radius: 10px;
+            background: var(--bg-card);
+            padding: 18px;
+            border-radius: 12px;
             margin-bottom: 15px;
+            border: 1px solid #1f293d;
+        }
+
+        .history-box {
+            margin-top: 15px;
+        }
+
+        .history-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid #1f293d;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .history-date {
+            font-size: 10px;
+            color: var(--gray-text);
         }
 
         .key-list-item {
             background-color: var(--bg-input);
-            padding: 10px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: 8px;
             font-family: monospace;
             font-size: 13px;
             color: var(--neon-green);
@@ -386,47 +482,50 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #2d3954;
         }
 
-        /* MODAL KHÓA KEY CHUẨN ĐỊNH DẠNG */
+        /* MODAL WINDOWS */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(4px);
         }
 
         .modal-box {
-            background-color: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
+            background: #111625;
+            padding: 22px;
+            border-radius: 14px;
             border: 2px solid var(--cyan-blue);
             width: 85%;
             max-width: 340px;
             text-align: center;
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.3);
         }
 
         .generated-key {
-            background-color: #000;
+            background-color: #07090e;
             color: var(--neon-green);
             font-family: monospace;
             font-size: 15px;
             padding: 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             margin: 15px 0;
             letter-spacing: 1px;
             border: 1px dashed var(--neon-green);
         }
 
-        /* BOTTOM NAVBAR */
+        /* NAVIGATION BAR */
         .bottom-navbar {
             position: fixed;
-            bottom: 0; left: 0; width: 100%; height: 65px;
-            background-color: var(--bg-card);
-            border-top: 1px solid #1a202c;
+            bottom: 0; left: 0; width: 100%; height: 68px;
+            background: linear-gradient(360deg, #0b0f19 0%, #131929 100%);
+            border-top: 1px solid #1f293d;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -437,16 +536,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            color: #555e70;
+            gap: 5px;
+            color: #64748b;
             font-size: 10px;
-            font-weight: bold;
+            font-weight: 800;
             cursor: pointer;
             flex: 1;
+            transition: 0.2s;
         }
 
         .nav-tab i { font-size: 18px; }
-        .nav-tab.active { color: var(--cyan-blue); }
+        .nav-tab.active { color: var(--cyan-blue); text-shadow: 0 0 8px var(--cyan-blue); }
     </style>
 </head>
 <body>
@@ -457,7 +557,7 @@
             <div id="user-avatar" class="avatar-box">HB</div>
             <div class="user-meta">
                 <div id="user-name" class="user-name">Loading...</div>
-                <div id="user-id" class="user-id">ID: 00000000</div>
+                <div id="user-balance" class="balance-badge">0đ</div>
             </div>
         </div>
         <div class="top-controls">
@@ -468,17 +568,23 @@
 
     <!-- SECRET ADMIN CONFIG -->
     <div id="admin-panel" class="admin-container">
-        <p class="admin-title">⚙️ Cấu Hình Hệ Thống</p>
-        <input type="text" id="cfg-title" class="input-field" placeholder="Tiêu đề thông báo">
-        <input type="text" id="cfg-desc" class="input-field" placeholder="Nội dung thông báo">
-        <button class="btn-update-config" onclick="saveAdminConfig()">Cập Nhật Hệ Thống</button>
+        <p class="admin-title">⚙️ Cấu Hình Hệ Thống & Số Dư</p>
+        <label class="form-label" style="color:var(--neon-green)">Cộng tiền cho User Test (đ):</label>
+        <input type="number" id="cfg-add-money" class="input-field" placeholder="Ví dụ: 500000">
+        <button class="btn-update-config" onclick="addAdminBalance()" style="margin-bottom:15px;">Cộng Tiền Ngay</button>
+        
+        <label class="form-label">Tiêu đề thông báo:</label>
+        <input type="text" id="cfg-title" class="input-field" placeholder="Tiêu đề thông báo mới">
+        <label class="form-label">Nội dung thông báo:</label>
+        <input type="text" id="cfg-desc" class="input-field" placeholder="Nội dung chi tiết">
+        <button class="btn-update-config" onclick="saveAdminConfig()">Cập Nhật Thông Báo</button>
     </div>
 
     <!-- TAB 1: CỬA HÀNG -->
     <div id="tab-store" class="tab-content active">
-        <div style="background: #11141a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 3px solid var(--neon-green);">
-            <div id="ann-title" style="font-weight:bold; font-size:13px; color:var(--neon-green);">Huy Bảo Shop - Free Fire</div>
-            <div id="ann-desc" style="font-size:12px; color:#cbd5e1; margin-top:3px;">Uy tín - Chất lượng - Hỗ trợ nhiệt tình.</div>
+        <div style="background: var(--bg-card); padding: 14px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--cyan-blue); border-top: 1px solid #1f293d;">
+            <div id="ann-title" style="font-weight:bold; font-size:13px; color:var(--cyan-blue);">Huy Bảo Shop - Free Fire</div>
+            <div id="ann-desc" style="font-size:12px; color:#cbd5e1; margin-top:4px;">Uy tín - Chất lượng - Hỗ trợ nhiệt tình.</div>
         </div>
 
         <!-- IOS PRODUCTS -->
@@ -494,7 +600,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">450.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('FLUORITE', '450.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('FLUORITE', 450000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -507,7 +613,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">500.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('MIGUL PRO', '500.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('MIGUL PRO', 500000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -520,7 +626,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">250.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('IOSVIET', '250.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('IOSVIET', 250000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -533,7 +639,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">280.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('SUDO', '280.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('SUDO', 280000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
         </div>
@@ -551,7 +657,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">320.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('NGOTRAN VIP', '320.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('NGOTRAN VIP', 320000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -564,7 +670,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">250.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('DRIP VIP', '250.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('DRIP VIP', 250000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -577,7 +683,7 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">140.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('ZYGAME', '140.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('ZYGAME', 140000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
         </div>
@@ -595,10 +701,9 @@
                 </div>
                 <div class="product-right">
                     <div class="p-cost">450.000đ</div>
-                    <button class="btn-buy-now" onclick="buyProduct('THANHDIEUCHEAT (Vĩnh viễn)', '450.000đ')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerPurchaseFlow('THANHDIEUCHEAT', 450000)" data-key="btn_buy">Mua</button>
                 </div>
             </div>
-            <!-- DUAL PRICING MOCKUP -->
             <div class="product-item">
                 <div class="product-left">
                     <div class="product-icon-wrapper"><i class="fa-solid fa-globe"></i></div>
@@ -608,11 +713,11 @@
                     </div>
                 </div>
                 <div class="product-right">
-                    <select class="select-duration" id="price-proxy" onchange="updatePrice(this)">
-                        <option value="240.000đ">Tháng: 240K</option>
-                        <option value="400.000đ">Vĩnh viễn: 400K</option>
+                    <select class="select-duration" id="price-proxy">
+                        <option value="240000">Tháng: 240K</option>
+                        <option value="400000">Vĩnh viễn: 400K</option>
                     </select>
-                    <button class="btn-buy-now" onclick="buyDualProduct('PROXY ADR - IOS', 'price-proxy')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerDualPurchaseFlow('PROXY ADR - IOS', 'price-proxy')" data-key="btn_buy">Mua</button>
                 </div>
             </div>
             <div class="product-item">
@@ -624,11 +729,11 @@
                     </div>
                 </div>
                 <div class="product-right">
-                    <select class="select-duration" id="price-aimlock" onchange="updatePrice(this)">
-                        <option value="250.000đ">Tháng: 250K</option>
-                        <option value="340.000đ">Vĩnh viễn: 340K</option>
+                    <select class="select-duration" id="price-aimlock">
+                        <option value="250000">Tháng: 250K</option>
+                        <option value="340000">Vĩnh viễn: 340K</option>
                     </select>
-                    <button class="btn-buy-now" onclick="buyDualProduct('AIMLOCK', 'price-aimlock')" data-key="btn_buy">Mua</button>
+                    <button class="btn-buy-now" onclick="triggerDualPurchaseFlow('AIMLOCK', 'price-aimlock')" data-key="btn_buy">Mua</button>
                 </div>
             </div>
         </div>
@@ -651,12 +756,18 @@
         </div>
     </div>
 
-    <!-- TAB 2: NẠP TIỀN BẰNG TÀI KHOẢN -->
+    <!-- TAB 2: NẠP TIỀN BẰNG TÀI KHOẢN & QR -->
     <div id="tab-topup" class="tab-content">
+        <!-- VIETQR EMBEDDED FROM IMAGE -->
+        <div class="qr-section">
+            <div class="qr-title">QUÉT MÃ VIETQR NẠP TIỀN TỰ ĐỘNG</div>
+            <div class="qr-info">Chủ TK: LE HUY BAO | STK: 2660566922 (MB Bank)</div>
+            <img class="qr-image" src="https://img.vietqr.io/image/MB-2660566922-compact2.jpg?addInfo=HuyBaoShop" alt="MB Bank VietQR LE HUY BAO">
+            <div style="font-size:11px; color:#64748b; margin-top:8px; font-weight: bold;">⚠️ Nội dung chuyển khoản điền tên Telegram của bạn</div>
+        </div>
+
         <div class="topup-card">
-            <h3 style="margin-top:0; color:var(--cyan-blue);" data-key="topup_header">🎮 Nạp Tiền Bằng Tài Khoản</h3>
-            <p style="font-size:12px; color:var(--gray-text);" data-key="topup_sub">Nhập thông tin tài khoản Game của bạn để hệ thống tiến hành đồng bộ gói nạp.</p>
-            
+            <h3 style="margin-top:0; color:var(--cyan-blue);" data-key="topup_header">🎮 Hoặc Nạp Bằng Tài Khoản Đồng Bộ</h3>
             <div style="margin-bottom: 12px;">
                 <label class="form-label" data-key="lbl_acc">Tài khoản (Email / Số điện thoại)</label>
                 <input type="text" id="topup-user" class="input-field" placeholder="Garena/Facebook account...">
@@ -673,7 +784,7 @@
                     <option value="Google">Google Account</option>
                 </select>
             </div>
-            <button class="btn-submit-topup" onclick="processAccountTopup()" data-key="btn_confirm_topup">Xác Nhận Nạp Ngay</button>
+            <button class="btn-submit-topup" onclick="processAccountTopup()" data-key="btn_confirm_topup">Xác Nhận Đồng Bộ Nạp</button>
         </div>
     </div>
 
@@ -691,7 +802,7 @@
             <tbody>
                 <tr>
                     <td><span class="rank-badge rank-1">1</span></td>
-                    <td style="font-weight:bold; color:#ffb74d;">Lê Hoàng Phong</td>
+                    <td style="font-weight:bold; color:#ffb703;">Lê Hoàng Phong</td>
                     <td>14.850.000đ</td>
                 </tr>
                 <tr>
@@ -718,13 +829,20 @@
         </table>
     </div>
 
-    <!-- TAB 4: CÁ NHÂN -->
+    <!-- TAB 4: CÁ NHÂN & LỊCH SỬ MUA HÀNG -->
     <div id="tab-profile" class="tab-content">
         <div class="profile-card">
-            <h4 style="margin:0 0 10px 0; color:var(--cyan-blue);" data-key="my_keys">🔑 Kho Key Bản Quyền Đã Mua</h4>
+            <h4 style="margin:0 0 10px 0; color:var(--cyan-blue);" data-key="my_keys">🔑 Key Active Gần Nhất</h4>
             <div id="purchased-keys-box">
-                <!-- Keys dynamically added here -->
-                <div style="font-size:12px; color:var(--gray-text);" id="no-key-text" data-key="no_key">Bạn chưa mua sản phẩm nào. Key sẽ hiển thị ở đây sau khi mua thành công.</div>
+                <div style="font-size:12px; color:var(--gray-text);" id="no-key-text" data-key="no_key">Chưa có key bản quyền nào hoạt động.</div>
+            </div>
+        </div>
+
+        <!-- NEW: PURCHASE HISTORY LOG -->
+        <div class="profile-card">
+            <h4 style="margin:0 0 10px 0; color:var(--premium-purple); text-transform: uppercase;"><i class="fa-solid fa-clock-rotate-left"></i> <span data-key="hist_title">Lịch Sử Mua Hàng</span></h4>
+            <div id="history-log-box" class="history-box">
+                <!-- Transactions render here -->
             </div>
         </div>
     </div>
@@ -735,7 +853,7 @@
             <h3 style="margin-top:0; color:var(--neon-green);" data-key="modal_success">🎉 Mua Thành Công!</h3>
             <p style="font-size:12px; color:#cbd5e1;" data-key="modal_sub">Vui lòng sao chép mã Key bản quyền Free Fire của bạn bên dưới:</p>
             <div id="key-display" class="generated-key">RTPIK1ALSW7VQ4LC</div>
-            <button class="btn-update-config" onclick="closeKeyModal()" data-key="btn_close">Đóng & Lưu</button>
+            <button class="btn-update-config" onclick="closeKeyModal()" data-key="btn_close" style="background: var(--cyan-blue); color:#000;">Đóng & Lưu</button>
         </div>
     </div>
 
@@ -762,6 +880,7 @@
     <script>
         const ADMIN_PASS = "lehuybao2710";
         let currentLang = 'vi';
+        let userBalance = 0;
 
         // DICTIONARY TRANSLATIONS
         const dictionary = {
@@ -777,24 +896,24 @@
                 rev_title: "💬 Đánh Giá Khách Hàng",
                 rev_2: "Nạp tiền bằng tài khoản auto duyệt nhanh vcl, 3 phút có hàng luôn uy tín.",
                 rev_3: "Bản Sudo đá giải ngon đét sếp. Sẽ ủng hộ shop dài dài.",
-                topup_header: "🎮 Nạp Tiền Bằng Tài Khoản",
-                topup_sub: "Nhập thông tin tài khoản Game của bạn để hệ thống tiến hành đồng bộ gói nạp.",
+                topup_header: "🎮 Hoặc Nạp Bằng Tài Khoản Đồng Bộ",
                 lbl_acc: "Tài khoản (Email / Số điện thoại)",
                 lbl_pass: "Mật khẩu game",
                 lbl_type: "Loại tài khoản đăng nhập",
-                btn_confirm_topup: "Xác Nhận Nạp Ngay",
+                btn_confirm_topup: "Xác Nhận Đồng Bộ Nạp",
                 top_title: "🏆 Bảng Xếp Hạng Đại Gia",
                 th_user: "Người Dùng",
                 th_total: "Tổng Nạp",
-                my_keys: "🔑 Kho Key Bản Quyền Đã Mua",
-                no_key: "Bạn chưa mua sản phẩm nào. Key sẽ hiển thị ở đây sau khi mua thành công.",
+                my_keys: "🔑 Key Active Gần Nhất",
+                no_key: "Chưa có key bản quyền nào hoạt động.",
                 modal_success: "🎉 Mua Thành Công!",
                 modal_sub: "Vui lòng sao chép mã Key bản quyền Free Fire của bạn bên dưới:",
                 btn_close: "Đóng & Lưu",
                 nav_store: "CỬA HÀNG",
                 nav_topup: "NẠP TIỀN",
                 nav_lead: "ĐUA TOP",
-                nav_prof: "CÁ NHÂN"
+                nav_prof: "CÁ NHÂN",
+                hist_title: "Lịch Sử Mua Hàng"
             },
             en: {
                 cate_ios: "iOS Section (iPhone, iPad)",
@@ -808,26 +927,42 @@
                 rev_title: "💬 Customer Reviews",
                 rev_2: "Top up via account is auto-approved insanely fast, got it in 3 mins. Highly trusted.",
                 rev_3: "Sudo version works great in competitive tournaments. Will support shop long term.",
-                topup_header: "🎮 Account Top-Up",
-                topup_sub: "Enter your Game account details for the system to synchronize the top-up package.",
+                topup_header: "🎮 Or Sync Account Top-Up",
                 lbl_acc: "Account (Email / Phone Number)",
                 lbl_pass: "Game Password",
                 lbl_type: "Login Account Type",
-                btn_confirm_topup: "Confirm Top-Up Now",
+                btn_confirm_topup: "Confirm Synchronization",
                 top_title: "🏆 Whale Leaderboard",
                 th_user: "User",
                 th_total: "Total Deposited",
-                my_keys: "🔑 Purchased License Keys",
-                no_key: "You haven't bought anything yet. Keys will appear here after a successful purchase.",
+                my_keys: "🔑 Latest Active Keys",
+                no_key: "No license keys are currently active.",
                 modal_success: "🎉 Purchase Successful!",
                 modal_sub: "Please copy your Free Fire authorization key below:",
                 btn_close: "Close & Save",
                 nav_store: "STORE",
                 nav_topup: "TOP UP",
                 nav_lead: "TOP RICH",
-                nav_prof: "PROFILE"
+                nav_prof: "PROFILE",
+                hist_title: "Purchase History"
             }
         };
+
+        // LOAD WALLET & DATA INITIALIZATION
+        function initWallet() {
+            let storedBalance = localStorage.getItem('user_balance');
+            if (storedBalance === null) {
+                localStorage.setItem('user_balance', '0');
+                userBalance = 0;
+            } else {
+                userBalance = parseInt(storedBalance);
+            }
+            updateBalanceUI();
+        }
+
+        function updateBalanceUI() {
+            document.getElementById('user-balance').textContent = userBalance.toLocaleString('vi-VN') + "đ";
+        }
 
         // AUTO-SYNC TELEGRAM DATA
         function syncTelegram() {
@@ -835,25 +970,22 @@
             tg.expand();
             const avatarBox = document.getElementById('user-avatar');
             const nameBox = document.getElementById('user-name');
-            const idBox = document.getElementById('user-id');
 
             if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 const u = tg.initDataUnsafe.user;
-                nameBox.textContent = u.first_name + (u.last_name ? " " + u.last_name : "");
-                idBox.textContent = "ID: " + u.id;
+                nameBox.innerHTML = `${u.first_name} ${u.last_name ? u.last_name : ""}`;
                 if (u.photo_url) {
                     avatarBox.innerHTML = `<img src="${u.photo_url}">`;
                 } else {
                     avatarBox.textContent = u.first_name.charAt(0).toUpperCase();
                 }
             } else {
-                nameBox.textContent = "Huy Bảo Developer";
-                idBox.textContent = "ID: 8692475970";
+                nameBox.innerHTML = "Huy Bảo Developer";
                 avatarBox.textContent = "HB";
             }
         }
 
-        // LANGUAGE TOGGLE FUNCTION
+        // LANGUAGE TOGGLE
         function toggleLanguage() {
             currentLang = currentLang === 'vi' ? 'en' : 'vi';
             document.getElementById('lang-btn').textContent = currentLang === 'vi' ? '🌐 EN' : '🌐 VI';
@@ -889,16 +1021,30 @@
             }
         }
 
+        // ADMIN FUNCS: TOP UP SIMULATION
+        function addAdminBalance() {
+            const amt = parseInt(document.getElementById('cfg-add-money').value);
+            if(isNaN(amt) || amt <= 0) {
+                alert("Vui lòng nhập số tiền hợp lệ!");
+                return;
+            }
+            userBalance += amt;
+            localStorage.setItem('user_balance', userBalance.toString());
+            updateBalanceUI();
+            alert(`Đã nạp thành công +${amt.toLocaleString('vi-VN')}đ vào số dư hệ thống!`);
+            document.getElementById('cfg-add-money').value = '';
+        }
+
         function saveAdminConfig() {
             const t = document.getElementById('cfg-title').value;
             const d = document.getElementById('cfg-desc').value;
             if(t) document.getElementById('ann-title').textContent = t;
             if(d) document.getElementById('ann-desc').textContent = d;
-            alert("Updated!");
+            alert("Thông báo hệ thống đã cập nhật!");
             document.getElementById('admin-panel').style.display = 'none';
         }
 
-        // SIMULATE KEY GENERATION ON PURCHASE: RTPIK1ALSW7VQ4LC FORMAT (16 characters)
+        // SECURE RANDOM LICENSE KEY FORMATTING (RTPIK1ALSW7VQ4LC)
         function generateRandomKey() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let key = '';
@@ -908,23 +1054,54 @@
             return key;
         }
 
-        function buyProduct(name, cost) {
-            const key = generateRandomKey();
-            document.getElementById('key-display').textContent = key;
+        // DUAL SELECTION INTERCEPTOR
+        function triggerDualPurchaseFlow(baseName, selectId) {
+            const chosenValue = parseInt(document.getElementById(selectId).value);
+            const durationText = document.getElementById(selectId).options[document.getElementById(selectId).selectedIndex].text;
+            triggerPurchaseFlow(`${baseName} (${durationText})`, chosenValue);
+        }
+
+        // FIXED TRANSACTION CHECK & CONFIRMATION DIALOGUE FLOW
+        function triggerPurchaseFlow(productName, price) {
+            // Step 1: Prompt Validation Confirmation & Balance status
+            const currentFormattedBalance = userBalance.toLocaleString('vi-VN') + "đ";
+            const formattedPrice = price.toLocaleString('vi-VN') + "đ";
+            
+            const confirmMsg = currentLang === 'vi' ? 
+                `[XÁC THỰC MUA HÀNG]\n\nSản phẩm: ${productName}\nGiá: ${formattedPrice}\nSố dư hiện tại của bạn: ${currentFormattedBalance}\n\nBạn có chắc chắn muốn tiến hành mua gói này không?` :
+                `[PURCHASE VERIFICATION]\n\nProduct: ${productName}\nPrice: ${formattedPrice}\nYour Current Balance: ${currentFormattedBalance}\n\nAre you sure you want to proceed with this purchase?`;
+
+            if (!confirm(confirmMsg)) {
+                return; // Canceled by user
+            }
+
+            // Step 2: Strict Balance Check (Fix for 0 balance bypass)
+            if (userBalance < price) {
+                const failMsg = currentLang === 'vi' ?
+                    `❌ Giao dịch thất bại!\nSố dư tài khoản không đủ để thanh toán sản phẩm này.\n\nVui lòng chuyển khoản quét mã QR tại mục "NẠP TIỀN" để bổ sung tiền vào ví.` :
+                    `❌ Transaction Failed!\nInsufficient balance to purchase this item.\n\nPlease scan VietQR in "TOP UP" tab to fund your wallet.`;
+                alert(failMsg);
+                return;
+            }
+
+            // Step 3: Deduct money and register product assets
+            userBalance -= price;
+            localStorage.setItem('user_balance', userBalance.toString());
+            updateBalanceUI();
+
+            const generatedKey = generateRandomKey();
+            document.getElementById('key-display').textContent = generatedKey;
             document.getElementById('key-modal').style.display = 'flex';
-            saveKeyToProfile(name, key);
+            
+            saveAndLogTransaction(productName, generatedKey, price);
         }
 
-        function buyDualProduct(name, selectId) {
-            const duration = document.getElementById(selectId).value;
-            buyProduct(`${name} (${duration})`, duration);
-        }
+        // STORE LICENSE ASSETS AND RENDER TIMELINE HISTORY LOGS
+        function saveAndLogTransaction(name, key, price) {
+            const now = new Date();
+            const timestamp = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
 
-        function updatePrice(selectEl) {
-            // Price dynamic visualization
-        }
-
-        function saveKeyToProfile(name, key) {
+            // Save key to list view
             const container = document.getElementById('purchased-keys-box');
             const noKeyText = document.getElementById('no-key-text');
             if (noKeyText) noKeyText.remove();
@@ -932,19 +1109,45 @@
             const div = document.createElement('div');
             div.className = 'key-list-item';
             div.innerHTML = `<span><strong>${name}</strong>: ${key}</span> <i class="fa-regular fa-copy" style="cursor:pointer;" onclick="navigator.clipboard.writeText('${key}'); alert('Copied!');"></i>`;
-            container.appendChild(div);
+            container.insertBefore(div, container.firstChild);
             
-            // Save state
-            let saved = JSON.parse(localStorage.getItem('bought_keys')) || [];
-            saved.push({name, key});
-            localStorage.setItem('bought_keys', JSON.stringify(saved));
+            // Log deep history metadata 
+            let historyLog = JSON.parse(localStorage.getItem('shop_history_logs')) || [];
+            historyLog.unshift({ name, key, price, time: timestamp });
+            localStorage.setItem('shop_history_logs', JSON.stringify(historyLog));
+            
+            renderHistoryUI();
+        }
+
+        function renderHistoryUI() {
+            const logBox = document.getElementById('history-log-box');
+            let historyLog = JSON.parse(localStorage.getItem('shop_history_logs')) || [];
+            
+            if(historyLog.length === 0) {
+                logBox.innerHTML = `<div style="font-size:12px; color:var(--gray-text); text-align:center; padding:10px;">Chưa có lịch sử giao dịch nào được lưu.</div>`;
+                return;
+            }
+
+            logBox.innerHTML = '';
+            historyLog.forEach(log => {
+                const div = document.createElement('div');
+                div.className = 'history-item';
+                div.innerHTML = `
+                    <div class="history-left">
+                        <span style="font-weight:bold; color:#fff;">${log.name}</span>
+                        <span class="history-date">${log.time}</span>
+                    </div>
+                    <span style="color:var(--gold-amber); font-weight:bold;">-${log.price.toLocaleString('vi-VN')}đ</span>
+                `;
+                logBox.appendChild(div);
+            });
         }
 
         function closeKeyModal() {
             document.getElementById('key-modal').style.display = 'none';
         }
 
-        // ACCOUNT TOPUP PROCESSING
+        // ACCOUNT SYNCHRONIZATION SIMULATION
         function processAccountTopup() {
             const u = document.getElementById('topup-user').value;
             const p = document.getElementById('topup-pass').value;
@@ -956,32 +1159,35 @@
             }
 
             alert(currentLang === 'vi' ? 
-                `Gửi yêu cầu đồng bộ tài khoản thành công!\nHệ thống đang kiểm tra đăng nhập [${t}] và xử lý gói nạp trong 3-5 phút.` : 
-                `Account synchronization request submitted successfully!\nThe system is verifying [${t}] login and processing the package in 3-5 minutes.`);
+                `Gửi yêu cầu đồng bộ tài khoản thành công!\nHệ thống đang kiểm tra đăng nhập [${t}] và xử lý gói nạp trong ít phút.` : 
+                `Account synchronization request submitted successfully!\nThe system is verifying [${t}] login and processing the package shortly.`);
             
-            // Clear inputs
             document.getElementById('topup-user').value = '';
             document.getElementById('topup-pass').value = '';
         }
 
-        function loadKeys() {
-            let saved = JSON.parse(localStorage.getItem('bought_keys')) || [];
-            if(saved.length > 0) {
+        // LOAD SAVED TRANSACTIONS ON INVOCATION
+        function loadSavedAssets() {
+            let historyLog = JSON.parse(localStorage.getItem('shop_history_logs')) || [];
+            if(historyLog.length > 0) {
                 const noKeyText = document.getElementById('no-key-text');
                 if (noKeyText) noKeyText.remove();
+                
                 const container = document.getElementById('purchased-keys-box');
-                saved.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'key-list-item';
-                    div.innerHTML = `<span><strong>${item.name}</strong>: ${item.key}</span> <i class="fa-regular fa-copy" onclick="navigator.clipboard.writeText('${item.key}'); alert('Copied!');"></i>`;
-                    container.appendChild(div);
-                });
+                // Display the most recent active key at the top component card
+                const latest = historyLog[0];
+                const div = document.createElement('div');
+                div.className = 'key-list-item';
+                div.innerHTML = `<span><strong>${latest.name}</strong>: ${latest.key}</span> <i class="fa-regular fa-copy" onclick="navigator.clipboard.writeText('${latest.key}'); alert('Copied!');"></i>`;
+                container.appendChild(div);
             }
+            renderHistoryUI();
         }
 
         window.onload = function() {
+            initWallet();
             syncTelegram();
-            loadKeys();
+            loadSavedAssets();
         };
     </script>
 </body>
