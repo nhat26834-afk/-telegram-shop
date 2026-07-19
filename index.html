@@ -2,730 +2,596 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh Diêu Store - Premium Free Fire Shop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Huy Bảo Shop - Mini App</title>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <!-- Thư viện FontAwesome chống chết ảnh -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Core Firebase Stable SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-
     <style>
         :root {
+            --bg-main: #0d0e12;
+            --bg-card: #16171e;
+            --bg-input: #1b1c24;
+            --text-color: #ffffff;
             --neon-green: #00ff66;
-            --neon-glow: rgba(0, 255, 102, 0.4);
-            --phantom-purple: #7b2cbf;
-            --cosmic-dark: #05020a;
-            --space-card: rgba(13, 19, 33, 0.85);
-            --border-color: rgba(0, 255, 102, 0.25);
+            --cyan-blue: #00e5ff;
+            --gray-text: #8e8e93;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { 
-            background: linear-gradient(135deg, var(--cosmic-dark) 0%, #0a1128 50%, #03071e 100%); 
-            color: #fff; 
-            padding-bottom: 100px; 
-            min-height: 100vh;
-            overflow-x: hidden;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            padding-bottom: 75px; /* Tránh đè menu dưới */
         }
 
-        .neon-text { 
-            color: var(--neon-green); 
-            text-shadow: 0 0 12px var(--neon-glow), 0 0 25px rgba(0,255,102,0.2); 
+        /* HEADER THỜI THƯỢNG GIỐNG ẢNH MẪU */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-card);
+            border-bottom: 1px solid #232530;
         }
-        
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 8px rgba(0,255,102,0.2); border-color: rgba(0, 255, 102, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(0,255,102,0.6); border-color: rgba(0, 255, 102, 1); }
-            100% { box-shadow: 0 0 8px rgba(0,255,102,0.2); border-color: rgba(0, 255, 102, 0.2); }
+
+        .user-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        /* POPUP KHỞI CHẠY KHÁCH */
-        .modal-overlay { position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(3, 1, 7, 0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
-        .welcome-modal { background: rgba(15, 23, 42, 0.95); border: 2px solid var(--neon-green); border-radius: 24px; width: 100%; max-width: 380px; padding: 30px; text-align: center; box-shadow: 0 0 20px var(--neon-glow); }
-        .btn-close { width: 100%; background: linear-gradient(90deg, var(--neon-green), #00b4d8); border: none; padding: 14px; border-radius: 14px; color: #000; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 20px; letter-spacing: 1px; transition: 0.3s; }
-        .btn-close:hover { transform: scale(1.02); box-shadow: 0 0 15px var(--neon-green); }
-        
-        /* HEADER */
-        .header { background: rgba(5, 2, 10, 0.9); padding: 18px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
-        .avatar-box { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; border: 2px solid var(--neon-green); box-shadow: 0 0 10px var(--neon-glow); }
-        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
-        .wallet-vnd { color: var(--neon-green); font-weight: 900; font-size: 20px; text-shadow: 0 0 8px var(--neon-glow); }
-        .role-badge { background: #161a30; color: #a5b4fc; font-size: 11px; padding: 6px 12px; border-radius: 8px; font-weight: bold; display: inline-block; margin-top: 5px; cursor: pointer; border: 1px solid #312e81; text-transform: uppercase; transition: 0.2s; }
-        .role-badge.admin-mode { background: var(--neon-green); color: #000; box-shadow: 0 0 12px var(--neon-green); border-color: var(--neon-green); }
-        
-        /* CONTAINER */
-        .content-container { padding: 20px; max-width: 600px; margin: 0 auto; }
-        .card-box { background: var(--space-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; margin-bottom: 20px; backdrop-filter: blur(12px); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4); }
-        .card-box.neon-border { border: 1px solid var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 102, 0.1); }
-        .box-title { font-size: 14px; font-weight: 800; margin-bottom: 18px; text-transform: uppercase; display: flex; align-items: center; gap: 10px; color: #fff; letter-spacing: 0.8px; }
-        .box-title i { color: var(--neon-green); filter: drop-shadow(0 0 5px var(--neon-green)); }
-        
-        .main-input { width: 100%; background: #090d16; border: 1px solid #1e293b; padding: 14px; border-radius: 14px; color: #fff; font-size: 14px; outline: none; transition: 0.2s; }
-        .main-input:focus { border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 255, 102, 0.25); }
-        
-        .btn-action { width: 100%; border: none; padding: 14px; border-radius: 14px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; text-transform: uppercase; transition: 0.2s; letter-spacing: 0.5px; margin-top: 5px; }
-        .btn-green { background: linear-gradient(90deg, var(--neon-green), #00b4d8); color: #000; }
-        .btn-green:hover { opacity: 0.95; box-shadow: 0 0 18px var(--neon-green); transform: translateY(-1px); }
-        .btn-purple { background: rgba(123, 44, 191, 0.2); color: #e0aaff; border: 1px solid var(--phantom-purple); }
-        .btn-purple:hover { background: rgba(123, 44, 191, 0.4); color: #fff; box-shadow: 0 0 12px var(--phantom-purple); }
-        .btn-danger { background: #ef4444; color: #fff; }
-        
-        /* GRID APPS */
-        .grid-apps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .app-item { background: rgba(20, 30, 55, 0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 22px 12px; text-align: center; cursor: pointer; transition: 0.25s ease; }
-        .app-item:hover, .app-item.active { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 102, 0.2); background: rgba(0, 255, 102, 0.04); transform: scale(1.02); }
-        .app-item img { width: 60px; height: 60px; border-radius: 16px; object-fit: cover; margin-bottom: 10px; border: 1px solid rgba(200,200,200,0.1); background: #111827; }
-        .app-name { font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f1f5f9; }
-        
-        /* SUB PRODUCT LIST */
-        .sub-product-list { display: flex; flex-direction: column; gap: 12px; }
-        .sub-product-item { background: rgba(20, 30, 55, 0.35); border: 1px solid rgba(255,255,255,0.05); border-radius: 18px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: 0.2s; }
-        .sub-product-item:hover { border-color: var(--neon-green); background: rgba(0,255,102,0.02); }
-        
-        .package-container { display: flex; flex-direction: column; gap: 12px; margin: 18px 0; }
-        .package-option { background: #090d16; border: 1px solid #1e293b; border-radius: 16px; padding: 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-        .package-option.selected { border-color: var(--neon-green); background: rgba(0, 255, 102, 0.05); box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.1); }
-        .pkg-price { background: #131f38; padding: 8px 16px; border-radius: 12px; font-weight: 800; font-size: 14px; border: 1px solid var(--border-color); color: var(--neon-green); text-shadow: 0 0 5px var(--neon-glow); }
-        
-        /* ADMIN PANEL */
-        .admin-panel { display: none; background: rgba(10, 6, 18, 0.98); border: 2px dashed var(--neon-green); border-radius: 22px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 25px rgba(0, 255, 102, 0.15); }
-        body.admin-active .admin-panel { display: block; }
-        .admin-section-title { font-size: 13px; color: var(--neon-green); font-weight: 800; margin-bottom: 12px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; border-top: 1px dashed rgba(0,255,102,0.2); padding-top: 15px; margin-top: 15px; }
-        .admin-section-title:first-child { border-top: none; padding-top: 0; margin-top: 0; }
-        .admin-grid-row { display: flex; gap: 12px; margin-bottom: 12px; }
-        .admin-grid-row input, .admin-grid-row textarea, .admin-grid-row select { flex: 1; background: #070913; border: 1px solid #27272a; padding: 13px; border-radius: 12px; color: #fff; font-size: 13px; outline: none; }
-        
-        /* FEEDBACKS */
-        .review-item { background: rgba(15, 23, 42, 0.5); padding: 15px; border-radius: 16px; border-left: 3px solid var(--neon-green); margin-bottom: 12px; }
-        .top-nap-item { display: flex; justify-content: space-between; padding: 14px 18px; background: rgba(15, 23, 42, 0.5); border-radius: 14px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.04); font-size: 13px; }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .back-btn { background: #131f38; border: 1px solid #1e293b; color: #fff; padding: 8px 16px; border-radius: 10px; font-size: 12px; cursor: pointer; margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; }
-        
-        /* STORAGE KHO */
-        .storage-group { margin-bottom: 20px; background: rgba(15, 23, 42, 0.4); padding: 15px; border-radius: 18px; border: 1px solid rgba(255,255,255,0.05); }
-        .storage-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 14px; margin-bottom: 12px; color: #fff; }
-        .storage-badge-count { background: #115e59; color: #5eead4; font-size: 12px; padding: 3px 8px; border-radius: 6px; }
-        .key-history-card { background: #070a13; border: 1px dashed rgba(0, 255, 102, 0.2); border-radius: 12px; padding: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .key-string { color: var(--neon-green); font-family: monospace; font-size: 14px; font-weight: bold; letter-spacing: 1px; }
-        .key-date { font-size: 11px; color: #64748b; margin-top: 4px; }
-        .btn-copy-mini { background: #1e293b; border: none; color: #cbd5e1; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .avatar-box {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-green);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2a2c3d;
+            font-weight: bold;
+        }
 
-        /* LỊCH SỬ NẠP */
-        .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
-        .history-table th { background: #0f172a; text-align: left; padding: 10px; color: #94a3b8; font-weight: 600; }
-        .history-table td { padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-        /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #060814; display: flex; justify-content: space-around; padding: 14px 0; border-top: 1px solid #111827; z-index: 999; }
-        .nav-item { text-align: center; color: #64748b; font-size: 11px; font-weight: 700; cursor: pointer; flex: 1; text-transform: uppercase; transition: 0.2s; }
-        .nav-item i { font-size: 20px; margin-bottom: 5px; display: block; }
-        .nav-item.active { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-glow); }
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 14px;
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-id {
+            font-size: 11px;
+            color: var(--gray-text);
+        }
+
+        .tg-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: #0088cc;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 2px;
+            width: fit-content;
+        }
+
+        .right-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .balance {
+            color: var(--neon-green);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* NÚT ADMIN PHÁT SÁNG GLOWING */
+        .admin-glow-btn {
+            background-color: var(--neon-green);
+            color: #000000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 900;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.4);
+            transition: 0.3s;
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        /* BẢNG CẤU HÌNH ADMIN (CHÚ LIÊN VIỀN ĐỨT XANH NEON Y HỆT ẢNH) */
+        .admin-container {
+            display: none; /* Ẩn mặc định, gõ pass mới hiện */
+            margin: 15px;
+            padding: 15px;
+            border: 2px dashed var(--neon-green);
+            border-radius: 12px;
+            background-color: #12131a;
+        }
+
+        .admin-title {
+            color: var(--neon-green);
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .row-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            flex: 1;
+            background-color: var(--bg-input);
+            border: 1px solid #2c2e3e;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        .input-field::placeholder {
+            color: #555870;
+        }
+
+        textarea.input-field {
+            width: 100%;
+            height: 65px;
+            resize: none;
+            margin-bottom: 15px;
+        }
+
+        .btn-update-config {
+            width: 100%;
+            background-color: var(--cyan-blue);
+            color: #000;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* KHU VỰC NỘI DUNG CÁC TAB */
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* THÔNG BÁO HỆ THỐNG NGOÀI TRANG CHỦ */
+        .system-announcement {
+            background: linear-gradient(135deg, #1e202c, #16171e);
+            border-left: 4px solid var(--cyan-blue);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .announcement-title {
+            color: var(--cyan-blue);
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .announcement-body {
+            font-size: 12.5px;
+            color: #b0bec5;
+            line-height: 1.4;
+        }
+
+        /* DANH SÁCH SẢN PHẨM KHÔNG LO VỠ GIAO DIỆN */
+        .product-vertical-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-item {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-info-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, #00e5ff, #0088cc);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .product-texts .p-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .product-texts .p-prices {
+            font-size: 11px;
+            color: #9e9e9e;
+        }
+
+        .product-texts .p-prices span {
+            color: #ffb74d;
+            margin-right: 5px;
+        }
+
+        .btn-buy-now {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* THANH MENU TABS DƯỚI CÙNG Y HỆT ẢNH MẪU */
+        .bottom-navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--bg-card);
+            border-top: 1px solid #232530;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 999;
+            box-sizing: border-box;
+        }
+
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: #757575;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            height: 100%;
+            transition: 0.2s;
+        }
+
+        .nav-tab i {
+            font-size: 18px;
+        }
+
+        /* Tab nào được chọn sẽ sáng xanh neon */
+        .nav-tab.active {
+            color: var(--neon-green);
+        }
+
+        /* Giao diện trống cho các tab khác */
+        .placeholder-box {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray-text);
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- POPUP THÔNG BÁO CHÀO MỪNG -->
-    <div class="modal-overlay" id="welcomeModal">
-        <div class="welcome-modal">
-            <div class="welcome-title neon-text" id="welcomeTitleView" style="font-weight:900; font-size:20px;">THANH DIÊU FREE FIRE</div>
-            <div id="welcomeTextContent" style="font-size:13px; color:#94a3b8; margin-top:12px; white-space:pre-line; line-height:1.5;">Đang tải bảng giá thiết bị...</div>
-            <button class="btn-close" onclick="document.getElementById('welcomeModal').style.display='none'">TRẢI NGHIỆM NGAY</button>
-        </div>
-    </div>
-
-    <!-- MAIN HEADER -->
+    <!-- KHU VỰC HEADER TỰ ĐỘNG ĐỒNG BỘ -->
     <div class="header">
-        <div style="display:flex; align-items:center; gap:12px;">
-            <div class="avatar-box"><img id="shopLogoView" src="https://i.imgur.com/w1A4Mwb.png"></div>
-            <div>
-                <div id="shopTitleView" style="font-weight:800; font-size:15px; letter-spacing:0.5px;">Thanh Diêu Shop</div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                    <span id="displayUserUid" style="font-size:11px; color:#64748b;">ID: Loading...</span>
-                    <button id="teleSupportBtn" onclick="openTelegramLink()" style="background: #0284c7; border:none; color:#fff; font-size:9px; font-weight:bold; padding:2px 6px; border-radius:4px; cursor:pointer;"><i class="fab fa-telegram"></i> TELEGRAM</button>
-                </div>
+        <div class="user-block">
+            <div id="dynamic-avatar" class="avatar-box">HB</div>
+            <div class="user-meta">
+                <div id="dynamic-name" class="user-name">Đang đồng bộ...</div>
+                <div id="dynamic-id" class="user-id">ID: 0000000000</div>
+                <a href="#" id="tg-channel-link" class="tg-badge" target="_blank">
+                    <i class="fa-brands fa-telegram"></i> TELEGRAM
+                </a>
             </div>
         </div>
-        <div style="text-align:right;">
-            <div class="wallet-vnd" id="userBalanceView">0đ</div>
-            <div class="role-badge" id="roleBadge" onclick="toggleAdminRole()">CUSTOMER (Bấm cấu hình)</div>
+        <div class="right-header">
+            <div class="balance">0đ</div>
+            <button class="admin-glow-btn" onclick="openAdminPanel()">HUY BẢO ADMIN<br>TỐI CAO</button>
         </div>
     </div>
 
-    <div class="content-container">
+    <!-- 📢 BẢNG ĐIỀU KHIỂN ADMIN 1. CẤU HÌNH HỆ THỐNG -->
+    <div id="admin-panel" class="admin-container">
+        <p class="admin-title">📢 1. Cấu Hình Hệ Thống</p>
+        <div class="row-inputs">
+            <input type="text" id="adm-title" class="input-field" placeholder="Tiêu đề thông báo">
+            <input type="text" id="adm-link" class="input-field" placeholder="Đường dẫn Telegram">
+        </div>
+        <textarea id="adm-content" class="input-field" placeholder="Nội dung thông báo..."></textarea>
         
-        <!-- ADMIN PANEL CONTROL -->
-        <div class="admin-panel" id="adminPanelBox">
-            <div class="admin-section-title"><i class="fa-solid fa-bullhorn"></i> 1. Cấu hình hệ thống</div>
-            <div class="admin-grid-row">
-                <input type="text" id="adminWelcomeTitle" placeholder="Tiêu đề thông báo">
-                <input type="text" id="adminTelegramLink" placeholder="Đường dẫn Telegram">
-            </div>
-            <div class="admin-grid-row">
-                <textarea id="adminWelcomeInput" placeholder="Nội dung thông báo..." rows="2"></textarea>
-            </div>
-            <button class="btn-action btn-green" onclick="adminSaveGlobalConfig()">CẬP NHẬT CẤU HÌNH CHUNG</button>
-            
-            <div class="admin-section-title"><i class="fa-solid fa-folder-plus"></i> 2. Quản lý danh mục (Apps)</div>
-            <div class="admin-grid-row">
-                <select id="adminAppSelect" onchange="onAdminAppSelectChange()"></select>
-            </div>
-            <div class="admin-grid-row">
-                <input type="text" id="adminAppName" placeholder="Tên danh mục">
-                <input type="text" id="adminAppIcon" placeholder="Link ảnh Icon">
-            </div>
-            <div class="admin-grid-row">
-                <button class="btn-action btn-green" onclick="adminSaveApp()">LƯU / CẬP NHẬT</button>
-                <button class="btn-action btn-danger" id="adminDeleteAppBtn" onclick="adminDeleteApp()">XÓA MỤC NÀY</button>
-            </div>
-
-            <div class="admin-section-title"><i class="fa-solid fa-cubes"></i> 3. Thay đổi giá trị sản phẩm & Sửa ảnh trực tiếp</div>
-            <div class="admin-grid-row">
-                <select id="adminSubProductSelect" onchange="onAdminSubSelectChange()"></select>
-            </div>
-            <div class="admin-grid-row">
-                <select id="adminSubParentApp"></select>
-                <input type="text" id="adminSubTitle" placeholder="Tên sản phẩm">
-            </div>
-            <div class="admin-grid-row">
-                <input type="text" id="adminSubDesc" placeholder="Mô tả đi kèm">
-                <input type="text" id="adminSubIcon" placeholder="Link ảnh trực tiếp (URL)">
-            </div>
-            <div class="admin-grid-row">
-                <input type="number" id="adminPriceP1" placeholder="Giá trị 1 (Ví dụ: 0 nếu không có)">
-                <input type="number" id="adminPriceP7" placeholder="Giá trị 2 (Ví dụ: Giá Tháng)">
-                <input type="number" id="adminPriceP31" placeholder="Giá trị 3 (Ví dụ: Giá Vĩnh Viễn)">
-            </div>
-            <div class="admin-grid-row">
-                <button class="btn-action btn-green" onclick="adminSaveSubProduct()">XÁC NHẬN CẬP NHẬT SẢN PHẨM</button>
-                <button class="btn-action btn-danger" id="adminDeleteSubBtn" onclick="adminDeleteSubProduct()">XÓA SẢN PHẨM KHỎI SHOP</button>
-            </div>
-
-            <div class="admin-section-title"><i class="fa-solid fa-hand-holding-dollar"></i> 4. Cộng tiền Realtime</div>
-            <div class="admin-grid-row">
-                <input type="text" id="adminTargetUid" placeholder="ID người dùng">
-                <input type="number" id="adminMoneyAmount" placeholder="Số tiền cần nạp">
-            </div>
-            <button class="btn-action btn-purple" onclick="adminAddMoneyProcess()">XÁC NHẬN CỘNG VÍ REALTIME</button>
+        <p class="admin-title" style="margin-top:10px;">📁 2. Quản Lý Danh Mục (Apps)</p>
+        <div class="row-inputs" style="margin-bottom: 15px;">
+            <select id="adm-select-app" class="input-field" style="background-color: var(--bg-input);" onchange="syncAppPriceToForm()">
+                <option value="app1">Bản Hack iOS VIP</option>
+                <option value="app2">Bản Hack Android PRO</option>
+                <option value="app3">Bypass PC Cực Mượt</option>
+            </select>
+            <input type="text" id="adm-app-price" class="input-field" placeholder="Giá tiền (đ)">
         </div>
 
-        <!-- TAB CỬA HÀNG MUA KEY -->
-        <div id="tab-muakey" class="tab-content active">
-            <div id="view-apps">
-                <div class="card-box neon-border">
-                    <div class="box-title"><i class="fa-solid fa-gamepad"></i> HỆ THỐNG ĐỒ CHƠI FREE FIRE</div>
-                    <div class="grid-apps" id="appsGridContainer"></div>
-                </div>
-                <div class="card-box">
-                    <div class="box-title"><i class="fa-solid fa-circle-nodes"></i> Nhật ký hoạt động máy chủ</div>
-                    <div id="reviewsContainer"></div>
-                </div>
-            </div>
+        <button class="btn-update-config" onclick="saveSystemConfig()">Cập Nhật Cấu Hình Chung</button>
+    </div>
 
-            <div id="view-subproducts" style="display:none;">
-                <button class="back-btn" onclick="showAppsView()"><i class="fa-solid fa-angle-left"></i> Quay lại mục chính</button>
-                <div class="card-box neon-border">
-                    <div class="box-title" id="subProductsTitle">SẢN PHẨM</div>
-                    <div class="sub-product-list" id="subProductsContainer"></div>
-                </div>
-            </div>
-
-            <div id="view-packages" style="display:none;">
-                <button class="back-btn" onclick="showSubProductsView()"><i class="fa-solid fa-angle-left"></i> Quay lại</button>
-                <div class="card-box neon-border">
-                    <div class="box-title">LỰA CHỌN THỜI HẠN KEY</div>
-                    <div class="package-container" id="packageOptionsContainer"></div>
-                    <button class="btn-action btn-green" style="margin-top:15px;" onclick="executePurchaseKey()"><i class="fa-solid fa-bolt"></i> XÁC NHẬN THANH TOÁN & LẤY KEY</button>
-                </div>
-            </div>
+    <!-- TAB 1: CỬA HÀNG (TRANG CHỦ) -->
+    <div id="tab-cua-hang" class="tab-content active">
+        <!-- Khu vực hiển thị thông báo động từ Admin -->
+        <div class="system-announcement">
+            <div id="view-title" class="announcement-title">Chào mừng bạn!</div>
+            <div id="view-content" class="announcement-body">Hệ thống hack cheat an toàn, uy tín và bảo mật hàng đầu bởi Huy Bảo Shop.</div>
         </div>
 
-        <!-- TAB NẠP TIỀN -->
-        <div id="tab-naptien" class="tab-content">
-            <div class="card-box neon-border">
-                <div class="box-title"><i class="fa-solid fa-qrcode"></i> Quét Mã Nạp Ví Tự Động</div>
-                <div style="margin-bottom:15px;">
-                    <input type="number" id="depositAmount" class="main-input" placeholder="Nhập số tiền cần nạp (Tối thiểu 10,000đ)">
+        <div class="product-vertical-list">
+            <div class="product-item">
+                <div class="product-info-side">
+                    <div class="product-icon"><i class="fa-brands fa-apple"></i></div>
+                    <div class="product-texts">
+                        <div class="p-name">Bản Hack iOS VIP</div>
+                        <div class="p-prices">Giá: <span id="price-app1">50.000đ</span></div>
+                    </div>
                 </div>
-                <button class="btn-action btn-green" onclick="generateVietQR()"><i class="fa-solid fa-bolt-lightning"></i> TẠO MÃ QR CLOUD REALTIME</button>
-                
-                <div style="text-align:center; margin-top:20px; display:none;" id="qrDisplayArea">
-                    <img id="qrGeneratedImg" style="width:220px; border-radius:16px; background:#fff; padding:12px; border:2px solid var(--neon-green)">
-                    <div style="font-size:13px; color:#00ff66; margin-top:12px; font-weight:bold; background:#0c1020; padding:10px; border-radius:10px;" id="qrMemoView"></div>
-                </div>
+                <button class="btn-buy-now" onclick="buyClick('Bản Hack iOS VIP')">Mua</button>
             </div>
 
-            <div class="card-box">
-                <div class="box-title"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ GIAO DỊCH NẠP TIỀN</div>
-                <div style="overflow-x: auto;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Thời Gian</th>
-                                <th>Nội Dung</th>
-                                <th>Số Tiền</th>
-                                <th>Trạng Thái</th>
-                            </tr>
-                        </thead>
-                        <tbody id="depositHistoryContainer"></tbody>
-                    </table>
+            <div class="product-item">
+                <div class="product-info-side">
+                    <div class="product-icon"><i class="fa-brands fa-android"></i></div>
+                    <div class="product-texts">
+                        <div class="p-name">Bản Hack Android PRO</div>
+                        <div class="p-prices">Giá: <span id="price-app2">40.000đ</span></div>
+                    </div>
                 </div>
+                <button class="btn-buy-now" onclick="buyClick('Bản Hack Android PRO')">Mua</button>
             </div>
-        </div>
 
-        <!-- TAB ĐUA TOP -->
-        <div id="tab-topnap" class="tab-content">
-            <div class="card-box neon-border">
-                <div class="box-title"><i class="fa-solid fa-crown"></i> Bảng Vàng Đại Gia Nạp Tiền</div>
-                <div id="topNapContainer"></div>
-            </div>
-        </div>
-
-        <!-- TAB CÁ NHÂN & KHO SỞ HỮU -->
-        <div id="tab-canhan" class="tab-content">
-            <div class="card-box">
-                <div class="box-title"><i class="fa-solid fa-fingerprint"></i> THÔNG TIN TRUY CẬP HỆ THỐNG</div>
-                <div style="font-size:13px; line-height:2.2; color:#94a3b8;">
-                    • UID Định Danh: <span style="color:var(--neon-green); font-weight:bold;" id="myProfileUid">...</span><br>
-                    • Phương thức liên hệ: <span style="color:#00b4d8; font-weight:bold;">Zalo: 0347071512 | Tele: @CIPHERSELLER</span><br>
-                    • Quyền hạn: <span style="color:#fff; font-weight:bold;" id="myProfileRole">Khách Hàng (Customer)</span>
+            <div class="product-item">
+                <div class="product-info-side">
+                    <div class="product-icon"><i class="fa-solid fa-display"></i></div>
+                    <div class="product-texts">
+                        <div class="p-name">Bypass PC Cực Mượt</div>
+                        <div class="p-prices">Giá: <span id="price-app3">70.000đ</span></div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="card-box neon-border">
-                <div class="box-title" style="color: #5eead4;"><i class="fa-solid fa-box-open"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
-                <div id="myStorageContainer"></div>
+                <button class="btn-buy-now" onclick="buyClick('Bypass PC Cực Mượt')">Mua</button>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="navigationTab('muakey', this)"><i class="fa-solid fa-gamepad"></i> Cửa Hàng</div>
-        <div class="nav-item" onclick="navigationTab('naptien', this)"><i class="fa-solid fa-qrcode"></i> Nạp Tiền</div>
-        <div class="nav-item" onclick="navigationTab('topnap', this)"><i class="fa-solid fa-trophy"></i> Đua Top</div>
-        <div class="nav-item" onclick="navigationTab('canhan', this)"><i class="fa-solid fa-user-astronaut"></i> Cá Nhân</div>
+    <!-- TAB 2: NẠP TIỀN -->
+    <div id="tab-nap-tien" class="tab-content">
+        <div class="placeholder-box">
+            <i class="fa-solid fa-wallet style-icon" style="font-size:40px; color:var(--cyan-blue); margin-bottom:15px;"></i>
+            <p>Hệ thống nạp tiền tự động qua Banking/Ví điện tử đang được xử lý.</p>
+        </div>
+    </div>
+
+    <!-- TAB 3: ĐUA TOP -->
+    <div id="tab-dua-top" class="tab-content">
+        <div class="placeholder-box">
+            <i class="fa-solid fa-trophy" style="font-size:40px; color:#ffb74d; margin-bottom:15px;"></i>
+            <p>Bảng xếp hạng đại gia nạp thẻ tháng này chưa có dữ liệu.</p>
+        </div>
+    </div>
+
+    <!-- TAB 4: CÁ NHÂN -->
+    <div id="tab-ca-nhan" class="tab-content">
+        <div class="placeholder-box">
+            <i class="fa-solid fa-user-gear" style="font-size:40px; color:var(--gray-text); margin-bottom:15px;"></i>
+            <p>Thông tin chi tiết gói phần mềm bạn đã mua sẽ hiển thị ở đây.</p>
+        </div>
+    </div>
+
+    <!-- 📱 THANH ĐIỀU HƯỚNG BOTTOM TABS -->
+    <div class="bottom-navbar">
+        <div class="nav-tab active" onclick="changeTab(this, 'tab-cua-hang')">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>CỬA HÀNG</span>
+        </div>
+        <div class="nav-tab" onclick="changeTab(this, 'tab-nap-tien')">
+            <i class="fa-solid fa-border-all"></i>
+            <span>NẠP TIỀN</span>
+        </div>
+        <div class="nav-tab" onclick="changeTab(this, 'tab-dua-top')">
+            <i class="fa-solid fa-trophy"></i>
+            <span>ĐUA TOP</span>
+        </div>
+        <div class="nav-tab" onclick="changeTab(this, 'tab-ca-nhan')">
+            <i class="fa-solid fa-user"></i>
+            <span>CÁ NHÂN</span>
+        </div>
     </div>
 
     <script>
-        const ADMIN_SECRET_PASSWORD = "lehuybao2710"; 
+        const MẬT_KHẨU_ADMIN = "lehuybao2710";
 
-        // Firebase Config Connection
-        const firebaseConfig = {
-            apiKey: "AIzaSyFakeKey_DoiThanhKeyCuaBan",
-            authDomain: "huybaoshop-demo.firebaseapp.com",
-            databaseURL: "https://huybaoshop-demo-default-rtdb.firebaseio.com", 
-            projectId: "huybaoshop-demo"
-        };
+        // 1. CƠ CHẾ GƯƠNG 🪞: TỰ ĐỘNG LẤY TÀI KHOẢN ĐANG ĐĂNG NHẬP TELEGRAM
+        function runTelegramSync() {
+            const webapp = window.Telegram.WebApp;
+            webapp.expand(); // Mở full màn hình app
 
-        let useCloudDatabase = false; let databaseRef = null;
-        try {
-            if (!firebaseConfig.databaseURL.includes("FakeKey") && !firebaseConfig.databaseURL.includes("demo")) {
-                firebase.initializeApp(firebaseConfig); databaseRef = firebase.database(); useCloudDatabase = true;
-            }
-        } catch (e) { console.error(e); }
+            const boxAvatar = document.getElementById('dynamic-avatar');
+            const boxName = document.getElementById('dynamic-name');
+            const boxId = document.getElementById('dynamic-id');
 
-        let clientUid = localStorage.getItem('user_uid') || Math.floor(100000 + Math.random() * 900000).toString();
-        localStorage.setItem('user_uid', clientUid);
-
-        // ĐỔ TỰ ĐỘNG 100% SẢN PHẨM VÀ MỨC GIÁ CHUẨN TỪ ẢNH BẢNG GIÁ ĐÃ CUNG CẤP
-        let globalConfig = { 
-            title: "Thanh Diêu - Free Fire", 
-            welcomeTitle: "BẢNG GIÁ ĐỒ CHƠI FREE FIRE", 
-            welcomeText: "Chào mừng bạn đến với hệ thống hack uy tín Thanh Diêu!\nHỗ trợ nhiệt tình qua Zalo: 0347071512 & Telegram: @CIPHERSELLER.\nChúc các bạn trải nghiệm game vui vẻ!", 
-            telegram: "https://t.me/CIPHERSELLER" 
-        };
-        
-        let apps = [
-            { id: "ios", name: "IOS (IPHONE, IPAD)", icon: "https://i.imgur.com/v8tTjFp.png" },
-            { id: "adr", name: "ADR (NO ROOT & ROOT)", icon: "https://i.imgur.com/uG0h8Nq.png" },
-            { id: "aim", name: "MENU AIM (DÙNG CHO CẢ ADR VÀ IOS)", icon: "https://i.imgur.com/XG1F86R.png" }
-        ];
-
-        let subProducts = [
-            // DANH MỤC HACK IOS (Đồng bộ Giá trọn gói vào ô p31)
-            { id: "fluorite", appId: "ios", title: "FLUORITE", desc: "Kèm chứng chỉ ESIGN 1 năm ổn định", icon: "https://i.imgur.com/v8tTjFp.png", p1: 0, p7: 0, p31: 450000 },
-            { id: "migul_pro", appId: "ios", title: "MIGUL PRO", desc: "Kèm chứng chỉ ESIGN 1 năm cao cấp", icon: "https://i.imgur.com/uG0h8Nq.png", p1: 0, p7: 0, p31: 500000 },
-            { id: "iosviet", appId: "ios", title: "IOSVIET", desc: "Kèm cài đặt TrollStore tiện ích", icon: "https://i.imgur.com/XG1F86R.png", p1: 0, p7: 0, p31: 250000 },
-            { id: "sudo", appId: "ios", title: "SUDO", desc: "Kèm chứng chỉ ESIGN không bảo hành (Thêm bảo hành +50K)", icon: "https://i.imgur.com/w1A4Mwb.png", p1: 0, p7: 0, p31: 280000 },
-
-            // DANH MỤC HACK ANDROID (ADR)
-            { id: "ngotran_vip", appId: "adr", title: "NGOTRAN VIP", desc: "Hỗ trợ mượt mà, dùng được cho cả iOS", icon: "https://i.imgur.com/v8tTjFp.png", p1: 0, p7: 0, p31: 320000 },
-            { id: "drip_vip", appId: "adr", title: "DRIP VIP", desc: "Phiên bản Android tối ưu chống ban", icon: "https://i.imgur.com/uG0h8Nq.png", p1: 0, p7: 0, p31: 250000 },
-            { id: "zygame", appId: "adr", title: "ZYGAME", desc: "Bản Hack Android phân khúc giá rẻ", icon: "https://i.imgur.com/XG1F86R.png", p1: 0, p7: 0, p31: 140000 },
-
-            // DANH MỤC MENU AIM TRUYỀN THỐNG (Có Gói Tháng ở ô p7 và Vĩnh Viễn ở ô p31)
-            { id: "thanhdieucheat", appId: "aim", title: "THANHDIEUCHEAT", desc: "Menu VIP độc quyền dùng vĩnh viễn", icon: "https://i.imgur.com/v8tTjFp.png", p1: 0, p7: 0, p31: 450000 },
-            { id: "proxy_adr_ios", appId: "aim", title: "PROXY ADR - IOS", desc: "Bypass đường truyền mạng ẩn danh mạng", icon: "https://i.imgur.com/uG0h8Nq.png", p1: 0, p7: 240000, p31: 400000 },
-            { id: "aimlock", appId: "aim", title: "AIMLOCK", desc: "Tự động khóa tâm cứng mục tiêu", icon: "https://i.imgur.com/XG1F86R.png", p1: 0, p7: 250000, p31: 340000 },
-            { id: "aimhead", appId: "aim", title: "AIMHEAD", desc: "Găm tâm chuẩn xác 100% vào Đầu", icon: "https://i.imgur.com/w1A4Mwb.png", p1: 0, p7: 200000, p31: 300000 },
-            { id: "aimbody", appId: "aim", title: "AIMBODY", desc: "Găm tâm chắc chắn vào Người (Body)", icon: "https://i.imgur.com/v8tTjFp.png", p1: 0, p7: 200000, p31: 360000 }
-        ];
-
-        let userBalance = 0; let myPurchases = []; let myDeposits = [];
-        let selectedAppId = ""; let selectedSubId = ""; let currentSelectedCost = 0; let currentRole = "CUSTOMER";
-        let selectedDurationText = "";
-
-        window.onload = function() {
-            document.getElementById('displayUserUid').innerText = "ID: " + clientUid;
-            document.getElementById('myProfileUid').innerText = clientUid;
-            
-            if (useCloudDatabase) {
-                databaseRef.ref('phantom_shop_v2/config').on('value', (snap) => { if(snap.val()) { globalConfig = snap.val(); applyConfigToUi(); } else { syncToCloud('config', globalConfig); } });
-                databaseRef.ref('phantom_shop_v2/apps').on('value', (snap) => { if(snap.val()) { apps = Object.values(snap.val()); } else { syncListToCloud('apps', apps); } refreshAppRenders(); });
-                databaseRef.ref('phantom_shop_v2/subProducts').on('value', (snap) => { if(snap.val()) { subProducts = Object.values(snap.val()); } else { syncListToCloud('subProducts', subProducts); } refreshAppRenders(); });
+            // Nếu app chạy thật trong Telegram
+            if (webapp.initDataUnsafe && webapp.initDataUnsafe.user) {
+                const userData = webapp.initDataUnsafe.user;
                 
-                databaseRef.ref('phantom_shop_v2/users/' + clientUid).on('value', (snap) => {
-                    let data = snap.val() || { balance: 0, purchases: [], deposits: [] };
-                    userBalance = data.balance || 0;
-                    myPurchases = data.purchases ? Object.values(data.purchases) : [];
-                    myDeposits = data.deposits ? Object.values(data.deposits) : [];
-                    updateUserDataUi();
-                });
+                // Đồng bộ Tên
+                boxName.textContent = userData.first_name + (userData.last_name ? " " + userData.last_name : "");
+                // Đồng bộ ID số thật
+                boxId.textContent = "ID: " + userData.id;
+                
+                // Đồng bộ Ảnh đại diện thật (Nếu không có ảnh thì lấy chữ cái đầu làm icon tròn)
+                if (userData.photo_url) {
+                    boxAvatar.innerHTML = `<img src="${userData.photo_url}" alt="avatar">`;
+                } else {
+                    boxAvatar.textContent = userData.first_name.charAt(0).toUpperCase();
+                }
             } else {
-                loadLocalStorageDb(); applyConfigToUi(); refreshAppRenders(); updateUserDataUi();
+                // Nếu sếp test ngoài trình duyệt máy tính, hệ thống tự giả lập một user ngẫu nhiên để test layout
+                boxName.textContent = "Huy Bảo Lập Trình Viên";
+                boxId.textContent = "ID: 100293847 (Demo)";
+                boxAvatar.textContent = "HB";
             }
-            setupDynamicLiveWidgets();
+        }
+
+        // 2. CHUYỂN ĐỔI QUA LẠI GIỮA CÁC TAB MENU DƯỚI CÙNG
+        function changeTab(tabElement, tabContentId) {
+            // Tắt active của toàn bộ nút menu
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            // Tắt hiển thị toàn bộ nội dung các tab
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+            // Kích hoạt tab được chọn
+            tabElement.classList.add('active');
+            document.getElementById(tabContentId).style.display = 'block';
+        }
+
+        // 3. ĐĂNG NHẬP & BẬT MỞ BẢNG ADMIN KHÔNG BỊ PHÁT HIỆN
+        function openAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+                return;
+            }
+
+            const passInput = prompt("Nhập mật khẩu tối cao để mở khóa cấu hình:");
+            if (passInput === MẬT_KHẨU_ADMIN) {
+                panel.style.display = 'block';
+                alert("Chào sếp Huy Bảo! Truy cập trang quản trị thành công.");
+            } else if (passInput !== null) {
+                alert("Sai mật khẩu! Vui lòng không cố gắng xâm nhập.");
+            }
+        }
+
+        // Đồng bộ giá tiền sản phẩm lên form khi chọn select
+        function syncAppPriceToForm() {
+            const selectedApp = document.getElementById('adm-select-app').value;
+            const priceText = document.getElementById('price-' + selectedApp).textContent;
+            document.getElementById('adm-app-price').value = priceText.replace('đ', '');
+        }
+
+        // 4. LƯU VÀ HIỂN THỊ DỮ LIỆU CẤU HÌNH ĐỘNG (LƯU VÀO LOCALSTORAGE)
+        function saveSystemConfig() {
+            const titleVal = document.getElementById('adm-title').value;
+            const linkVal = document.getElementById('adm-link').value;
+            const contentVal = document.getElementById('adm-content').value;
+            const selectedApp = document.getElementById('adm-select-app').value;
+            const appPriceVal = document.getElementById('adm-app-price').value;
+
+            // Lưu thông báo hệ thống
+            if(titleVal) {
+                localStorage.setItem('sys_title', titleVal);
+                document.getElementById('view-title').textContent = titleVal;
+            }
+            if(contentVal) {
+                localStorage.setItem('sys_content', contentVal);
+                document.getElementById('view-content').textContent = contentVal;
+            }
+            // Lưu link telegram
+            if(linkVal) {
+                localStorage.setItem('sys_link', linkVal);
+                document.getElementById('tg-channel-link').href = linkVal;
+            }
+            // Lưu giá sản phẩm
+            if(appPriceVal) {
+                const formattedPrice = appPriceVal.endsWith('đ') ? appPriceVal : appPriceVal + 'đ';
+                localStorage.setItem('price_' + selectedApp, formattedPrice);
+                document.getElementById('price-' + selectedApp).textContent = formattedPrice;
+            }
+
+            alert("Đã áp dụng và đồng bộ cấu hình hệ thống thành công!");
+        }
+
+        // Tải lại các dữ liệu đã lưu khi bật app lên
+        function loadSavedData() {
+            if(localStorage.getItem('sys_title')) document.getElementById('view-title').textContent = localStorage.getItem('sys_title');
+            if(localStorage.getItem('sys_content')) document.getElementById('view-content').textContent = localStorage.getItem('sys_content');
+            if(localStorage.getItem('sys_link')) document.getElementById('tg-channel-link').href = localStorage.getItem('sys_link');
+            
+            if(localStorage.getItem('price_app1')) document.getElementById('price-app1').textContent = localStorage.getItem('price_app1');
+            if(localStorage.getItem('price_app2')) document.getElementById('price-app2').textContent = localStorage.getItem('price_app2');
+            if(localStorage.getItem('price_app3')) document.getElementById('price-app3').textContent = localStorage.getItem('price_app3');
+
+            // Đưa giá trị mặc định vào form nhập admin
+            document.getElementById('adm-title').value = document.getElementById('view-title').textContent;
+            document.getElementById('adm-content').value = document.getElementById('view-content').textContent;
+            document.getElementById('adm-link').value = document.getElementById('tg-channel-link').href;
+            syncAppPriceToForm();
+        }
+
+        function buyClick(appName) {
+            alert("Hệ thống xử lý hóa đơn mua: " + appName);
+        }
+
+        // Chạy khởi động khi load xong giao diện
+        window.onload = function() {
+            runTelegramSync();
+            loadSavedData();
         };
-
-        function syncToCloud(path, obj) { if(useCloudDatabase) databaseRef.ref('phantom_shop_v2/'+path).set(obj); }
-        function syncListToCloud(path, arr) { if(useCloudDatabase) { databaseRef.ref('phantom_shop_v2/'+path).remove(); arr.forEach(i => { databaseRef.ref('phantom_shop_v2/'+path+'/'+i.id).set(i); }); } }
-
-        function loadLocalStorageDb() {
-            let localApps = localStorage.getItem('local_apps'); if(localApps) apps = JSON.parse(localApps);
-            let localSubs = localStorage.getItem('local_subs'); if(localSubs) subProducts = JSON.parse(localSubs);
-            let localConfig = localStorage.getItem('local_config'); if(localConfig) globalConfig = JSON.parse(localConfig);
-            let userDb = JSON.parse(localStorage.getItem('user_' + clientUid)) || { balance: 0, purchases: [], deposits: [] };
-            userBalance = userDb.balance || 0; myPurchases = userDb.purchases || []; myDeposits = userDb.deposits || [];
-        }
-
-        function saveLocalStorageUser() {
-            let userDb = { balance: userBalance, purchases: myPurchases, deposits: myDeposits };
-            localStorage.setItem('user_' + clientUid, JSON.stringify(userDb));
-        }
-
-        function applyConfigToUi() {
-            document.getElementById('shopTitleView').innerText = globalConfig.title;
-            document.getElementById('welcomeTitleView').innerText = globalConfig.welcomeTitle;
-            document.getElementById('welcomeTextContent').innerText = globalConfig.welcomeText;
-        }
-
-        function openTelegramLink() { if(globalConfig.telegram) window.open(globalConfig.telegram, '_blank'); else alert("Chưa thiết lập link Telegram."); }
-
-        function updateUserDataUi() {
-            document.getElementById('userBalanceView').innerText = userBalance.toLocaleString('vi-VN') + "đ";
-            renderMyStorage(); renderDepositHistory();
-        }
-
-        function navigationTab(tabId, element) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active'); element.classList.add('active');
-        }
-
-        function refreshAppRenders() {
-            renderAppsList();
-            if(currentRole === "ADMIN") { setupAdminDropdowns(); }
-            if(selectedAppId) renderSubProducts();
-            if(selectedSubId) renderPackagesOptions();
-        }
-
-        function renderAppsList() {
-            const container = document.getElementById('appsGridContainer'); if(!container) return;
-            container.innerHTML = "";
-            apps.forEach(app => {
-                container.innerHTML += `
-                    <div class="app-item ${selectedAppId === app.id ? 'active' : ''}" onclick="selectAppTarget('${app.id}', '${app.name}')">
-                        <img src="${app.icon}" onerror="this.src='https://i.imgur.com/w1A4Mwb.png'">
-                        <div class="app-name">${app.name}</div>
-                    </div>`;
-            });
-        }
-
-        function selectAppTarget(appId, appName) {
-            selectedAppId = appId; document.getElementById('view-apps').style.display = 'none';
-            document.getElementById('view-subproducts').style.display = 'block';
-            document.getElementById('subProductsTitle').innerText = appName; renderSubProducts();
-        }
-
-        function showAppsView() { selectedAppId = ""; document.getElementById('view-apps').style.display = 'block'; document.getElementById('view-subproducts').style.display = 'none'; }
-
-        function renderSubProducts() {
-            const container = document.getElementById('subProductsContainer'); container.innerHTML = "";
-            let list = subProducts.filter(s => s.appId === selectedAppId);
-            if(list.length === 0) { container.innerHTML = "<div style='font-size:13px;color:#64748b;text-align:center;padding:20px;'>Chưa có sản phẩm.</div>"; return; }
-            list.forEach(sub => {
-                container.innerHTML += `
-                    <div class="sub-product-item" onclick="selectSubProductTarget('${sub.id}')">
-                        <div style="display:flex;align-items:center;gap:14px;">
-                            <img src="${sub.icon}" style="width:42px;height:42px;border-radius:10px;" onerror="this.src='https://i.imgur.com/w1A4Mwb.png'">
-                            <div><div style="font-size:14px;font-weight:bold;">${sub.title}</div><div style="font-size:11.5px;color:#94a3b8;margin-top:4px;">${sub.desc}</div></div>
-                        </div>
-                        <i class="fa-solid fa-chevron-right" style="color:var(--neon-green);font-size:13px;"></i>
-                    </div>`;
-            });
-        }
-
-        function selectSubProductTarget(subId) {
-            selectedSubId = subId; document.getElementById('view-subproducts').style.display = 'none';
-            document.getElementById('view-packages').style.display = 'block'; renderPackagesOptions();
-        }
-
-        function showSubProductsView() { selectedSubId = ""; document.getElementById('view-subproducts').style.display = 'block'; document.getElementById('view-packages').style.display = 'none'; }
-
-        // TỰ ĐỘNG BÓC TÁCH HIỂN THỊ THỜI HẠN PHÙ HỢP VỚI TỪNG LOẠI TRÊN ẢNH
-        function renderPackagesOptions() {
-            const container = document.getElementById('packageOptionsContainer'); if(!container) return;
-            let sub = subProducts.find(s => s.id === selectedSubId); if(!sub) return;
-            container.innerHTML = "";
-            
-            let options = [];
-            if (Number(sub.p1) > 0) options.push({ price: sub.p1, text: "Gói 1 Ngày", label: "1 Ngày" });
-            if (Number(sub.p7) > 0) {
-                let termLabel = (sub.appId === "aim") ? "1 Tháng" : "Gói 7 Ngày";
-                options.push({ price: sub.p7, text: termLabel, label: termLabel });
-            }
-            if (Number(sub.p31) > 0) {
-                let termLabel = (sub.appId === "ios" || sub.appId === "adr") ? "Trọn Gói Bản Quyền" : "Vĩnh Viễn";
-                options.push({ price: sub.p31, text: termLabel, label: termLabel });
-            }
-            
-            options.forEach((opt, idx) => {
-                let selClass = idx === 0 ? "selected" : "";
-                if(idx === 0) { currentSelectedCost = opt.price; selectedDurationText = opt.text; }
-                container.innerHTML += `
-                    <div class="package-option ${selClass}" onclick="togglePackageSelection(this, ${opt.price}, '${opt.text}')">
-                        <div>Thời hạn: ${opt.label}</div>
-                        <div class="pkg-price">${Number(opt.price).toLocaleString()}đ</div>
-                    </div>`;
-            });
-        }
-
-        function togglePackageSelection(element, price, text) {
-            document.querySelectorAll('.package-option').forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected'); currentSelectedCost = price; selectedDurationText = text;
-        }
-
-        function generateHackKeyFormat() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; let keyStr = "";
-            for (let i = 0; i < 16; i++) { keyStr += chars.charAt(Math.floor(Math.random() * chars.length)); }
-            return keyStr;
-        }
-
-        function getFormattedCurrentDate() {
-            let d = new Date(); let pad = (n) => n < 10 ? '0' + n : n;
-            return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-        }
-
-        function executePurchaseKey() {
-            let sub = subProducts.find(s => s.id === selectedSubId); if(!sub) return;
-            if (userBalance < currentSelectedCost) return alert("Thất bại! Số dư ví của bạn không đủ. Vui lòng nạp thêm tiền.");
-
-            let newGeneratedKey = generateHackKeyFormat();
-            let purchaseItem = { title: sub.title + " (" + selectedDurationText + ")", key: newGeneratedKey, date: getFormattedCurrentDate() };
-
-            if (useCloudDatabase) {
-                databaseRef.ref('phantom_shop_v2/users/' + clientUid).runTransaction((currentData) => {
-                    if (!currentData) currentData = { balance: 0, purchases: {} };
-                    if ((currentData.balance || 0) < currentSelectedCost) return;
-                    currentData.balance -= currentSelectedCost;
-                    if(!currentData.purchases) currentData.purchases = {};
-                    let pushKey = databaseRef.ref().child('dummy').push().key;
-                    currentData.purchases[pushKey] = purchaseItem;
-                    return currentData;
-                }, (error, committed) => {
-                    if (committed) { alert("🎉 THÀNH CÔNG!\n\nMã key: " + newGeneratedKey); }
-                });
-            } else {
-                userBalance -= currentSelectedCost; myPurchases.push(purchaseItem);
-                saveLocalStorageUser(); updateUserDataUi();
-                alert("🎉 THÀNH CÔNG!\n\nMã key: " + newGeneratedKey);
-            }
-        }
-
-        function renderMyStorage() {
-            const container = document.getElementById('myStorageContainer'); if(!container) return;
-            if(myPurchases.length === 0) { container.innerHTML = "<div style='font-size:12px;color:#64748b;text-align:center;padding:15px;'>Bạn chưa mua mã key nào.</div>"; return; }
-            
-            let groups = {};
-            myPurchases.forEach(item => { if(!groups[item.title]) groups[item.title] = []; groups[item.title].push(item); });
-
-            container.innerHTML = "";
-            for (let title in groups) {
-                let items = groups[title]; let cardsHtml = "";
-                items.forEach(it => {
-                    cardsHtml += `
-                        <div class="key-history-card">
-                            <div><div class="key-string">${it.key}</div><div class="key-date">Ngày mua: ${it.date}</div></div>
-                            <button class="btn-copy-mini" onclick="copyToClipboardText('${it.key}')"><i class="fa-regular fa-copy"></i></button>
-                        </div>`;
-                });
-                container.innerHTML += `<div class="storage-group"><div class="storage-header"><div><i class="fa-solid fa-gift" style="color:var(--neon-green);margin-right:6px;"></i> ${title}</div><span class="storage-badge-count">${items.length}</span></div>${cardsHtml}</div>`;
-            }
-        }
-
-        function copyToClipboardText(text) {
-            navigator.clipboard.writeText(text).then(() => { alert("Đã sao chép key: " + text); });
-        }
-
-        function generateVietQR() {
-            let amount = parseInt(document.getElementById('depositAmount').value);
-            if(!amount || amount < 10000) return alert("Số tiền nạp tối thiểu là 10,000đ!");
-            let apiUrl = `https://img.vietqr.io/image/MB-0347071512-qr_only.png?amount=${amount}&addInfo=NAP%20${clientUid}&accountName=THANH%20DIEU`;
-            document.getElementById('qrGeneratedImg').src = apiUrl;
-            document.getElementById('qrMemoView').innerText = `GHI CHÚ CHUYỂN KHOẢN CHUẨN: NAP ${clientUid}`;
-            document.getElementById('qrDisplayArea').style.display = "block";
-
-            let depositItem = { date: getFormattedCurrentDate(), memo: "NAP " + clientUid, amount: amount, status: "Chờ duyệt tự động" };
-            if(useCloudDatabase) { databaseRef.ref('phantom_shop_v2/users/' + clientUid + '/deposits').push(depositItem); }
-            else { myDeposits.unshift(depositItem); saveLocalStorageUser(); renderDepositHistory(); }
-        }
-
-        function renderDepositHistory() {
-            const container = document.getElementById('depositHistoryContainer'); if(!container) return;
-            if(myDeposits.length === 0) { container.innerHTML = "<tr><td colspan='4' style='text-align:center;color:#64748b;'>Chưa có giao dịch.</td></tr>"; return; }
-            container.innerHTML = "";
-            myDeposits.forEach(d => {
-                let statusColor = d.status.includes("Thành công") ? "var(--neon-green)" : "#f59e0b";
-                container.innerHTML += `<tr><td>${d.date}</td><td>${d.memo}</td><td style='color:#00b4d8;font-weight:bold;'>+${Number(d.amount).toLocaleString()}đ</td><td style='color:${statusColor};font-weight:bold;'>${d.status}</td></tr>`;
-            });
-        }
-
-        // ================= ADMIN FUNCTIONS =================
-        function toggleAdminRole() {
-            if(currentRole === "CUSTOMER") {
-                let pass = prompt("Nhập mật khẩu Admin tối cao:");
-                if(pass === ADMIN_SECRET_PASSWORD) {
-                    currentRole = "ADMIN"; document.getElementById('roleBadge').innerText = "THANH DIÊU ADMIN TỐI CAO";
-                    document.getElementById('roleBadge').classList.add('admin-mode'); document.body.classList.add('admin-active');
-                    document.getElementById('myProfileRole').innerText = "Chủ Shop (Administrator)"; setupAdminDropdowns();
-                }
-            } else {
-                currentRole = "CUSTOMER"; document.getElementById('roleBadge').innerText = "CUSTOMER (Bấm cấu hình)";
-                document.getElementById('roleBadge').classList.remove('admin-mode'); document.body.classList.remove('admin-active');
-                document.getElementById('myProfileRole').innerText = "Khách Hàng";
-            }
-        }
-
-        function adminSaveGlobalConfig() {
-            globalConfig.welcomeTitle = document.getElementById('adminWelcomeTitle').value || globalConfig.welcomeTitle;
-            globalConfig.telegram = document.getElementById('adminTelegramLink').value || globalConfig.telegram;
-            globalConfig.welcomeText = document.getElementById('adminWelcomeInput').value || globalConfig.welcomeText;
-            if(useCloudDatabase) syncToCloud('config', globalConfig); else { localStorage.setItem('local_config', JSON.stringify(globalConfig)); applyConfigToUi(); }
-            alert("Đã lưu cấu hình!");
-        }
-
-        function setupAdminDropdowns() {
-            const appSelect = document.getElementById('adminAppSelect'); appSelect.innerHTML = `<option value="new">--- THÊM MỚI DANH MỤC ---</option>`;
-            const parentSelect = document.getElementById('adminSubParentApp'); parentSelect.innerHTML = "";
-            apps.forEach(a => { appSelect.innerHTML += `<option value="${a.id}">${a.name}</option>`; parentSelect.innerHTML += `<option value="${a.id}">${a.name}</option>`; });
-
-            const subSelect = document.getElementById('adminSubProductSelect'); subSelect.innerHTML = `<option value="new">--- THÊM MỚI SẢN PHẨM ---</option>`;
-            subProducts.forEach(s => { subSelect.innerHTML += `<option value="${s.id}">${s.title}</option>`; });
-            onAdminAppSelectChange(); onAdminSubSelectChange();
-        }
-
-        function onAdminAppSelectChange() {
-            let val = document.getElementById('adminAppSelect').value;
-            if(val === "new") { document.getElementById('adminAppName').value = ""; document.getElementById('adminAppIcon').value = ""; document.getElementById('adminDeleteAppBtn').style.display = "none"; }
-            else { let a = apps.find(i => i.id === val); if(a) { document.getElementById('adminAppName').value = a.name; document.getElementById('adminAppIcon').value = a.icon; document.getElementById('adminDeleteAppBtn').style.display = "block"; } }
-        }
-
-        function adminSaveApp() {
-            let val = document.getElementById('adminAppSelect').value; let name = document.getElementById('adminAppName').value.trim(); let icon = document.getElementById('adminAppIcon').value.trim();
-            if(!name) return;
-            if(val === "new") { apps.push({ id: "app_" + Date.now(), name: name, icon: icon }); }
-            else { let a = apps.find(i => i.id === val); if(a) { a.name = name; a.icon = icon; } }
-            if(useCloudDatabase) syncListToCloud('apps', apps); else { localStorage.setItem('local_apps', JSON.stringify(apps)); refreshAppRenders(); }
-            alert("Lưu danh mục thành công!");
-        }
-
-        function adminDeleteApp() {
-            let val = document.getElementById('adminAppSelect').value; if(val === "new") return;
-            if(confirm("Xóa danh mục này?")) {
-                apps = apps.filter(a => a.id !== val); subProducts = subProducts.filter(s => s.appId !== val);
-                if(useCloudDatabase) { syncListToCloud('apps', apps); syncListToCloud('subProducts', subProducts); } else { localStorage.setItem('local_apps', JSON.stringify(apps)); localStorage.setItem('local_subs', JSON.stringify(subProducts)); refreshAppRenders(); }
-                alert("Đã xóa xong!");
-            }
-        }
-
-        function onAdminSubSelectChange() {
-            let val = document.getElementById('adminSubProductSelect').value;
-            if(val === "new") {
-                document.getElementById('adminSubTitle').value = ""; document.getElementById('adminSubDesc').value = ""; document.getElementById('adminSubIcon').value = "";
-                document.getElementById('adminPriceP1').value = ""; document.getElementById('adminPriceP7').value = ""; document.getElementById('adminPriceP31').value = "";
-                document.getElementById('adminDeleteSubBtn').style.display = "none";
-            } else {
-                let s = subProducts.find(i => i.id === val);
-                if(s) {
-                    document.getElementById('adminSubParentApp').value = s.appId; document.getElementById('adminSubTitle').value = s.title;
-                    document.getElementById('adminSubDesc').value = s.desc; document.getElementById('adminSubIcon').value = s.icon;
-                    document.getElementById('adminPriceP1').value = s.p1; document.getElementById('adminPriceP7').value = s.p7; document.getElementById('adminPriceP31').value = s.p31;
-                    document.getElementById('adminDeleteSubBtn').style.display = "block";
-                }
-            }
-        }
-
-        function adminSaveSubProduct() {
-            let val = document.getElementById('adminSubProductSelect').value; let appId = document.getElementById('adminSubParentApp').value;
-            let title = document.getElementById('adminSubTitle').value.trim(); let desc = document.getElementById('adminSubDesc').value.trim(); let icon = document.getElementById('adminSubIcon').value.trim();
-            let p1 = parseInt(document.getElementById('adminPriceP1').value) || 0; let p7 = parseInt(document.getElementById('adminPriceP7').value) || 0; let p31 = parseInt(document.getElementById('adminPriceP31').value) || 0;
-            if(!title) return;
-
-            if(val === "new") { subProducts.push({ id: "sub_" + Date.now(), appId: appId, title: title, desc: desc, icon: icon, p1: p1, p7: p7, p31: p31 }); }
-            else { let s = subProducts.find(i => i.id === val); if(s) { s.appId = appId; s.title = title; s.desc = desc; s.icon = icon; s.p1 = p1; s.p7 = p7; s.p31 = p31; } }
-            if(useCloudDatabase) syncListToCloud('subProducts', subProducts); else { localStorage.setItem('local_subs', JSON.stringify(subProducts)); refreshAppRenders(); }
-            alert("Lưu sản phẩm thành công!");
-        }
-
-        function adminDeleteSubProduct() {
-            let val = document.getElementById('adminSubProductSelect').value; if(val === "new") return;
-            if(confirm("Xóa sản phẩm này?")) {
-                subProducts = subProducts.filter(s => s.id !== val);
-                if(useCloudDatabase) syncListToCloud('subProducts', subProducts); else { localStorage.setItem('local_subs', JSON.stringify(subProducts)); refreshAppRenders(); }
-                alert("Đã xóa sản phẩm!");
-            }
-        }
-
-        function adminAddMoneyProcess() {
-            let targetUid = document.getElementById('adminTargetUid').value.trim(); let amount = parseInt(document.getElementById('adminMoneyAmount').value);
-            if(!targetUid || !amount) return;
-            if (useCloudDatabase) {
-                databaseRef.ref('phantom_shop_v2/users/' + targetUid).runTransaction((curr) => {
-                    if (!curr) curr = { balance: 0, purchases: {}, deposits: {} };
-                    curr.balance = (curr.balance || 0) + amount;
-                    if(!curr.deposits) curr.deposits = {};
-                    curr.deposits[databaseRef.ref().child('dummy').push().key] = { date: getFormattedCurrentDate(), memo: "Admin nạp ví", amount: amount, status: "Thành công" };
-                    return curr;
-                }, (err, comm) => { if (comm) alert("Đã cộng tiền tài khoản!"); });
-            } else {
-                if(targetUid === clientUid) { userBalance += amount; myDeposits.unshift({ date: getFormattedCurrentDate(), memo: "Admin nạp ví", amount: amount, status: "Thành công" }); saveLocalStorageUser(); updateUserDataUi(); alert("Đã cộng tiền!"); }
-            }
-        }
-
-        function setupDynamicLiveWidgets() {
-            const users = ["Huy Bảo", "Thanh Diêu VIP", "Long FreeFire", "Khánh IOS", "Tuấn Android", "Hoàng Sudo", "Đạt Esign"];
-            const reviews = ["Bản Fluorite cài Esign mượt lắm shop.", "Menu Aimlock găm tâm đỉnh thật sự.", "Mới nạp qua QR 10s là có tiền mua key luôn.", "Proxy ADR dùng leo rank bao mượt không bị văng.", "Mua nhầm key được Admin CipherSeller hỗ trợ đổi luôn, 10 điểm."];
-            const revContainer = document.getElementById('reviewsContainer');
-            const topContainer = document.getElementById('topNapContainer');
-            
-            if(revContainer) revContainer.innerHTML = `<div class='review-item'><div style='font-size:12px;font-weight:bold;color:var(--neon-green)'>Thanh Diêu Shop</div><div style='font-size:12px;color:#cbd5e1;font-style:italic;'>"Hệ thống bán đồ chơi tự động."</div></div>`;
-            if(topContainer) topContainer.innerHTML = `<div class='top-nap-item'><div>Khách ID: 384***</div><div style='color:var(--neon-green);font-weight:bold;'>500,000đ</div></div>`;
-
-            setInterval(() => {
-                if(!revContainer) return;
-                revContainer.innerHTML = `<div class='review-item'><div style='font-size:12px;font-weight:bold;color:var(--neon-green)'>${users[Math.floor(Math.random()*users.length)]}</div><div style='font-size:12px;color:#cbd5e1;font-style:italic;'>"${reviews[Math.floor(Math.random()*reviews.length)]}"</div></div>` + revContainer.innerHTML;
-                if(revContainer.children.length > 3) revContainer.removeChild(revContainer.lastChild);
-            }, 4000);
-
-            setInterval(() => {
-                if(!topContainer) return;
-                topContainer.innerHTML = `<div class='top-nap-item'><div>Khách ID: ${Math.floor(100000+Math.random()*899999)}***</div><div style='color:var(--neon-green);font-weight:bold;'>+${[20000,50000,100000,200000,500000][Math.floor(Math.random()*5)].toLocaleString()}đ</div></div>` + topContainer.innerHTML;
-                if(topContainer.children.length > 6) topContainer.removeChild(topContainer.lastChild);
-            }, 5000);
-        }
     </script>
 </body>
 </html>
