@@ -1334,5 +1334,54 @@
             validateAndGenerateQR();
         };
     </script>
+    <!-- BẮT ĐẦU PHẦN THÊM NHẠC -->
+<style>
+    .music-float-btn {
+        position: fixed;
+        bottom: 85px; 
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #00ff88, #00f0ff);
+        border: 2px solid #000;
+        color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        z-index: 9999;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        cursor: pointer;
+    }
+    .music-float-btn.playing {
+        animation: spin-music 3s linear infinite;
+        background: linear-gradient(135deg, #00f0ff, #b700ff);
+    }
+    @keyframes spin-music { 100% { transform: rotate(360deg); } }
+</style>
+
+<audio id="bg-music" src="https://docs.google.com/uc?export=download&id=1VCKOTn5W9eQJhn9f6inYc8uXtLpO6ZuB" loop></audio>
+<button id="music-btn" class="music-float-btn" onclick="toggleMusic()">▶️</button>
+
+<script>
+    let isMusicPlaying = false;
+    function toggleMusic() {
+        const music = document.getElementById('bg-music');
+        const btn = document.getElementById('music-btn');
+        if (isMusicPlaying) {
+            music.pause();
+            btn.classList.remove('playing');
+            btn.innerHTML = '▶️';
+        } else {
+            music.play();
+            btn.classList.add('playing');
+            btn.innerHTML = '⏸️';
+        }
+        isMusicPlaying = !isMusicPlaying;
+    }
+</script>
+<!-- KẾT THÚC PHẦN THÊM NHẠC -->
+
 </body>
 </html>
