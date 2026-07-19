@@ -1336,24 +1336,30 @@
     </script>
 <audio id="bg-music" src="https://docs.google.com/uc?export=download&id=1VCKOTn5W9eQJhn9f6inYc8uXtLpO6ZuB" loop></audio>
 
+<!-- Nút bấm hiển thị nhạc -->
+<button id="music-btn" onclick="toggleMusic()" style="position:fixed; bottom:20px; right:20px; z-index:9999;">Nhạc: 🎵</button>
+
 <script>
     const music = document.getElementById('bg-music');
-    
-    // Tự động phát khi người dùng chạm bất cứ đâu vào màn hình lần đầu tiên
-    function playMusicOnce() {
-        music.play().then(() => {
-            console.log("Nhạc đã phát");
-            document.removeEventListener('click', playMusicOnce);
-            document.removeEventListener('touchstart', playMusicOnce);
-        }).catch(err => {
-            console.log("Đang đợi người dùng tương tác...");
-        });
+    const btn = document.getElementById('music-btn');
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+            btn.innerHTML = "Nhạc: 🎵 (Đang phát)";
+        } else {
+            music.pause();
+            btn.innerHTML = "Nhạc: 🎵 (Đã tắt)";
+        }
     }
 
-    document.addEventListener('click', playMusicOnce);
-    document.addEventListener('touchstart', playMusicOnce);
+    // Tự động phát khi chạm màn hình
+    document.addEventListener('click', function playOnce() {
+        music.play();
+        btn.innerHTML = "Nhạc: 🎵 (Đang phát)";
+        document.removeEventListener('click', playOnce);
+    }, { once: true });
 </script>
-
 
 </body>
 </html>
