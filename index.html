@@ -14,22 +14,22 @@
 
     <style>
         :root {
-            --bg-dark: #080511;
-            --card-bg: rgba(20, 13, 34, 0.85);
-            --card-inner: rgba(30, 20, 50, 0.7);
+            --bg-dark: #07040f;
+            --card-bg: rgba(22, 14, 38, 0.82);
+            --card-inner: rgba(35, 22, 58, 0.65);
             --pink-main: #ff2a8d;
-            --pink-glow: rgba(255, 42, 141, 0.35);
+            --pink-glow: rgba(255, 42, 141, 0.4);
             --purple-neon: #a855f7;
             --green-glow: #10b981;
-            --green-bg: rgba(16, 185, 129, 0.15);
             --cyan-neon: #06b6d4;
             --text-main: #ffffff;
-            --text-sub: #9e8fb8;
+            --text-sub: #a393be;
             --border-light: rgba(255, 255, 255, 0.08);
-            --border-pink: rgba(255, 42, 141, 0.3);
-            --radius-xl: 22px;
-            --radius-lg: 16px;
-            --radius-md: 12px;
+            --border-pink: rgba(255, 42, 141, 0.35);
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-pill: 50px;
         }
 
         * {
@@ -44,12 +44,12 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 90px;
+            padding-bottom: 95px;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 1. HOANH ĐÀO RƠI NHẸ & MỎNG */
+        /* HOA ANH ĐÀO RƠI MỎNG NỀN */
         #sakura-canvas {
             position: fixed;
             top: 0;
@@ -60,11 +60,11 @@
             z-index: 1;
         }
 
-        /* 2. LOADING SCREEN (CHẬM & MƯỢT HƠN) */
+        /* LOADING SCREEN MƯỢT MÀ */
         #loading-screen {
             position: fixed;
             inset: 0;
-            background: #05030a;
+            background: #040208;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -75,8 +75,8 @@
 
         .loader-box {
             position: relative;
-            width: 90px;
-            height: 90px;
+            width: 95px;
+            height: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,14 +88,14 @@
             border-radius: 50%;
             border: 3px solid rgba(255, 42, 141, 0.15);
             border-top-color: var(--pink-main);
-            border-right-color: var(--purple-neon);
+            border-right-color: var(--cyan-neon);
             animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
         }
 
         .loader-logo {
             position: absolute;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
@@ -104,39 +104,39 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .progress-wrapper {
-            width: 230px;
+            width: 240px;
             height: 8px;
             background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
+            border-radius: var(--radius-pill);
             margin-top: 25px;
             overflow: hidden;
-            border: 1px solid rgba(255, 42, 141, 0.25);
-            box-shadow: 0 0 14px var(--pink-glow);
+            border: 1px solid rgba(255, 42, 141, 0.3);
+            box-shadow: 0 0 15px var(--pink-glow);
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, var(--pink-main), var(--purple-neon));
-            border-radius: 20px;
-            transition: width 0.12s linear;
+            border-radius: var(--radius-pill);
+            transition: width 0.1s linear;
         }
 
         .loading-text {
             margin-top: 12px;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-sub);
             font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
-        /* 3. HEADER TELEGRAM */
+        /* HEADER TELEGRAM */
         .header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(8, 5, 17, 0.88);
-            backdrop-filter: blur(16px);
+            background: rgba(7, 4, 15, 0.88);
+            backdrop-filter: blur(18px);
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-light);
             display: flex;
@@ -151,8 +151,8 @@
         }
 
         .avatar-box img {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
@@ -184,23 +184,23 @@
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
             color: var(--pink-main);
-            padding: 6px 10px;
-            border-radius: 20px;
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
 
         .wallet-badge {
             background: linear-gradient(135deg, rgba(255, 42, 141, 0.18), rgba(168, 85, 247, 0.18));
             border: 1px solid var(--border-pink);
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
             text-align: right;
-            box-shadow: 0 0 10px var(--pink-glow);
+            box-shadow: 0 0 12px var(--pink-glow);
         }
 
         .wallet-badge .amount {
@@ -218,14 +218,14 @@
         }
 
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: zoomIn 0.3s ease; }
+        .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
 
-        @keyframes zoomIn {
-            from { opacity: 0; transform: scale(0.97); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* CATEGORY CARDS BO TRÒN */
+        /* CATEGORY CARDS BO TRÒN MỀM MẠI */
         .category-grid {
             display: flex;
             flex-direction: column;
@@ -241,8 +241,9 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: all 0.2s;
-            backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .category-card:active { transform: scale(0.97); }
@@ -254,29 +255,29 @@
         }
 
         .category-icon {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             background: linear-gradient(135deg, rgba(255, 42, 141, 0.25), rgba(168, 85, 247, 0.35));
             border: 1px solid var(--pink-main);
-            border-radius: 50%;
+            border-radius: 50%; /* Đảm bảo hình tròn */
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             color: var(--pink-main);
-            box-shadow: 0 0 12px var(--pink-glow);
+            box-shadow: 0 0 14px var(--pink-glow);
         }
 
         .category-title { font-weight: 800; font-size: 14px; color: #fff; }
         .category-sub { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
 
-        /* BUTTON QUAY LẠI & SẢN PHẨM */
+        /* NÚT QUAY LẠI & Ô SẢN PHẨM ĐẸP MẮT BO TRÒN */
         .btn-back {
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
             color: #fff;
             padding: 10px 18px;
-            border-radius: 20px;
+            border-radius: var(--radius-pill);
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -284,78 +285,106 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .product-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            margin-bottom: 14px;
-            padding: 16px;
-            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl); /* Bo tròn hoàn toàn khung sản phẩm */
+            margin-bottom: 16px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
 
         .product-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            gap: 14px;
+            margin-bottom: 10px;
         }
 
         .product-badge-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%; /* Chuyển hoàn toàn thành hình tròn */
             background: rgba(255, 42, 141, 0.15);
+            border: 1px solid var(--border-pink);
             color: var(--pink-main);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
+            box-shadow: 0 0 10px var(--pink-glow);
         }
 
-        .product-title { font-weight: 700; font-size: 15px; color: #fff; }
-        .product-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 12px; line-height: 1.4; }
+        .product-title { font-weight: 800; font-size: 16px; color: #fff; }
+        .product-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5; }
 
         .product-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }
 
-        select.plan-select {
+        /* CUSTOM SELECT VỚI MŨI TÊN CHỌN GÓI ĐẸP */
+        .select-wrapper {
             flex: 1;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--pink-main);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        select.plan-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-pill); /* Bo tròn phím chọn */
             color: #fff;
-            padding: 10px 12px;
+            padding: 12px 35px 12px 16px;
             font-size: 12px;
+            font-weight: 600;
             outline: none;
+            appearance: none;
+            cursor: pointer;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .btn-buy {
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
+            padding: 12px 22px;
+            border-radius: var(--radius-pill);
+            font-weight: 800;
             font-size: 12px;
             cursor: pointer;
-            box-shadow: 0 4px 12px var(--pink-glow);
+            box-shadow: 0 4px 15px var(--pink-glow);
             transition: 0.2s;
         }
 
         .btn-buy:active { transform: scale(0.95); }
 
-        /* GIAO DỊCH GẦN ĐÂY THỜI GIAN THỰC (20+ NGƯỜI) */
+        /* GIAO DỊCH GẦN ĐÂY THỜI GIAN THỰC */
         .live-tx-box {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            margin-top: 18px;
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
         }
 
         .live-tx-header {
@@ -383,7 +412,7 @@
         .tx-item {
             background: var(--card-inner);
             border-radius: var(--radius-md);
-            padding: 10px 12px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -396,13 +425,14 @@
         .tx-amount.green { color: var(--green-glow); }
         .tx-amount.pink { color: var(--pink-main); }
 
-        /* 4. MẪU LỊCH SỬ MUA (KHO CỦA BẠN - CHUẨN MINH PHÚC STORE) */
+        /* KHO CỦA BẠN (LỊCH SỬ MUA MỀM MẠI, BO TRÒN) */
         .kho-card {
             background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            margin-bottom: 14px;
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl); /* Thẻ bo tròn mềm mại, không góc cạnh thô */
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
 
         .kho-header {
@@ -410,15 +440,15 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed var(--border-light);
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
         }
 
         .kho-title {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 14px;
             color: #fff;
         }
@@ -428,15 +458,16 @@
             color: #000;
             font-weight: 800;
             font-size: 11px;
-            padding: 2px 8px;
-            border-radius: 12px;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
         }
 
         .key-row-item {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: var(--radius-md);
-            padding: 12px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg); /* Bo tròn hoàn toàn các ô chứa key */
+            padding: 12px 14px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -448,7 +479,7 @@
             font-family: 'Orbitron', monospace;
             font-weight: 700;
             font-size: 13px;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
 
         .key-date-text {
@@ -459,11 +490,11 @@
 
         .btn-copy-icon {
             background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--border-pink);
             color: #fff;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%; /* Nút copy hình tròn mềm mại */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -471,9 +502,9 @@
             transition: 0.2s;
         }
 
-        .btn-copy-icon:active { background: var(--pink-main); }
+        .btn-copy-icon:active { background: var(--pink-main); transform: scale(0.9); }
 
-        /* 5. MÀN TOP NẠP (THÁNG / TUẦN / TẤT CẢ - TỪ 3M-7M) */
+        /* MÀN TOP NẠP (CHE GIỮA BẰNG DẤU ***) */
         .top-filter-bar {
             display: flex;
             gap: 8px;
@@ -482,11 +513,11 @@
 
         .top-filter-btn {
             flex: 1;
-            padding: 8px;
+            padding: 9px;
             text-align: center;
             background: var(--card-inner);
             border: 1px solid var(--border-light);
-            border-radius: 20px;
+            border-radius: var(--radius-pill);
             font-size: 11px;
             font-weight: 700;
             color: var(--text-sub);
@@ -497,14 +528,14 @@
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 0 10px var(--pink-glow);
+            box-shadow: 0 0 12px var(--pink-glow);
         }
 
         .leader-item {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
-            padding: 12px 14px;
+            padding: 14px 16px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -512,9 +543,9 @@
         }
 
         .rank-number {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%; /* Hình tròn */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -523,25 +554,25 @@
             font-family: 'Orbitron';
         }
 
-        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 10px rgba(234, 179, 8, 0.5); }
+        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 12px rgba(234, 179, 8, 0.6); }
         .rank-2 { background: #94a3b8; color: #000; }
         .rank-3 { background: #b45309; color: #fff; }
         .rank-other { background: rgba(255,255,255,0.1); color: #fff; }
 
         .leader-user {
             flex: 1;
-            margin-left: 12px;
+            margin-left: 14px;
         }
 
-        .leader-name { font-weight: 700; font-size: 13px; color: #fff; }
+        .leader-name { font-weight: 800; font-size: 13px; color: #fff; }
         .leader-sub { font-size: 10px; color: var(--text-sub); }
         .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 12px; }
 
-        /* NẠP TIỀN AUTO & CHỌN NHANH */
+        /* NẠP TIỀN AUTO */
         .quick-amounts {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 14px;
         }
 
@@ -549,8 +580,8 @@
             background: var(--card-inner);
             border: 1px solid var(--border-light);
             color: #fff;
-            padding: 10px;
-            border-radius: var(--radius-md);
+            padding: 12px;
+            border-radius: var(--radius-pill);
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -561,23 +592,23 @@
 
         .input-round {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.55);
             border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 12px 14px;
+            border-radius: var(--radius-pill);
+            padding: 14px 18px;
             color: #fff;
             font-size: 13px;
             outline: none;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
-        /* MODAL POPUP MUA THÀNH CÔNG */
+        /* MODAL POPUP MUA THÀNH CÔNG (HIỆU ỨNG ĐỈNH CAO) */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(12px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -585,52 +616,61 @@
         }
 
         .modal-body {
-            background: linear-gradient(160deg, #1b0c2e, #090412);
-            border: 1px solid var(--pink-main);
-            border-radius: 28px;
-            padding: 24px;
+            background: linear-gradient(160deg, #230f3c, #0a0416);
+            border: 2px solid var(--pink-main);
+            border-radius: 32px; /* Bo tròn hoàn toàn bảng popup */
+            padding: 28px 24px;
             width: 100%;
-            max-width: 350px;
+            max-width: 360px;
             text-align: center;
-            box-shadow: 0 0 35px var(--pink-glow);
-            animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 50px var(--pink-glow);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.7) translateY(20px); }
+            from { opacity: 0; transform: scale(0.6) translateY(30px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-icon-glow {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
-            border-radius: 50%;
+            border-radius: 50%; /* Hình tròn hoàn hảo */
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px auto;
-            font-size: 28px;
+            margin: 0 auto 16px auto;
+            font-size: 32px;
             color: #fff;
-            box-shadow: 0 0 20px var(--pink-glow);
+            box-shadow: 0 0 25px var(--pink-glow);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px var(--pink-glow); }
+            50% { box-shadow: 0 0 35px var(--pink-main); transform: scale(1.05); }
+            100% { box-shadow: 0 0 15px var(--pink-glow); }
         }
 
         .key-led-box {
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px dashed var(--cyan-neon);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            margin: 16px 0;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px dashed var(--cyan-neon);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            margin: 18px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.2);
         }
 
         .key-led-text {
             color: var(--cyan-neon);
             font-family: 'Orbitron', monospace;
-            font-weight: 700;
-            font-size: 13px;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 1px;
         }
 
         /* NAVBAR FOOTER */
@@ -639,8 +679,8 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 68px;
-            background: rgba(8, 5, 17, 0.94);
+            height: 72px;
+            background: rgba(7, 4, 15, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
@@ -662,8 +702,8 @@
             transition: 0.2s;
         }
 
-        .nav-item i { font-size: 19px; }
-        .nav-item.active { color: var(--pink-main); text-shadow: 0 0 10px var(--pink-glow); }
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { color: var(--pink-main); text-shadow: 0 0 12px var(--pink-glow); }
     </style>
 </head>
 <body>
@@ -698,7 +738,7 @@
             <button class="lang-btn" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> <span id="lang-label">VI</span></button>
             <div class="wallet-badge">
                 <div style="font-size:9px; color:var(--text-sub);" data-i18n="balance_label">SỐ DƯ</div>
-                <div class="amount" id="balance-display">999.999.999đ</div>
+                <div class="amount" id="balance-display">0đ</div>
             </div>
         </div>
     </div>
@@ -773,9 +813,9 @@
                 <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
                 <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
                 
-                <button class="btn-buy" style="width:100%; padding:12px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
+                <button class="btn-buy" style="width:100%; padding:14px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
 
-                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-pink); text-align:center;">
+                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-xl); border:1px solid var(--border-pink); text-align:center;">
                     <div style="font-weight:bold; color:var(--pink-main); font-size:13px; margin-bottom:10px;">CỔNG THANH TOÁN QR AUTO 24/7</div>
                     <img id="qr-img" src="" alt="QR" style="width:180px; height:180px; border-radius:12px; border:2px solid #fff;">
                     <div style="margin-top:12px; font-size:12px; text-align:left; line-height:1.7;">
@@ -798,7 +838,7 @@
         </div>
 
         <div id="tab-history" class="tab-content">
-            <div style="font-weight:800; font-size:14px; color:#fff; margin-bottom:12px;"><i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
+            <div style="font-weight:800; font-size:15px; color:#fff; margin-bottom:14px;"><i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
             <div id="kho-container"></div>
         </div>
 
@@ -807,17 +847,17 @@
     <div id="key-modal" class="modal">
         <div class="modal-body">
             <div class="modal-icon-glow">
-                <i class="fa-solid fa-circle-check"></i>
+                <i class="fa-solid fa-award"></i>
             </div>
-            <h3 id="modal-title" style="color:#fff; font-size:17px; font-weight:800;">MUA THÀNH CÔNG!</h3>
-            <p id="modal-desc" style="font-size:12px; color:var(--text-sub); margin-top:6px;"></p>
+            <h3 id="modal-title" style="color:#fff; font-size:18px; font-weight:900; letter-spacing:0.5px;">GIAO DỊCH THÀNH CÔNG!</h3>
+            <p id="modal-desc" style="font-size:12px; color:var(--text-sub); margin-top:6px; line-height:1.4;"></p>
             
             <div class="key-led-box">
                 <span class="key-led-text" id="key-display">HB-XXXX-XXXX</span>
                 <i class="fa-regular fa-copy" style="color:var(--pink-main); cursor:pointer; font-size:18px;" onclick="copyCurrentKey()"></i>
             </div>
 
-            <button class="btn-buy" style="width:100%; padding:11px;" onclick="closeKeyModal()" data-i18n="btn_close">ĐÓNG</button>
+            <button class="btn-buy" style="width:100%; padding:12px;" onclick="closeKeyModal()" data-i18n="btn_close">ĐÓNG & TIẾP TỤC</button>
         </div>
     </div>
 
@@ -862,56 +902,35 @@
             ]
         };
 
-        /* DANH SÁCH GIAO DỊCH GẦN ĐÂY THỜI GIAN THỰC */
         const sampleLiveTx = [
             { u: "Trần Trúc", a: "nạp 500.000đ", t: "00:40", type: "green" },
             { u: "Zang Nam", a: "nạp 150.000đ", t: "00:23", type: "green" },
             { u: "Kagero", a: "nạp 10.000đ", t: "23:43", type: "green" },
-            { u: "Hoc NgThe", a: "nạp 10.000đ", t: "23:36", type: "green" },
-            { u: "Bao An", a: "nạp 50.000đ", t: "23:35", type: "green" },
-            { u: "Vũ Tạp Hóa IOS", a: "mua Liên Quân chấp tố - Aov Hack 30Days", t: "00:55", type: "pink" },
-            { u: "lad", a: "mua Migul Pro VietNam - Migul Pro 30days", t: "00:30", type: "pink" },
-            { u: "Zang Nam", a: "mua Migul Basic VietNam - Migul basic 30days", t: "00:25", type: "pink" },
-            { u: "Bao An", a: "mua Migul Basic VietNam - Migul basic 1day", t: "00:04", type: "pink" },
-            { u: "Vũ Tạp Hóa IOS", a: "mua Proxy FFM or FFTH - PROXY FF 7days", t: "00:00", type: "pink" },
-            { u: "Lâm Xung", a: "nạp 350.000đ", t: "22:15", type: "green" },
-            { u: "Huy Wang", a: "nạp 20.000đ", t: "22:00", type: "green" },
-            { u: "ARTEMIS", a: "mua SUDOHAX TIPA - 30 ngày", t: "21:45", type: "pink" },
-            { u: "Nguyễn Phương", a: "mua AoV Menu Hack - 1 Giờ", t: "21:10", type: "pink" }
+            { u: "Vũ Tạp Hóa IOS", a: "mua Liên Quân - Aov Hack 30Days", t: "00:55", type: "pink" },
+            { u: "lad", a: "mua Migul Pro - 30days", t: "00:30", type: "pink" }
         ];
 
-        /* DATA TOP NẠP (HẠN MỨC 3M - 7.5M VND) */
+        /* DATA TOP NẠP (TÊN ĐÃ ĐƯỢC CHE DẤU SAO Ở GIỮA) */
         const topData = [
-            { r: 1, u: "Lê Hoàng Phong", id: "@phong_vip", val: "7.500.000đ" },
-            { r: 2, u: "Nguyễn Công Thành Diệu", id: "@dieu_hax", val: "6.200.000đ" },
-            { r: 3, u: "Vũ Đình Trọng", id: "@trong_freefire", val: "5.150.000đ" },
-            { r: 4, u: "Đức Kiên", id: "@kienducc", val: "4.435.000đ" },
-            { r: 5, u: "Vanthienios", id: "@vanthienios", val: "4.115.000đ" },
-            { r: 6, u: "Đoan Giàu", id: "@DVgiau", val: "4.058.000đ" },
-            { r: 7, u: "K3V Nn", id: "@whitebanfile11", val: "3.930.000đ" },
-            { r: 8, u: "dat nguyen", id: "@ddatcheat", val: "3.430.000đ" },
-            { r: 9, u: "QIOS", id: "@nquangios", val: "3.000.000đ" }
+            { r: 1, u: "Lê H***ng Phong", id: "@phong_vip", val: "7.500.000đ" },
+            { r: 2, u: "Nguyễn C*** Diệu", id: "@dieu_hax", val: "6.200.000đ" },
+            { r: 3, u: "Vũ Đ*** Trọng", id: "@trong_freefire", val: "5.150.000đ" },
+            { r: 4, u: "Đức K***", id: "@kienducc", val: "4.435.000đ" },
+            { r: 5, u: "Vanth***", id: "@vanthienios", val: "4.115.000đ" },
+            { r: 6, u: "Đoàn G***", id: "@DVgiau", val: "4.058.000đ" },
+            { r: 7, u: "K3V N**", id: "@whitebanfile11", val: "3.930.000đ" },
+            { r: 8, u: "Dat N****", id: "@ddatcheat", val: "3.430.000đ" },
+            { r: 9, u: "QIOS***", id: "@nquangios", val: "3.000.000đ" }
         ];
 
-        /* KHO MẶC ĐỊNH MẪU ĐỂ KHÔNG BỊ TRỐNG (MẪU MINH PHÚC STORE) */
         const defaultKhoItems = [
             {
                 prodTitle: "Migul Lite - Vietnam Version - 7 Ngày",
                 count: 1,
                 keys: [{ code: "RTPIK1ALSW7VQ4LC", date: "2026-07-04 23:21" }]
-            },
-            {
-                prodTitle: "Migul Pro - Vietnam Version - 1 Giờ",
-                count: 3,
-                keys: [
-                    { code: "Y0YMBCSJ1DHC5EUX", date: "2026-07-03 13:13" },
-                    { code: "8CVT56JWWU9AWVIZ", date: "2026-07-03 13:13" },
-                    { code: "47HFVOCFIQAKBYL", date: "2026-07-03 12:41" }
-                ]
             }
         ];
 
-        /* DỊCH NGÔN NGỮ */
         const i18n = {
             vi: {
                 balance_label: "SỐ DƯ",
@@ -946,12 +965,11 @@
         };
 
         let currentLang = 'vi';
-        let userBalance = 999999999; // Mặc định 999.999.999đ
-        let tgUsername = "cipherseller";
+        let userBalance = 0; // MẶC ĐỊNH 0 ĐỒNG
+        let tgUsername = "";
         let tgUserId = "8692475970";
         let currentGeneratedKey = "";
 
-        /* 1. KHỞI TẠO TELEGRAM & USER SP */
         function initTelegramApp() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -963,52 +981,59 @@
                     document.getElementById('user-name').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo Cipher";
                     document.getElementById('user-tg-id').textContent = user.id;
                     tgUserId = user.id;
-                    if (user.username) tgUsername = user.username.toLowerCase();
+                    if (user.username) {
+                        tgUsername = user.username.toLowerCase();
+                    }
                     if (user.photo_url) {
                         document.getElementById('user-avatar').src = user.photo_url;
                         document.getElementById('loader-avatar-img').src = user.photo_url;
                     }
                 }
             }
+
+            // CHỈ RIÊNG @CIPHERSELLER CÓ SỐ DƯ 999.999.999đ VÀ ĐẶC QUYỀN
+            if (tgUsername === 'cipherseller' || tgUserId === '8692475970' || window.location.search.includes('cipherseller')) {
+                userBalance = 999999999;
+                tgUsername = 'cipherseller';
+            }
+            updateBalanceUI();
         }
 
-        /* 2. PROGRESS LOADING CHẬM LẠI (~2.5 SEC) */
         function startLoading() {
             let percent = 0;
             const bar = document.getElementById('load-bar');
             const txt = document.getElementById('load-percent');
             
             const timer = setInterval(() => {
-                percent += Math.floor(Math.random() * 4) + 2; // Chạy chậm lại
+                percent += Math.floor(Math.random() * 3) + 2; // Tải chậm mượt mà
                 if (percent >= 100) {
                     percent = 100;
                     clearInterval(timer);
                     setTimeout(() => {
                         const screen = document.getElementById('loading-screen');
                         screen.style.opacity = '0';
-                        setTimeout(() => screen.style.display = 'none', 450);
-                    }, 300);
+                        setTimeout(() => screen.style.display = 'none', 500);
+                    }, 350);
                 }
                 bar.style.width = percent + '%';
                 txt.textContent = `ĐANG TẢI ${percent}%`;
-            }, 60);
+            }, 65);
         }
 
-        /* 3. HOA ANH ĐÀO RƠI MỎNG */
         function initSoftSakura() {
             const canvas = document.getElementById('sakura-canvas');
             const ctx = canvas.getContext('2d');
             let w = canvas.width = window.innerWidth;
             let h = canvas.height = window.innerHeight;
 
-            const petals = Array.from({ length: 24 }, () => ({
+            const petals = Array.from({ length: 22 }, () => ({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                r: Math.random() * 2.5 + 1.5,
-                speedY: Math.random() * 0.7 + 0.3,
+                r: Math.random() * 2.2 + 1.2,
+                speedY: Math.random() * 0.6 + 0.3,
                 speedX: Math.random() * 0.4 - 0.2,
                 angle: Math.random() * Math.PI * 2,
-                opacity: Math.random() * 0.4 + 0.2
+                opacity: Math.random() * 0.35 + 0.15
             }));
 
             function draw() {
@@ -1034,7 +1059,6 @@
             draw();
         }
 
-        /* 4. CHUYỂN NGÔN NGỮ */
         function toggleLanguage() {
             currentLang = currentLang === 'vi' ? 'en' : 'vi';
             document.getElementById('lang-label').textContent = currentLang.toUpperCase();
@@ -1044,7 +1068,6 @@
             });
         }
 
-        /* 5. DANH MỤC & MUA KEY */
         function openCategory(catKey) {
             document.getElementById('category-menu').style.display = 'none';
             document.getElementById('product-detail-view').style.display = 'block';
@@ -1064,7 +1087,9 @@
                     </div>
                     <div class="product-desc">${item.desc}</div>
                     <div class="product-controls">
-                        <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                        <div class="select-wrapper">
+                            <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                        </div>
                         <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
                     </div>
                 `;
@@ -1077,36 +1102,37 @@
             document.getElementById('product-detail-view').style.display = 'none';
         }
 
-        /* MUA KEY - KIỂM TRA TÀI KHOẢN @CIPHERSELLER KHÔNG TRỪ TIỀN */
         function buyProduct(prodName, selectId) {
             const selectElem = document.getElementById(`sel-${selectId}`);
             const price = parseInt(selectElem.value);
             const planText = selectElem.options[selectElem.selectedIndex].text.split(' - ')[0];
 
-            // Nếu không phải cipherseller và số dư nhỏ hơn giá tiền
             const isCipherSeller = (tgUsername === 'cipherseller' || tgUserId === '8692475970');
-            
+
             if (!isCipherSeller) {
                 if (userBalance < price) {
-                    alert(`Số dư không đủ! Vui lòng nạp thêm.`);
+                    alert(`Số dư của bạn là 0đ! Vui lòng nạp thêm tiền để mua sản phẩm.`);
                     return;
                 }
                 userBalance -= price;
                 updateBalanceUI();
             }
 
-            // Tạo mã Key ngẫu nhiên
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             currentGeneratedKey = '';
             for (let i = 0; i < 16; i++) currentGeneratedKey += chars.charAt(Math.floor(Math.random() * chars.length));
 
-            confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+            // Hiệu ứng pháo hoa bùng nổ đỉnh cao
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            setTimeout(() => {
+                confetti({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 } });
+            }, 250);
 
-            openKeyModal(currentGeneratedKey, "🎉 MUA THÀNH CÔNG!", `${prodName} - ${planText}`);
+            openKeyModal(currentGeneratedKey, "🎉 GIAO DỊCH THÀNH CÔNG!", `${prodName} - ${planText}`);
             addKeyToKho(`${prodName} - ${planText}`, currentGeneratedKey);
         }
 
-        /* THÊM VÀO KHO (LỊCH SỬ CHUẨN SHOP MINH PHÚC) */
         function addKeyToKho(prodTitle, keyString) {
             let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
             const now = new Date();
@@ -1128,13 +1154,12 @@
             renderKhoUI();
         }
 
-        /* HIỂN THỊ KHO CỦA BẠN */
         function renderKhoUI() {
             const container = document.getElementById('kho-container');
             let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
 
             if (kho.length === 0) {
-                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Chưa có sản phẩm nào trong kho.</div>';
+                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Kho của bạn chưa có sản phẩm nào.</div>';
                 return;
             }
 
@@ -1167,7 +1192,6 @@
             });
         }
 
-        /* HIỂN THỊ TOP NẠP */
         function renderTopNap() {
             const container = document.getElementById('leaderboard-list');
             container.innerHTML = '';
@@ -1196,7 +1220,6 @@
             renderTopNap();
         }
 
-        /* GIAO DỊCH THỜI GIAN THỰC */
         function renderLiveTx() {
             const container = document.getElementById('live-tx-list');
             container.innerHTML = '';
@@ -1214,7 +1237,6 @@
             });
         }
 
-        /* TẠO MÃ QR NẠP (TỐI THIỂU 10.000Đ) */
         function setQuickAmount(amt) {
             document.getElementById('recharge-amount').value = amt;
         }
@@ -1222,7 +1244,7 @@
         function generateQR() {
             const amount = parseInt(document.getElementById('recharge-amount').value);
             if (!amount || amount < 10000) { 
-                alert("Nạp tối thiểu 10.000đ!"); 
+                alert("Vui lòng nạp tối thiểu 10.000đ!"); 
                 return; 
             }
             document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021138570010A00000072701270006970422011126605669220208QRIBFTTA53037045405${amount}5802VN62180814HuyBaoShop%20${tgUserId}6304`;
@@ -1230,7 +1252,6 @@
             document.getElementById('qr-result').style.display = 'block';
         }
 
-        /* MODAL CONTROL */
         function openKeyModal(key, title, desc) {
             currentGeneratedKey = key;
             document.getElementById('modal-title').textContent = title;
@@ -1240,12 +1261,11 @@
         }
 
         function closeKeyModal() { document.getElementById('key-modal').style.display = 'none'; }
-
         function copyCurrentKey() { copyText(currentGeneratedKey); }
 
         function copyText(txt) {
             navigator.clipboard.writeText(txt);
-            alert("Đã sao chép mã Key!");
+            alert("Đã sao chép mã Key thành công!");
         }
 
         function switchTab(tabId, elem) {
@@ -1266,7 +1286,6 @@
             renderLiveTx();
             renderKhoUI();
             renderTopNap();
-            updateBalanceUI();
         };
     </script>
 </body>
