@@ -8,22 +8,23 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
-            --bg-dark: #0b0713;
-            --card-bg: rgba(23, 14, 38, 0.75);
-            --card-inner: rgba(35, 21, 56, 0.6);
+            --bg-dark: #080511;
+            --card-bg: rgba(20, 13, 34, 0.85);
+            --card-inner: rgba(30, 20, 50, 0.7);
             --pink-main: #ff2a8d;
-            --pink-glow: rgba(255, 42, 141, 0.4);
+            --pink-glow: rgba(255, 42, 141, 0.35);
             --purple-neon: #a855f7;
             --green-glow: #10b981;
+            --green-bg: rgba(16, 185, 129, 0.15);
             --cyan-neon: #06b6d4;
             --text-main: #ffffff;
-            --text-sub: #a192b8;
+            --text-sub: #9e8fb8;
             --border-light: rgba(255, 255, 255, 0.08);
             --border-pink: rgba(255, 42, 141, 0.3);
             --radius-xl: 22px;
@@ -48,7 +49,7 @@
             position: relative;
         }
 
-        /* ===== 1. CANVAS HOANH ĐÀO RƠI NHẸ & MỎNG ===== */
+        /* 1. HOANH ĐÀO RƠI NHẸ & MỎNG */
         #sakura-canvas {
             position: fixed;
             top: 0;
@@ -59,11 +60,11 @@
             z-index: 1;
         }
 
-        /* ===== 2. MÀN HÌNH LOADING CÓ THANH CHẠY ===== */
+        /* 2. LOADING SCREEN (CHẬM & MƯỢT HƠN) */
         #loading-screen {
             position: fixed;
             inset: 0;
-            background: #07040d;
+            background: #05030a;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -74,8 +75,8 @@
 
         .loader-box {
             position: relative;
-            width: 85px;
-            height: 85px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,28 +89,29 @@
             border: 3px solid rgba(255, 42, 141, 0.15);
             border-top-color: var(--pink-main);
             border-right-color: var(--purple-neon);
-            animation: spin 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
         }
 
         .loader-logo {
             position: absolute;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid var(--pink-main);
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .progress-wrapper {
-            width: 220px;
+            width: 230px;
             height: 8px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             margin-top: 25px;
             overflow: hidden;
-            border: 1px solid rgba(255, 42, 141, 0.2);
-            box-shadow: 0 0 12px var(--pink-glow);
+            border: 1px solid rgba(255, 42, 141, 0.25);
+            box-shadow: 0 0 14px var(--pink-glow);
         }
 
         .progress-bar {
@@ -117,23 +119,23 @@
             width: 0%;
             background: linear-gradient(90deg, var(--pink-main), var(--purple-neon));
             border-radius: 20px;
-            transition: width 0.1s linear;
+            transition: width 0.12s linear;
         }
 
         .loading-text {
-            margin-top: 10px;
+            margin-top: 12px;
             font-size: 12px;
             color: var(--text-sub);
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
         }
 
-        /* ===== 3. HEADER ĐỒNG BỘ TELEGRAM ===== */
+        /* 3. HEADER TELEGRAM */
         .header {
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(11, 7, 19, 0.85);
+            background: rgba(8, 5, 17, 0.88);
             backdrop-filter: blur(16px);
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-light);
@@ -148,10 +150,6 @@
             gap: 12px;
         }
 
-        .avatar-box {
-            position: relative;
-        }
-
         .avatar-box img {
             width: 46px;
             height: 46px;
@@ -162,7 +160,7 @@
         }
 
         .user-info .username {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 14px;
             color: #fff;
             display: flex;
@@ -194,26 +192,25 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: 0.2s;
         }
 
         .wallet-badge {
-            background: linear-gradient(135deg, rgba(255, 42, 141, 0.2), rgba(168, 85, 247, 0.2));
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.18), rgba(168, 85, 247, 0.18));
             border: 1px solid var(--border-pink);
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 20px;
             text-align: right;
             box-shadow: 0 0 10px var(--pink-glow);
         }
 
         .wallet-badge .amount {
-            color: #fff;
+            color: var(--green-glow);
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
             font-family: 'Orbitron', sans-serif;
         }
 
-        /* ===== CONTAINER & TABS ===== */
+        /* CONTAINER CHÍNH */
         .container {
             padding: 16px;
             position: relative;
@@ -228,7 +225,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* ===== 4. GIẢM TẢI - 3 MỤC CARD THU GỌN BO TRÒN ===== */
+        /* CATEGORY CARDS BO TRÒN */
         .category-grid {
             display: flex;
             flex-direction: column;
@@ -244,15 +241,11 @@
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transition: all 0.2s;
             backdrop-filter: blur(10px);
         }
 
-        .category-card:active {
-            transform: scale(0.97);
-            border-color: var(--pink-main);
-        }
+        .category-card:active { transform: scale(0.97); }
 
         .category-left {
             display: flex;
@@ -261,9 +254,9 @@
         }
 
         .category-icon {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, rgba(255, 42, 141, 0.2), rgba(168, 85, 247, 0.3));
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.25), rgba(168, 85, 247, 0.35));
             border: 1px solid var(--pink-main);
             border-radius: 50%;
             display: flex;
@@ -271,22 +264,13 @@
             justify-content: center;
             font-size: 22px;
             color: var(--pink-main);
-            box-shadow: 0 0 15px var(--pink-glow);
+            box-shadow: 0 0 12px var(--pink-glow);
         }
 
-        .category-title {
-            font-weight: 800;
-            font-size: 15px;
-            color: #fff;
-        }
+        .category-title { font-weight: 800; font-size: 14px; color: #fff; }
+        .category-sub { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
 
-        .category-sub {
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-top: 3px;
-        }
-
-        /* ===== DANH SÁCH SẢN PHẨM KHU VỰC CHI TIẾT ===== */
+        /* BUTTON QUAY LẠI & SẢN PHẨM */
         .btn-back {
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
@@ -300,7 +284,6 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: 0.2s;
         }
 
         .product-card {
@@ -310,12 +293,6 @@
             margin-bottom: 14px;
             padding: 16px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: 0.2s;
-        }
-
-        .product-card:hover {
-            border-color: var(--border-pink);
         }
 
         .product-header {
@@ -337,18 +314,8 @@
             font-size: 18px;
         }
 
-        .product-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #fff;
-        }
-
-        .product-desc {
-            font-size: 12px;
-            color: var(--text-sub);
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
+        .product-title { font-weight: 700; font-size: 15px; color: #fff; }
+        .product-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 12px; line-height: 1.4; }
 
         .product-controls {
             display: flex;
@@ -358,7 +325,7 @@
 
         select.plan-select {
             flex: 1;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-md);
             color: #fff;
@@ -380,15 +347,15 @@
             transition: 0.2s;
         }
 
-        .btn-buy:active { transform: scale(0.94); }
+        .btn-buy:active { transform: scale(0.95); }
 
-        /* ===== 5. LỊCH SỬ GIAO DỊCH VỪA NẠP / MUA (20-40 KHÁCH HÀNG) ===== */
+        /* GIAO DỊCH GẦN ĐÂY THỜI GIAN THỰC (20+ NGƯỜI) */
         .live-tx-box {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
-            padding: 14px;
-            margin-top: 20px;
+            padding: 16px;
+            margin-top: 18px;
         }
 
         .live-tx-header {
@@ -402,7 +369,7 @@
         }
 
         .tx-scroll-container {
-            max-height: 250px;
+            max-height: 260px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -429,8 +396,111 @@
         .tx-amount.green { color: var(--green-glow); }
         .tx-amount.pink { color: var(--pink-main); }
 
-        /* ===== 6. LỊCH SỬ MUA KEY NHỎ GỌN ĐẸP MẮT ===== */
-        .history-card-mini {
+        /* 4. MẪU LỊCH SỬ MUA (KHO CỦA BẠN - CHUẨN MINH PHÚC STORE) */
+        .kho-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .kho-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-light);
+        }
+
+        .kho-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .kho-count-badge {
+            background: var(--green-glow);
+            color: #000;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .key-row-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .key-code-text {
+            color: var(--green-glow);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .key-date-text {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 3px;
+        }
+
+        .btn-copy-icon {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-light);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy-icon:active { background: var(--pink-main); }
+
+        /* 5. MÀN TOP NẠP (THÁNG / TUẦN / TẤT CẢ - TỪ 3M-7M) */
+        .top-filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .top-filter-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            background: var(--card-inner);
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+        }
+
+        .top-filter-btn.active {
+            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 0 10px var(--pink-glow);
+        }
+
+        .leader-item {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
@@ -441,14 +511,72 @@
             justify-content: space-between;
         }
 
-        .history-card-mini:hover { border-color: var(--border-pink); }
+        .rank-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            font-family: 'Orbitron';
+        }
 
-        /* ===== 7. MODAL MUA THÀNH CÔNG VỚI HIỆU ỨNG MƯỢT ===== */
+        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 10px rgba(234, 179, 8, 0.5); }
+        .rank-2 { background: #94a3b8; color: #000; }
+        .rank-3 { background: #b45309; color: #fff; }
+        .rank-other { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .leader-user {
+            flex: 1;
+            margin-left: 12px;
+        }
+
+        .leader-name { font-weight: 700; font-size: 13px; color: #fff; }
+        .leader-sub { font-size: 10px; color: var(--text-sub); }
+        .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 12px; }
+
+        /* NẠP TIỀN AUTO & CHỌN NHANH */
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .btn-quick {
+            background: var(--card-inner);
+            border: 1px solid var(--border-light);
+            color: #fff;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-quick:active { border-color: var(--pink-main); background: rgba(255, 42, 141, 0.2); }
+
+        .input-round {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        /* MODAL POPUP MUA THÀNH CÔNG */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.82);
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
@@ -457,7 +585,7 @@
         }
 
         .modal-body {
-            background: linear-gradient(160deg, #1d0f30, #0c0617);
+            background: linear-gradient(160deg, #1b0c2e, #090412);
             border: 1px solid var(--pink-main);
             border-radius: 28px;
             padding: 24px;
@@ -465,8 +593,7 @@
             max-width: 350px;
             text-align: center;
             box-shadow: 0 0 35px var(--pink-glow);
-            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
+            animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes modalPop {
@@ -475,17 +602,17 @@
         }
 
         .modal-icon-glow {
-            width: 65px;
-            height: 65px;
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 14px auto;
-            font-size: 30px;
+            margin: 0 auto 12px auto;
+            font-size: 28px;
             color: #fff;
-            box-shadow: 0 0 25px var(--pink-glow);
+            box-shadow: 0 0 20px var(--pink-glow);
         }
 
         .key-led-box {
@@ -506,37 +633,14 @@
             font-size: 13px;
         }
 
-        /* ===== FORM ĐỒNG BỘ GAME & GỬI TÀI KHOẢN ===== */
-        .sync-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: 16px;
-            margin-top: 16px;
-        }
-
-        .input-round {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            margin-bottom: 10px;
-        }
-
-        .input-round:focus { border-color: var(--pink-main); }
-
-        /* FOOTER NAVBAR BO TRÒN */
+        /* NAVBAR FOOTER */
         .navbar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             height: 68px;
-            background: rgba(11, 7, 19, 0.92);
+            background: rgba(8, 5, 17, 0.94);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
@@ -584,7 +688,7 @@
             </div>
             <div class="user-info">
                 <div class="username">
-                    <span id="user-name">Huy Bảo User</span> 
+                    <span id="user-name">Huy Bảo Cipher</span> 
                     <i class="fa-solid fa-circle-check" style="color:var(--pink-main); font-size:12px;"></i>
                 </div>
                 <div class="telegram-id">ID: <span id="user-tg-id">8692475970</span></div>
@@ -594,7 +698,7 @@
             <button class="lang-btn" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> <span id="lang-label">VI</span></button>
             <div class="wallet-badge">
                 <div style="font-size:9px; color:var(--text-sub);" data-i18n="balance_label">SỐ DƯ</div>
-                <div class="amount" id="balance-display">0đ</div>
+                <div class="amount" id="balance-display">999.999.999đ</div>
             </div>
         </div>
     </div>
@@ -654,38 +758,48 @@
         </div>
 
         <div id="tab-recharge" class="tab-content">
-            <div class="product-card" style="text-align:center;">
-                <div style="font-size:13px; color:var(--text-sub); margin-bottom:10px;" data-i18n="recharge_prompt">Nhập số tiền bạn muốn nạp (Tối thiểu 20.000đ):</div>
-                <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="text-align:center; font-family:'Orbitron'; font-weight:bold;">
+            <div class="product-card">
+                <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MÚON NẠP:</div>
+                
+                <div class="quick-amounts">
+                    <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
+                </div>
+
+                <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
+                <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
                 
                 <button class="btn-buy" style="width:100%; padding:12px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
 
-                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-pink);">
-                    <div style="font-weight:bold; color:var(--pink-main); font-size:13px; margin-bottom:8px;">QUÉT MÃ QR NẠP TỰ ĐỘNG 24/7</div>
+                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-pink); text-align:center;">
+                    <div style="font-weight:bold; color:var(--pink-main); font-size:13px; margin-bottom:10px;">CỔNG THANH TOÁN QR AUTO 24/7</div>
                     <img id="qr-img" src="" alt="QR" style="width:180px; height:180px; border-radius:12px; border:2px solid #fff;">
-                    <div style="margin-top:10px; font-size:12px; text-align:left; line-height:1.6;">
-                        <div>Ngân Hàng: <strong>MB BANK</strong></div>
+                    <div style="margin-top:12px; font-size:12px; text-align:left; line-height:1.7;">
+                        <div>Ngân Hàng: <strong>MB BANK (Quân Đội)</strong></div>
                         <div>Số Tài Khoản: <strong>2660566922</strong></div>
-                        <div>Chủ TK: <strong>LE HUY BAO</strong></div>
-                        <div>Nội dung: <strong id="qr-memo" style="color:var(--cyan-neon);">...</strong></div>
+                        <div>Chủ Tài Khoản: <strong>LE HUY BAO</strong></div>
+                        <div>Nội dung CK: <strong id="qr-memo" style="color:var(--cyan-neon);">...</strong></div>
                     </div>
                 </div>
-            </div>
-
-            <div class="sync-box">
-                <div style="font-weight:700; color:#fff; font-size:13px; margin-bottom:10px;"><i class="fa-solid fa-arrows-rotate" style="color:var(--pink-main);"></i> ĐỒNG BỘ GÓI NẠP TÀI KHOẢN GAME</div>
-                <input type="text" class="input-round" placeholder="Tài khoản Game (Email / Số điện thoại)">
-                <input type="password" class="input-round" placeholder="Mật khẩu đăng nhập">
-                <button class="btn-buy" style="width:100%;" onclick="alert('Đã gửi yêu cầu đồng bộ!')">XÁC NHẬN ĐỒNG BỘ</button>
             </div>
         </div>
 
         <div id="tab-leaderboard" class="tab-content">
+            <div class="top-filter-bar">
+                <button class="top-filter-btn active" onclick="switchTopTab('month', this)">THÁNG NÀY</button>
+                <button class="top-filter-btn" onclick="switchTopTab('week', this)">TUẦN NÀY</button>
+                <button class="top-filter-btn" onclick="switchTopTab('all', this)">TẤT CẢ</button>
+            </div>
             <div id="leaderboard-list"></div>
         </div>
 
         <div id="tab-history" class="tab-content">
-            <div id="history-list"></div>
+            <div style="font-weight:800; font-size:14px; color:#fff; margin-bottom:12px;"><i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
+            <div id="kho-container"></div>
         </div>
 
     </div>
@@ -721,13 +835,13 @@
             <span data-i18n="nav_top">Top Nạp</span>
         </div>
         <div class="nav-item" onclick="switchTab('history', this)">
-            <i class="fa-solid fa-clock-history"></i>
-            <span data-i18n="nav_history">Lịch Sử</span>
+            <i class="fa-solid fa-user"></i>
+            <span data-i18n="nav_history">Cá Nhân</span>
         </div>
     </div>
 
     <script>
-        /* ===== DATA SẢN PHẨM ===== */
+        /* DATA SẢN PHẨM */
         const productsData = {
             ios: [
                 { name: "Migul Pro", desc: "Kèm chứng chỉ ESIGN 1 năm cao cấp", icon: "fa-apple", plans: [{t: "1 Tháng", p: 450000}, {t: "7 Ngày", p: 215000}] },
@@ -748,31 +862,56 @@
             ]
         };
 
-        /* GIẢ LẬP 25 GIAO DỊCH LỊCH SỬ THỜI GIAN THỰC */
+        /* DANH SÁCH GIAO DỊCH GẦN ĐÂY THỜI GIAN THỰC */
         const sampleLiveTx = [
-            { u: "Trần Trúc", a: "nạp 500.000đ", t: "vừa xong", type: "green" },
-            { u: "Vũ Tạp Hóa IOS", a: "mua Liên Quân chấp tố 30Days", t: "1 phút trước", type: "pink" },
-            { u: "Zang Nam", a: "nạp 150.000đ", t: "2 phút trước", type: "green" },
-            { u: "lad", a: "mua Migul Pro Vietnam - 30days", t: "3 phút trước", type: "pink" },
-            { u: "Kagero", a: "nạp 10.000đ", t: "5 phút trước", type: "green" },
-            { u: "Bao An", a: "mua Migul Basic Vietnam - 1day", t: "6 phút trước", type: "pink" },
-            { u: "Hoc NgThe", a: "nạp 10.000đ", t: "8 phút trước", type: "green" },
-            { u: "O'Cloud VIP", a: "nạp 175.000đ", t: "10 phút trước", type: "green" },
-            { u: "Nguyễn Phương", a: "nạp 140.000đ", t: "12 phút trước", type: "green" },
-            { u: "Tâm Hoàng", a: "nạp 170.000đ", t: "15 phút trước", type: "green" },
-            { u: "Lâm Xung", a: "nạp 350.000đ", t: "18 phút trước", type: "green" },
-            { u: "ARTEMIS", a: "mua SUDOHAX TIPA - 30 ngày", t: "20 phút trước", type: "pink" },
-            { u: "Huy Wang", a: "nạp 20.000đ", t: "22 phút trước", type: "green" },
-            { u: "X TWEAK", a: "mua Migul Pro - 1 Giờ", t: "25 phút trước", type: "pink" },
-            { u: "HiỂN mua", a: "AoV Menu Hack - 1 Giờ", t: "28 phút trước", type: "pink" },
-            { u: "Đức Kiên", a: "nạp 200.000đ", t: "30 phút trước", type: "green" },
-            { u: "Vanthienios", a: "mua Fluorite iOS 30Days", t: "32 phút trước", type: "pink" },
-            { u: "K3V Nn", a: "nạp 100.000đ", t: "35 phút trước", type: "green" },
-            { u: "dat nguyen", a: "mua Proxy ADR-iOS 1 tháng", t: "40 phút trước", type: "pink" },
-            { u: "QIOS", a: "nạp 500.000đ", t: "42 phút trước", type: "green" }
+            { u: "Trần Trúc", a: "nạp 500.000đ", t: "00:40", type: "green" },
+            { u: "Zang Nam", a: "nạp 150.000đ", t: "00:23", type: "green" },
+            { u: "Kagero", a: "nạp 10.000đ", t: "23:43", type: "green" },
+            { u: "Hoc NgThe", a: "nạp 10.000đ", t: "23:36", type: "green" },
+            { u: "Bao An", a: "nạp 50.000đ", t: "23:35", type: "green" },
+            { u: "Vũ Tạp Hóa IOS", a: "mua Liên Quân chấp tố - Aov Hack 30Days", t: "00:55", type: "pink" },
+            { u: "lad", a: "mua Migul Pro VietNam - Migul Pro 30days", t: "00:30", type: "pink" },
+            { u: "Zang Nam", a: "mua Migul Basic VietNam - Migul basic 30days", t: "00:25", type: "pink" },
+            { u: "Bao An", a: "mua Migul Basic VietNam - Migul basic 1day", t: "00:04", type: "pink" },
+            { u: "Vũ Tạp Hóa IOS", a: "mua Proxy FFM or FFTH - PROXY FF 7days", t: "00:00", type: "pink" },
+            { u: "Lâm Xung", a: "nạp 350.000đ", t: "22:15", type: "green" },
+            { u: "Huy Wang", a: "nạp 20.000đ", t: "22:00", type: "green" },
+            { u: "ARTEMIS", a: "mua SUDOHAX TIPA - 30 ngày", t: "21:45", type: "pink" },
+            { u: "Nguyễn Phương", a: "mua AoV Menu Hack - 1 Giờ", t: "21:10", type: "pink" }
         ];
 
-        /* NGÔN NGỮ (VI / EN) */
+        /* DATA TOP NẠP (HẠN MỨC 3M - 7.5M VND) */
+        const topData = [
+            { r: 1, u: "Lê Hoàng Phong", id: "@phong_vip", val: "7.500.000đ" },
+            { r: 2, u: "Nguyễn Công Thành Diệu", id: "@dieu_hax", val: "6.200.000đ" },
+            { r: 3, u: "Vũ Đình Trọng", id: "@trong_freefire", val: "5.150.000đ" },
+            { r: 4, u: "Đức Kiên", id: "@kienducc", val: "4.435.000đ" },
+            { r: 5, u: "Vanthienios", id: "@vanthienios", val: "4.115.000đ" },
+            { r: 6, u: "Đoan Giàu", id: "@DVgiau", val: "4.058.000đ" },
+            { r: 7, u: "K3V Nn", id: "@whitebanfile11", val: "3.930.000đ" },
+            { r: 8, u: "dat nguyen", id: "@ddatcheat", val: "3.430.000đ" },
+            { r: 9, u: "QIOS", id: "@nquangios", val: "3.000.000đ" }
+        ];
+
+        /* KHO MẶC ĐỊNH MẪU ĐỂ KHÔNG BỊ TRỐNG (MẪU MINH PHÚC STORE) */
+        const defaultKhoItems = [
+            {
+                prodTitle: "Migul Lite - Vietnam Version - 7 Ngày",
+                count: 1,
+                keys: [{ code: "RTPIK1ALSW7VQ4LC", date: "2026-07-04 23:21" }]
+            },
+            {
+                prodTitle: "Migul Pro - Vietnam Version - 1 Giờ",
+                count: 3,
+                keys: [
+                    { code: "Y0YMBCSJ1DHC5EUX", date: "2026-07-03 13:13" },
+                    { code: "8CVT56JWWU9AWVIZ", date: "2026-07-03 13:13" },
+                    { code: "47HFVOCFIQAKBYL", date: "2026-07-03 12:41" }
+                ]
+            }
+        ];
+
+        /* DỊCH NGÔN NGỮ */
         const i18n = {
             vi: {
                 balance_label: "SỐ DƯ",
@@ -781,13 +920,13 @@
                 cat_aim_title: "MỤC AIM (ADR & IOS)",
                 recent_tx_header: "GIAO DỊCH MỚI NHẤT SHOP",
                 btn_back: "QUAY LẠI MỤC CHÍNH",
-                recharge_prompt: "Nhập số tiền bạn muốn nạp (Tối thiểu 20.000đ):",
+                recharge_prompt: "CHỌN NHANH SỐ TIỀN MÚON NẠP:",
                 btn_create_qr: "TẠO MÃ QR NẠP TIỀN",
                 btn_close: "ĐÓNG",
                 nav_shop: "Cửa Hàng",
                 nav_recharge: "Nạp Tiền",
                 nav_top: "Top Nạp",
-                nav_history: "Lịch Sử"
+                nav_history: "Cá Nhân"
             },
             en: {
                 balance_label: "BALANCE",
@@ -796,22 +935,23 @@
                 cat_aim_title: "AIM CATEGORY (ADR & IOS)",
                 recent_tx_header: "RECENT TRANSACTIONS",
                 btn_back: "BACK TO MAIN MENU",
-                recharge_prompt: "Enter top-up amount (Min 20,000 VND):",
+                recharge_prompt: "QUICK SELECT AMOUNT TO TOP UP:",
                 btn_create_qr: "GENERATE PAYMENT QR",
                 btn_close: "CLOSE",
                 nav_shop: "Store",
                 nav_recharge: "Top Up",
                 nav_top: "Ranking",
-                nav_history: "History"
+                nav_history: "Account"
             }
         };
 
         let currentLang = 'vi';
-        let userBalance = 996109999;
+        let userBalance = 999999999; // Mặc định 999.999.999đ
+        let tgUsername = "cipherseller";
         let tgUserId = "8692475970";
         let currentGeneratedKey = "";
 
-        /* 1. KHỞI TẠO ĐỒNG BỘ TELEGRAM WEBAPP */
+        /* 1. KHỞI TẠO TELEGRAM & USER SP */
         function initTelegramApp() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -820,9 +960,10 @@
 
                 const user = tg.initDataUnsafe?.user;
                 if (user) {
-                    document.getElementById('user-name').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo User";
+                    document.getElementById('user-name').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo Cipher";
                     document.getElementById('user-tg-id').textContent = user.id;
                     tgUserId = user.id;
+                    if (user.username) tgUsername = user.username.toLowerCase();
                     if (user.photo_url) {
                         document.getElementById('user-avatar').src = user.photo_url;
                         document.getElementById('loader-avatar-img').src = user.photo_url;
@@ -831,40 +972,40 @@
             }
         }
 
-        /* 2. LOADING PROGRESS BAR */
+        /* 2. PROGRESS LOADING CHẬM LẠI (~2.5 SEC) */
         function startLoading() {
             let percent = 0;
             const bar = document.getElementById('load-bar');
             const txt = document.getElementById('load-percent');
             
             const timer = setInterval(() => {
-                percent += Math.floor(Math.random() * 15) + 5;
+                percent += Math.floor(Math.random() * 4) + 2; // Chạy chậm lại
                 if (percent >= 100) {
                     percent = 100;
                     clearInterval(timer);
                     setTimeout(() => {
                         const screen = document.getElementById('loading-screen');
                         screen.style.opacity = '0';
-                        setTimeout(() => screen.style.display = 'none', 400);
-                    }, 200);
+                        setTimeout(() => screen.style.display = 'none', 450);
+                    }, 300);
                 }
                 bar.style.width = percent + '%';
                 txt.textContent = `ĐANG TẢI ${percent}%`;
-            }, 80);
+            }, 60);
         }
 
-        /* 3. CANVAS HOA ANH ĐÀO RƠI NHẸ & MỎNG */
+        /* 3. HOA ANH ĐÀO RƠI MỎNG */
         function initSoftSakura() {
             const canvas = document.getElementById('sakura-canvas');
             const ctx = canvas.getContext('2d');
             let w = canvas.width = window.innerWidth;
             let h = canvas.height = window.innerHeight;
 
-            const petals = Array.from({ length: 22 }, () => ({
+            const petals = Array.from({ length: 24 }, () => ({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                r: Math.random() * 3 + 2, // Kích thước nhỏ mỏng
-                speedY: Math.random() * 0.8 + 0.3,
+                r: Math.random() * 2.5 + 1.5,
+                speedY: Math.random() * 0.7 + 0.3,
                 speedX: Math.random() * 0.4 - 0.2,
                 angle: Math.random() * Math.PI * 2,
                 opacity: Math.random() * 0.4 + 0.2
@@ -893,7 +1034,7 @@
             draw();
         }
 
-        /* 4. CHUYỂN ĐỔI NGÔN NGỮ */
+        /* 4. CHUYỂN NGÔN NGỮ */
         function toggleLanguage() {
             currentLang = currentLang === 'vi' ? 'en' : 'vi';
             document.getElementById('lang-label').textContent = currentLang.toUpperCase();
@@ -903,7 +1044,7 @@
             });
         }
 
-        /* 5. CỬA HÀNG & MUA HÀNG */
+        /* 5. DANH MỤC & MUA KEY */
         function openCategory(catKey) {
             document.getElementById('category-menu').style.display = 'none';
             document.getElementById('product-detail-view').style.display = 'block';
@@ -936,46 +1077,126 @@
             document.getElementById('product-detail-view').style.display = 'none';
         }
 
+        /* MUA KEY - KIỂM TRA TÀI KHOẢN @CIPHERSELLER KHÔNG TRỪ TIỀN */
         function buyProduct(prodName, selectId) {
             const selectElem = document.getElementById(`sel-${selectId}`);
             const price = parseInt(selectElem.value);
             const planText = selectElem.options[selectElem.selectedIndex].text.split(' - ')[0];
 
-            if (userBalance < price) {
-                alert(`Số dư không đủ! Cần nạp thêm ${(price - userBalance).toLocaleString('vi-VN')}đ.`);
+            // Nếu không phải cipherseller và số dư nhỏ hơn giá tiền
+            const isCipherSeller = (tgUsername === 'cipherseller' || tgUserId === '8692475970');
+            
+            if (!isCipherSeller) {
+                if (userBalance < price) {
+                    alert(`Số dư không đủ! Vui lòng nạp thêm.`);
+                    return;
+                }
+                userBalance -= price;
+                updateBalanceUI();
+            }
+
+            // Tạo mã Key ngẫu nhiên
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            currentGeneratedKey = '';
+            for (let i = 0; i < 16; i++) currentGeneratedKey += chars.charAt(Math.floor(Math.random() * chars.length));
+
+            confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+
+            openKeyModal(currentGeneratedKey, "🎉 MUA THÀNH CÔNG!", `${prodName} - ${planText}`);
+            addKeyToKho(`${prodName} - ${planText}`, currentGeneratedKey);
+        }
+
+        /* THÊM VÀO KHO (LỊCH SỬ CHUẨN SHOP MINH PHÚC) */
+        function addKeyToKho(prodTitle, keyString) {
+            let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours()}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+            let existingGroup = kho.find(x => x.prodTitle === prodTitle);
+            if (existingGroup) {
+                existingGroup.count += 1;
+                existingGroup.keys.unshift({ code: keyString, date: dateStr });
+            } else {
+                kho.unshift({
+                    prodTitle: prodTitle,
+                    count: 1,
+                    keys: [{ code: keyString, date: dateStr }]
+                });
+            }
+
+            localStorage.setItem('shop_kho_data', JSON.stringify(kho));
+            renderKhoUI();
+        }
+
+        /* HIỂN THỊ KHO CỦA BẠN */
+        function renderKhoUI() {
+            const container = document.getElementById('kho-container');
+            let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
+
+            if (kho.length === 0) {
+                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Chưa có sản phẩm nào trong kho.</div>';
                 return;
             }
 
-            userBalance -= price;
-            updateBalanceUI();
+            container.innerHTML = '';
+            kho.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'kho-card';
 
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            currentGeneratedKey = 'HB-';
-            for (let i = 0; i < 12; i++) currentGeneratedKey += chars.charAt(Math.floor(Math.random() * chars.length));
+                let keysHtml = item.keys.map(k => `
+                    <div class="key-row-item">
+                        <div>
+                            <div class="key-code-text">${k.code}</div>
+                            <div class="key-date-text">Ngày mua: ${k.date}</div>
+                        </div>
+                        <button class="btn-copy-icon" onclick="copyText('${k.code}')"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                `).join('');
 
-            // Bắn pháo hoa chúc mừng
-            confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-
-            openKeyModal(currentGeneratedKey, "🎉 MUA THÀNH CÔNG!", `${prodName} (${planText})`);
-            saveHistoryLog(`${prodName} (${planText})`, currentGeneratedKey, price);
+                card.innerHTML = `
+                    <div class="kho-header">
+                        <div class="kho-title">
+                            <i class="fa-solid fa-box" style="color:var(--green-glow);"></i>
+                            <span>${item.prodTitle}</span>
+                        </div>
+                        <div class="kho-count-badge">${item.count}</div>
+                    </div>
+                    <div>${keysHtml}</div>
+                `;
+                container.appendChild(card);
+            });
         }
 
-        function openKeyModal(key, title, desc) {
-            currentGeneratedKey = key;
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-desc').textContent = desc;
-            document.getElementById('key-display').textContent = key;
-            document.getElementById('key-modal').style.display = 'flex';
+        /* HIỂN THỊ TOP NẠP */
+        function renderTopNap() {
+            const container = document.getElementById('leaderboard-list');
+            container.innerHTML = '';
+
+            topData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'leader-item';
+
+                let rankClass = item.r === 1 ? 'rank-1' : (item.r === 2 ? 'rank-2' : (item.r === 3 ? 'rank-3' : 'rank-other'));
+
+                div.innerHTML = `
+                    <div class="rank-number ${rankClass}">${item.r}</div>
+                    <div class="leader-user">
+                        <div class="leader-name">${item.u}</div>
+                        <div class="leader-sub">${item.id}</div>
+                    </div>
+                    <div class="leader-val">${item.val}</div>
+                `;
+                container.appendChild(div);
+            });
         }
 
-        function closeKeyModal() { document.getElementById('key-modal').style.display = 'none'; }
-
-        function copyCurrentKey() {
-            navigator.clipboard.writeText(currentGeneratedKey);
-            alert("Đã sao chép Mã Key!");
+        function switchTopTab(type, elem) {
+            document.querySelectorAll('.top-filter-btn').forEach(b => b.classList.remove('active'));
+            elem.classList.add('active');
+            renderTopNap();
         }
 
-        /* 6. HIỂN THỊ GIAO DỊCH THỜI GIAN THỰC SHOP */
+        /* GIAO DỊCH THỜI GIAN THỰC */
         function renderLiveTx() {
             const container = document.getElementById('live-tx-list');
             container.innerHTML = '';
@@ -993,48 +1214,38 @@
             });
         }
 
-        /* UTILS */
-        function saveHistoryLog(name, key, price) {
-            const now = new Date();
-            const time = `${now.getHours()}:${now.getMinutes() < 10 ? '0' : ''}${now.getMinutes()}`;
-            let logs = JSON.parse(localStorage.getItem('shop_history_logs')) || [];
-            logs.unshift({ name, key, price, time });
-            localStorage.setItem('shop_history_logs', JSON.stringify(logs));
-            renderHistoryUI();
-        }
-
-        function renderHistoryUI() {
-            const container = document.getElementById('history-list');
-            let logs = JSON.parse(localStorage.getItem('shop_history_logs')) || [];
-            if (logs.length === 0) {
-                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Chưa có lịch sử mua hàng.</div>';
-                return;
-            }
-            container.innerHTML = '';
-            logs.forEach(log => {
-                const div = document.createElement('div');
-                div.className = 'history-card-mini';
-                div.onclick = () => openKeyModal(log.key, "🔑 CHI TIẾT MÃ KEY", log.name);
-                div.innerHTML = `
-                    <div>
-                        <div style="font-weight:700; color:#fff; font-size:13px;">${log.name}</div>
-                        <div style="font-size:10px; color:var(--text-sub);">${log.time}</div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="color:var(--pink-main); font-weight:bold; font-size:12px;">-${log.price.toLocaleString('vi-VN')}đ</div>
-                        <span style="font-size:10px; color:var(--cyan-neon);">Xem Key</span>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
+        /* TẠO MÃ QR NẠP (TỐI THIỂU 10.000Đ) */
+        function setQuickAmount(amt) {
+            document.getElementById('recharge-amount').value = amt;
         }
 
         function generateQR() {
             const amount = parseInt(document.getElementById('recharge-amount').value);
-            if (!amount || amount < 20000) { alert("Nạp tối thiểu 20.000đ!"); return; }
+            if (!amount || amount < 10000) { 
+                alert("Nạp tối thiểu 10.000đ!"); 
+                return; 
+            }
             document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021138570010A00000072701270006970422011126605669220208QRIBFTTA53037045405${amount}5802VN62180814HuyBaoShop%20${tgUserId}6304`;
-            document.getElementById('qr-memo').textContent = `HuyBaoShop ID ${tgUserId}`;
+            document.getElementById('qr-memo').textContent = `NAP${tgUserId}`;
             document.getElementById('qr-result').style.display = 'block';
+        }
+
+        /* MODAL CONTROL */
+        function openKeyModal(key, title, desc) {
+            currentGeneratedKey = key;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('key-display').textContent = key;
+            document.getElementById('key-modal').style.display = 'flex';
+        }
+
+        function closeKeyModal() { document.getElementById('key-modal').style.display = 'none'; }
+
+        function copyCurrentKey() { copyText(currentGeneratedKey); }
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt);
+            alert("Đã sao chép mã Key!");
         }
 
         function switchTab(tabId, elem) {
@@ -1053,7 +1264,8 @@
             startLoading();
             initSoftSakura();
             renderLiveTx();
-            renderHistoryUI();
+            renderKhoUI();
+            renderTopNap();
             updateBalanceUI();
         };
     </script>
