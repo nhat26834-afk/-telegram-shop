@@ -25,6 +25,7 @@
             --purple-neon: #9333ea;
             --green-glow: #10b981;
             --cyan-neon: #00f2fe;
+            --diamond-blue: #00d2ff;
             --text-main: #ffffff;
             --text-sub: #b3a1d1;
             --border-light: rgba(255, 255, 255, 0.08);
@@ -237,7 +238,7 @@
             position: relative;
             background: var(--card-bg);
             border-radius: var(--radius-xl);
-            padding: 1px; /* Chiều rộng viền siêu nhỏ gọn */
+            padding: 1px;
             overflow: hidden;
             margin-bottom: 16px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
@@ -303,6 +304,104 @@
 
         .category-title { font-weight: 800; font-size: 13.5px; color: #fff; }
         .category-sub { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
+
+        /* Diamond Top-Up UI Styling */
+        .diamond-icon-box {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.3), rgba(147, 51, 234, 0.3));
+            border: 1px solid var(--diamond-blue);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            color: var(--diamond-blue);
+        }
+
+        .diamond-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .diamond-item {
+            background: rgba(12, 6, 24, 0.8);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: var(--radius-lg);
+            padding: 12px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        .diamond-item.selected {
+            border-color: var(--diamond-blue);
+            background: rgba(0, 210, 255, 0.15);
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+        }
+
+        .diamond-amount {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .diamond-price {
+            font-size: 11px;
+            color: var(--green-glow);
+            font-weight: 700;
+            margin-top: 4px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Support Section Styling */
+        .support-card {
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.1), rgba(0, 242, 254, 0.08));
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl);
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .support-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-support-zalo {
+            flex: 1;
+            background: #0068ff;
+            color: #fff;
+            padding: 10px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(0, 104, 255, 0.3);
+        }
+
+        .btn-support-tg {
+            flex: 1;
+            background: #229ed9;
+            color: #fff;
+            padding: 10px;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(34, 158, 217, 0.3);
+        }
 
         /* Buttons & Controls */
         .btn-back {
@@ -492,7 +591,7 @@
             font-size: 11px;
         }
 
-        /* Leaderboard UI - Masked Privacy */
+        /* Leaderboard UI */
         .top-filter-bar {
             display: flex;
             gap: 6px;
@@ -646,15 +745,16 @@
             align-items: center;
             gap: 3px;
             color: var(--text-sub);
-            font-size: 10.5px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
-            width: 25%;
+            width: 20%;
             transition: 0.2s;
         }
 
-        .nav-item i { font-size: 18px; }
+        .nav-item i { font-size: 17px; }
         .nav-item.active { color: var(--pink-main); text-shadow: 0 0 10px var(--pink-glow); }
+        .nav-item.diamond-tab.active { color: var(--diamond-blue); text-shadow: 0 0 10px rgba(0, 210, 255, 0.6); }
     </style>
 </head>
 <body>
@@ -700,7 +800,7 @@
     <!-- Main Container -->
     <div class="container">
         
-        <!-- Tab 1: Shop & Danh mục -->
+        <!-- Tab 1: Shop & Danh mục Mod/Cheat -->
         <div id="tab-shop" class="tab-content active">
             
             <div id="category-menu">
@@ -770,7 +870,55 @@
 
         </div>
 
-        <!-- Tab 2: Nạp Tiền (Recharge) -->
+        <!-- Tab 2: Nạp Kim Cương Free Fire (MỚI NÂNG CẤP) -->
+        <div id="tab-ff-diamond" class="tab-content">
+            <div class="flow-border-card">
+                <div class="flow-card-inner">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+                        <div class="category-icon diamond-icon-box">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <div>
+                            <div style="font-size:15px; font-weight:800; color:#fff;">NẠP KIM CƯƠNG FREE FIRE</div>
+                            <div style="font-size:11px; color:var(--text-sub);">Xử lý tự động nhanh chóng qua ID Game</div>
+                        </div>
+                    </div>
+
+                    <!-- Ô Nhập ID Acc Game -->
+                    <div style="font-size:11px; font-weight:700; color:var(--cyan-neon); margin-bottom:6px;">
+                        <i class="fa-solid fa-id-card"></i> NHẬP ID ACCOUNT GAME FREE FIRE:
+                    </div>
+                    <input type="number" id="ff-game-id" class="input-round" placeholder="Ví dụ: 123456789..." style="font-family:'Orbitron'; font-weight:bold; letter-spacing:1px;">
+
+                    <!-- Gói Kim Cương Lựa Chọn -->
+                    <div style="font-size:11px; font-weight:700; color:#fff; margin-bottom:8px;">CHỌN GÓI NẠP KIM CƯƠNG:</div>
+                    <div class="diamond-grid">
+                        <div class="diamond-item selected" onclick="selectDiamondPack(this, 300000, '2.960 KC')">
+                            <div class="diamond-amount"><i class="fa-solid fa-gem" style="color:var(--diamond-blue);"></i> 2.960 KC</div>
+                            <div class="diamond-price">300.000đ</div>
+                        </div>
+                        <div class="diamond-item" onclick="selectDiamondPack(this, 500000, '6.372 KC')">
+                            <div class="diamond-amount"><i class="fa-solid fa-gem" style="color:var(--diamond-blue);"></i> 6.372 KC</div>
+                            <div class="diamond-price">500.000đ</div>
+                        </div>
+                        <div class="diamond-item" onclick="selectDiamondPack(this, 700000, '9.382 KC')">
+                            <div class="diamond-amount"><i class="fa-solid fa-gem" style="color:var(--diamond-blue);"></i> 9.382 KC</div>
+                            <div class="diamond-price">700.000đ</div>
+                        </div>
+                        <div class="diamond-item" onclick="selectDiamondPack(this, 1000000, '18.000 KC')">
+                            <div class="diamond-amount"><i class="fa-solid fa-gem" style="color:var(--diamond-blue);"></i> 18.000 KC</div>
+                            <div class="diamond-price">1.000.000đ</div>
+                        </div>
+                    </div>
+
+                    <button class="btn-buy" style="width:100%; padding:12px; margin-top:16px; background:linear-gradient(135deg, var(--diamond-blue), var(--purple-neon)); box-shadow:0 0 15px rgba(0,210,255,0.4);" onclick="processFFDiamondOrder()">
+                        <i class="fa-solid fa-bolt"></i> XÁC NHẬN NẠP KIM CƯƠNG
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Nạp Tiền Tài Khoản (Recharge) -->
         <div id="tab-recharge" class="tab-content">
             <div class="flow-border-card">
                 <div class="flow-card-inner">
@@ -804,7 +952,7 @@
             </div>
         </div>
 
-        <!-- Tab 3: Top Nạp (Leaderboard - Che ID Bảo Mật) -->
+        <!-- Tab 4: Top Nạp (Leaderboard - Che ID Bảo Mật) -->
         <div id="tab-leaderboard" class="tab-content">
             <div class="top-filter-bar">
                 <button class="top-filter-btn active" onclick="switchTopTab('month', this)">THÁNG NÀY</button>
@@ -814,7 +962,7 @@
             <div id="leaderboard-list"></div>
         </div>
 
-        <!-- Tab 4: Cá Nhân & Kho Key (Thiết Kế Nhỏ Gọn) -->
+        <!-- Tab 5: Cá Nhân & Hỗ Trợ Khách Hàng (MỚI NÂNG CẤP) -->
         <div id="tab-history" class="tab-content">
             <div class="personal-card-compact">
                 <div style="display:flex; align-items:center; gap:10px;">
@@ -830,6 +978,25 @@
                 </div>
             </div>
 
+            <!-- Ô Hỗ Trợ Khách Hàng Mới -->
+            <div class="support-card">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-headset" style="color:var(--pink-main); font-size:18px;"></i>
+                    <div style="font-weight:800; font-size:13px; color:#fff;">HỖ TRỢ KHÁCH HÀNG 24/7</div>
+                </div>
+                <div style="font-size:10.5px; color:var(--text-sub); margin-top:6px; line-height:1.4;">
+                    Bạn gặp sự cố, thắc mắc về đơn hàng hoặc chưa biết cách cài đặt? Nhấn vào bên dưới để gặp hỗ trợ viên ngay!
+                </div>
+                <div class="support-btn-group">
+                    <a href="https://zalo.me/84347071512" target="_blank" class="btn-support-zalo">
+                        <i class="fa-solid fa-comment"></i> ZALO HỖ TRỢ
+                    </a>
+                    <a href="https://t.me/cipherseller" target="_blank" class="btn-support-tg">
+                        <i class="fa-paper-plane"></i> TELEGRAM
+                    </a>
+                </div>
+            </div>
+
             <div style="font-weight:800; font-size:13px; color:#fff; margin:12px 0 8px 4px; display:flex; align-items:center; gap:6px;">
                 <i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO KEY DỊCH VỤ
             </div>
@@ -838,7 +1005,7 @@
 
     </div>
 
-    <!-- Purchase Key Modal Overlay -->
+    <!-- Purchase / Order Key Modal Overlay -->
     <div id="key-modal" class="modal">
         <div class="modal-body">
             <div style="width:50px; height:50px; background:linear-gradient(135deg, var(--pink-main), var(--cyan-neon)); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto; font-size:22px; color:#fff; box-shadow:0 0 20px var(--pink-glow);">
@@ -861,6 +1028,10 @@
         <div class="nav-item active" onclick="switchTab('shop', this)">
             <i class="fa-solid fa-store"></i>
             <span data-i18n="nav_shop">Cửa Hàng</span>
+        </div>
+        <div class="nav-item diamond-tab" onclick="switchTab('ff-diamond', this)">
+            <i class="fa-solid fa-gem"></i>
+            <span>Nạp KC FF</span>
         </div>
         <div class="nav-item" onclick="switchTab('recharge', this)">
             <i class="fa-solid fa-wallet"></i>
@@ -909,7 +1080,7 @@
             { u: "Trần T***", a: "nạp 500.000đ", t: "00:40", type: "green" },
             { u: "Zang N***", a: "nạp 150.000đ", t: "00:23", type: "green" },
             { u: "Vũ T***", a: "mua Migul Pro - 30day", t: "00:55", type: "pink" },
-            { u: "Phạm K***", a: "mua Aimlock - Vĩnh Viễn", t: "00:30", type: "pink" }
+            { u: "Phạm K***", a: "nạp 6.372 Kim Cương FF", t: "00:12", type: "green" }
         ];
 
         /* Top Recharge Masked Data (Che ID Bảo Mật) */
@@ -937,6 +1108,10 @@
         let tgUsername = "";
         let tgUserId = "8692475970";
         let currentGeneratedKey = "";
+
+        // Biến lưu thông tin gói Kim Cương FF được chọn
+        let selectedFFPrice = 300000;
+        let selectedFFDiamond = "2.960 KC";
 
         function initTelegramApp() {
             if (window.Telegram && window.Telegram.WebApp) {
@@ -987,7 +1162,6 @@
             }, 35);
         }
 
-        /* Enhanced High-Definition 3D Sakura Effect */
         function initHD3DSakura() {
             const canvas = document.getElementById('sakura-canvas');
             const ctx = canvas.getContext('2d');
@@ -1038,6 +1212,40 @@
                 requestAnimationFrame(draw);
             }
             draw();
+        }
+
+        /* Logic Nạp Kim Cương Free Fire */
+        function selectDiamondPack(elem, price, diamondText) {
+            document.querySelectorAll('.diamond-item').forEach(d => d.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedFFPrice = price;
+            selectedFFDiamond = diamondText;
+        }
+
+        function processFFDiamondOrder() {
+            const gameId = document.getElementById('ff-game-id').value.trim();
+            if (!gameId || gameId.length < 5) {
+                alert("Vui lòng nhập chính xác ID Game Free Fire (Ít nhất 5 chữ số)!");
+                return;
+            }
+
+            const isCipherSeller = (tgUsername === 'cipherseller' || tgUserId === '8692475970');
+
+            if (!isCipherSeller) {
+                if (userBalance < selectedFFPrice) {
+                    alert(`Số dư không đủ (${userBalance.toLocaleString('vi-VN')}đ)! Vui lòng nạp thêm tiền vào ví.`);
+                    return;
+                }
+                userBalance -= selectedFFPrice;
+                updateBalanceUI();
+            }
+
+            const orderCode = 'FF-ID' + gameId.substring(0, 4) + '-' + Math.floor(1000 + Math.random() * 9000);
+            
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+
+            openKeyModal(orderCode, "💎 LỆNH NẠP KC THÀNH CÔNG!", `Đã gửi ${selectedFFDiamond} vào ID Account: ${gameId}. Hệ thống đang tự động cộng kim cương vào game cho bạn!`);
+            addKeyToKho(`Nạp FF (${selectedFFDiamond}) - ID: ${gameId}`, orderCode);
         }
 
         function toggleLanguage() {
@@ -1140,7 +1348,7 @@
             document.getElementById('total-keys-bought').textContent = totalBought;
 
             if (kho.length === 0) {
-                container.innerHTML = '<div style="font-size:11px; color:var(--text-sub); text-align:center; padding:20px;">Kho của bạn chưa có key nào.</div>';
+                container.innerHTML = '<div style="font-size:11px; color:var(--text-sub); text-align:center; padding:20px;">Kho của bạn chưa có dịch vụ/key nào.</div>';
                 return;
             }
 
@@ -1161,8 +1369,8 @@
                 card.innerHTML = `
                     <div class="flow-card-inner" style="padding:12px;">
                         <div style="font-weight:800; font-size:12px; color:#fff; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                            <span><i class="fa-solid fa-key" style="color:var(--pink-main); margin-right:5px;"></i>${item.prodTitle}</span>
-                            <span style="background:var(--green-glow); color:#000; padding:2px 8px; border-radius:10px; font-size:10px;">${item.count} Key</span>
+                            <span><i class="fa-solid fa-cube" style="color:var(--pink-main); margin-right:5px;"></i>${item.prodTitle}</span>
+                            <span style="background:var(--green-glow); color:#000; padding:2px 8px; border-radius:10px; font-size:10px;">${item.count} Đơn</span>
                         </div>
                         <div>${keysHtml}</div>
                     </div>
@@ -1238,9 +1446,9 @@
 
         function copyText(txt) {
             navigator.clipboard.writeText(txt).then(() => {
-                alert("Đã sao chép mã Key!");
+                alert("Đã sao chép mã!");
             }).catch(() => {
-                alert("Mã Key: " + txt);
+                alert("Mã: " + txt);
             });
         }
 
