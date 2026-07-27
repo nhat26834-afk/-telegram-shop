@@ -17,16 +17,16 @@
 
     <style>
         :root {
-            --bg-dark: #07040f;
-            --card-bg: rgba(22, 14, 38, 0.85);
-            --card-inner: rgba(35, 22, 58, 0.7);
+            --bg-dark: #06030d;
+            --card-bg: rgba(20, 12, 34, 0.82);
+            --card-inner: rgba(32, 19, 52, 0.75);
             --pink-main: #ff2a8d;
-            --pink-glow: rgba(255, 42, 141, 0.4);
+            --pink-glow: rgba(255, 42, 141, 0.5);
             --purple-neon: #a855f7;
             --green-glow: #10b981;
             --cyan-neon: #06b6d4;
             --text-main: #ffffff;
-            --text-sub: #a393be;
+            --text-sub: #a797c2;
             --border-light: rgba(255, 255, 255, 0.08);
             --border-pink: rgba(255, 42, 141, 0.35);
             --radius-xl: 24px;
@@ -52,7 +52,7 @@
             position: relative;
         }
 
-        /* Sakura Canvas Background */
+        /* Ambient Sakura & Particle Canvas */
         #sakura-canvas {
             position: fixed;
             top: 0;
@@ -63,10 +63,60 @@
             z-index: 1;
         }
 
-        /* Anime Mascot Widget Floating UI */
+        /* --- LED LIQUID / BORDER BEAM EFFECT --- */
+        .led-border-wrap {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            padding: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .led-border-wrap::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                var(--pink-main), 
+                var(--purple-neon), 
+                var(--cyan-neon), 
+                transparent 30%
+            );
+            animation: rotateLED 4s linear infinite;
+            z-index: 0;
+        }
+
+        .led-border-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: var(--card-bg);
+            border-radius: calc(var(--radius-xl) - 2px);
+            z-index: 1;
+            backdrop-filter: blur(16px);
+        }
+
+        .led-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        @keyframes rotateLED {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Interactive Anime Mascot Widget */
         .anime-mascot-container {
             position: fixed;
-            bottom: 82px;
+            bottom: 84px;
             right: 14px;
             z-index: 999;
             display: flex;
@@ -76,21 +126,21 @@
         }
 
         .mascot-speech-bubble {
-            background: rgba(18, 10, 32, 0.92);
+            background: rgba(18, 10, 32, 0.94);
             border: 1.5px solid var(--pink-main);
             color: #fff;
-            padding: 8px 12px;
-            border-radius: 16px 16px 4px 16px;
+            padding: 9px 14px;
+            border-radius: 18px 18px 4px 18px;
             font-size: 11px;
             font-weight: 700;
-            box-shadow: 0 4px 18px var(--pink-glow);
-            margin-bottom: 8px;
+            box-shadow: 0 0 20px var(--pink-glow);
+            margin-bottom: 10px;
             opacity: 0;
             transform: translateY(10px) scale(0.9);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 170px;
+            max-width: 180px;
             text-align: right;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             pointer-events: auto;
         }
 
@@ -99,44 +149,54 @@
             transform: translateY(0) scale(1);
         }
 
+        /* Mascot Liquid Avatar Ring */
         .mascot-avatar-wrapper {
-            width: 68px;
-            height: 68px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             padding: 3px;
-            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon), var(--cyan-neon));
-            box-shadow: 0 0 20px var(--pink-glow);
+            position: relative;
             cursor: pointer;
             pointer-events: auto;
             animation: mascotFloat 3.5s ease-in-out infinite;
-            transition: transform 0.2s;
-            position: relative;
+            overflow: hidden;
         }
 
-        .mascot-avatar-wrapper:active {
-            transform: scale(0.92);
+        .mascot-avatar-wrapper::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(var(--pink-main), var(--cyan-neon), var(--purple-neon), var(--pink-main));
+            animation: rotateLED 2.5s linear infinite;
         }
 
         .mascot-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top center;
+            object-position: center;
             border-radius: 50%;
+            position: relative;
+            z-index: 2;
             border: 2px solid #07040f;
             display: block;
+            background: #10061e;
         }
 
         .mascot-online-dot {
             position: absolute;
-            bottom: 2px;
-            right: 2px;
+            bottom: 3px;
+            right: 3px;
             width: 14px;
             height: 14px;
             background: var(--green-glow);
             border: 2px solid #07040f;
             border-radius: 50%;
             box-shadow: 0 0 8px var(--green-glow);
+            z-index: 3;
         }
 
         @keyframes mascotFloat {
@@ -178,8 +238,8 @@
 
         .loader-logo {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
@@ -201,7 +261,7 @@
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--pink-main), var(--purple-neon));
+            background: linear-gradient(90deg, var(--pink-main), var(--purple-neon), var(--cyan-neon));
             border-radius: var(--radius-pill);
             transition: width 0.1s linear;
         }
@@ -219,7 +279,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(7, 4, 15, 0.9);
+            background: rgba(6, 3, 13, 0.88);
             backdrop-filter: blur(18px);
             padding: 14px 16px;
             border-bottom: 1px solid var(--border-light);
@@ -240,7 +300,7 @@
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
-            box-shadow: 0 0 12px var(--pink-glow);
+            box-shadow: 0 0 14px var(--pink-glow);
         }
 
         .user-info .username {
@@ -279,8 +339,6 @@
             transition: 0.2s;
         }
 
-        .lang-btn:active { transform: scale(0.95); }
-
         .wallet-badge {
             background: linear-gradient(135deg, rgba(255, 42, 141, 0.18), rgba(168, 85, 247, 0.18));
             border: 1px solid var(--border-pink);
@@ -308,7 +366,7 @@
         .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -358,7 +416,7 @@
         .category-title { font-weight: 800; font-size: 14px; color: #fff; }
         .category-sub { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
 
-        /* Buttons & Products */
+        /* Buttons & Controls */
         .btn-back {
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
@@ -373,16 +431,6 @@
             align-items: center;
             gap: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-pink);
-            border-radius: var(--radius-xl);
-            margin-bottom: 16px;
-            padding: 20px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
         }
 
         .product-header {
@@ -445,10 +493,11 @@
             outline: none;
             appearance: none;
             cursor: pointer;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
 
+        /* Shine Effect Button */
         .btn-buy {
+            position: relative;
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             color: #fff;
             border: none;
@@ -458,7 +507,25 @@
             font-size: 12px;
             cursor: pointer;
             box-shadow: 0 4px 15px var(--pink-glow);
+            overflow: hidden;
             transition: 0.2s;
+        }
+
+        .btn-buy::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transform: rotate(30deg);
+            animation: shineBtn 3s infinite;
+        }
+
+        @keyframes shineBtn {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            20%, 100% { transform: translateX(100%) rotate(30deg); }
         }
 
         .btn-buy:active { transform: scale(0.95); }
@@ -652,7 +719,12 @@
         }
 
         .leader-name { font-weight: 800; font-size: 13px; color: #fff; }
-        .leader-sub { font-size: 10px; color: var(--text-sub); }
+        .leader-sub { 
+            font-size: 10px; 
+            color: var(--text-sub); 
+            filter: blur(3px); /* Che ID Telegram */
+            user-select: none;
+        }
         .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 12px; }
 
         /* Recharge UI */
@@ -858,7 +930,7 @@
             left: 0;
             right: 0;
             height: 72px;
-            background: rgba(7, 4, 15, 0.95);
+            background: rgba(6, 3, 13, 0.95);
             backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-light);
             display: flex;
@@ -890,7 +962,7 @@
     <div id="loading-screen">
         <div class="loader-box">
             <div class="loader-circle"></div>
-            <img class="loader-logo" id="loader-avatar-img" src="https://i.imgur.com/8Q9Z5bX.png" alt="Logo">
+            <img class="loader-logo" id="loader-avatar-img" src="https://i.pinimg.com/736x/8e/3c/6e/8e3c6e9ec19c0a6b2ed3c3ba2a19b889.jpg" alt="Logo">
         </div>
         <div class="progress-wrapper">
             <div class="progress-bar" id="load-bar"></div>
@@ -905,7 +977,7 @@
     <div class="anime-mascot-container">
         <div class="mascot-speech-bubble" id="mascot-speech">Huy Bảo Shop xin chào bạn! 🌸</div>
         <div class="mascot-avatar-wrapper" onclick="triggerMascotInteraction()">
-            <img class="mascot-img" id="mascot-img-elem" alt="Mascot Anime">
+            <img class="mascot-img" id="mascot-img-elem" src="https://i.pinimg.com/736x/8e/3c/6e/8e3c6e9ec19c0a6b2ed3c3ba2a19b889.jpg" alt="Mascot Anime">
             <div class="mascot-online-dot"></div>
         </div>
     </div>
@@ -914,7 +986,7 @@
     <div class="header">
         <div class="user-profile">
             <div class="avatar-box">
-                <img id="user-avatar" src="https://i.imgur.com/8Q9Z5bX.png" alt="Avatar">
+                <img id="user-avatar" src="https://i.pinimg.com/736x/8e/3c/6e/8e3c6e9ec19c0a6b2ed3c3ba2a19b889.jpg" alt="Avatar">
             </div>
             <div class="user-info">
                 <div class="username">
@@ -993,62 +1065,64 @@
 
         <!-- Tab: Top Up / Recharge -->
         <div id="tab-recharge" class="tab-content">
-            <div class="product-card">
-                <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MUỐN NẠP:</div>
-                
-                <div class="quick-amounts">
-                    <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
-                </div>
-
-                <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
-                <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
-                
-                <button class="btn-buy" style="width:100%; padding:14px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
-
-                <!-- Upgraded VietQR Display Card -->
-                <div id="qr-result" style="display:none;" class="vietqr-card">
-                    <div style="font-weight:800; color:var(--pink-main); font-size:14px; letter-spacing:0.5px;">CỔNG THANH TOÁN VIETQR AUTO 24/7</div>
-                    <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">Quét mã bằng app ngân hàng bất kỳ để tự động nạp</div>
+            <div class="led-border-wrap">
+                <div class="led-content">
+                    <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MUỐN NẠP:</div>
                     
-                    <div class="qr-image-wrapper">
-                        <img id="qr-img" src="" alt="VietQR Code">
+                    <div class="quick-amounts">
+                        <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
                     </div>
 
-                    <div class="qr-info-list">
-                        <div class="qr-info-row">
-                            <span class="qr-info-label">Ngân Hàng:</span>
-                            <span class="qr-info-val">MB BANK (Quân Đội)</span>
-                        </div>
-                        <div class="qr-info-row">
-                            <span class="qr-info-label">Chủ Tài Khoản:</span>
-                            <span class="qr-info-val" style="color:var(--cyan-neon);">LE HUY BAO</span>
-                        </div>
-                        <div class="qr-info-row">
-                            <span class="qr-info-label">Số Tài Khoản:</span>
-                            <span class="qr-info-val">
-                                <span id="stk-val">2660566922</span>
-                                <button class="btn-copy-sm" onclick="copyText('2660566922')">Coppy</button>
-                            </span>
-                        </div>
-                        <div class="qr-info-row">
-                            <span class="qr-info-label">Số Tiền Nạp:</span>
-                            <span class="qr-info-val">
-                                <span id="amt-val" style="color:var(--green-glow);">0đ</span>
-                                <button class="btn-copy-sm" onclick="copyText(document.getElementById('recharge-amount').value)">Coppy</button>
-                            </span>
-                        </div>
-                        <div class="qr-info-row" style="border-color:var(--pink-main);">
-                            <span class="qr-info-label">Nội Dung CK:</span>
-                            <span class="qr-info-val">
-                                <span id="qr-memo" style="color:var(--pink-main); font-family:'Orbitron';">...</span>
-                                <button class="btn-copy-sm" onclick="copyText(document.getElementById('qr-memo').textContent)">Coppy</button>
-                            </span>
-                        </div>
+                    <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
+                    <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
+                    
+                    <button class="btn-buy" style="width:100%; padding:14px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
+                </div>
+            </div>
+
+            <!-- Upgraded VietQR Display Card -->
+            <div id="qr-result" style="display:none;" class="vietqr-card">
+                <div style="font-weight:800; color:var(--pink-main); font-size:14px; letter-spacing:0.5px;">CỔNG THANH TOÁN VIETQR AUTO 24/7</div>
+                <div style="font-size:11px; color:var(--text-sub); margin-top:2px;">Quét mã bằng app ngân hàng bất kỳ để tự động nạp</div>
+                
+                <div class="qr-image-wrapper">
+                    <img id="qr-img" src="" alt="VietQR Code">
+                </div>
+
+                <div class="qr-info-list">
+                    <div class="qr-info-row">
+                        <span class="qr-info-label">Ngân Hàng:</span>
+                        <span class="qr-info-val">MB BANK (Quân Đội)</span>
+                    </div>
+                    <div class="qr-info-row">
+                        <span class="qr-info-label">Chủ Tài Khoản:</span>
+                        <span class="qr-info-val" style="color:var(--cyan-neon);">LE HUY BAO</span>
+                    </div>
+                    <div class="qr-info-row">
+                        <span class="qr-info-label">Số Tài Khoản:</span>
+                        <span class="qr-info-val">
+                            <span id="stk-val">2660566922</span>
+                            <button class="btn-copy-sm" onclick="copyText('2660566922')">Coppy</button>
+                        </span>
+                    </div>
+                    <div class="qr-info-row">
+                        <span class="qr-info-label">Số Tiền Nạp:</span>
+                        <span class="qr-info-val">
+                            <span id="amt-val" style="color:var(--green-glow);">0đ</span>
+                            <button class="btn-copy-sm" onclick="copyText(document.getElementById('recharge-amount').value)">Coppy</button>
+                        </span>
+                    </div>
+                    <div class="qr-info-row" style="border-color:var(--pink-main);">
+                        <span class="qr-info-label">Nội Dung CK:</span>
+                        <span class="qr-info-val">
+                            <span id="qr-memo" style="color:var(--pink-main); font-family:'Orbitron';">...</span>
+                            <button class="btn-copy-sm" onclick="copyText(document.getElementById('qr-memo').textContent)">Coppy</button>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1112,9 +1186,6 @@
 
     <!-- Scripting Execution -->
     <script>
-        /* Embedded Image Data for Mascot (Direct SVG Avatar Generator to Ensure ZERO Broken Link) */
-        const ANIME_MASCOT_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%233a1c5c"/><stop offset="100%" stop-color="%230b0518"/></radialGradient><linearGradient id="hair" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23ffffff"/><stop offset="100%" stop-color="%23e2d5f8"/></linearGradient></defs><rect width="200" height="200" rx="100" fill="url(%23bg)"/><path d="M40 180 Q100 130 160 180" fill="%23f2d2c4"/><path d="M50 110 Q40 50 100 20 Q160 50 150 110 Q160 160 100 180 Q40 160 50 110 Z" fill="url(%23hair)"/><ellipse cx="75" cy="105" rx="12" ry="16" fill="%232b1040"/><ellipse cx="125" cy="105" rx="12" ry="16" fill="%232b1040"/><circle cx="78" cy="100" r="5" fill="%23ff2a8d"/><circle cx="128" cy="100" r="5" fill="%23ff2a8d"/><path d="M92 125 Q100 133 108 125" stroke="%23ff2a8d" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 40 Q100 10 140 40 Q150 90 140 110 Q100 85 60 110 Q50 90 60 40" fill="url(%23hair)"/><path d="M120 45 L150 25 L140 55 Z" fill="%23ff2a8d"/></svg>`;
-
         /* Product Database Configuration */
         const productsData = {
             ios: [
@@ -1292,7 +1363,7 @@
             { u: "lad", a: "mua Aimlock - Vĩnh Viễn", t: "00:30", type: "pink" }
         ];
 
-        /* Anonymous Top Recharge Leaderboard */
+        /* Anonymous Top Recharge Leaderboard - Che Mờ ID */
         const topData = [
             { r: 1, u: "Lê H***ng Phong", id: "@phong_vip", val: "7.500.000đ" },
             { r: 2, u: "Nguyễn C*** Diệu", id: "@dieu_hax", val: "6.200.000đ" },
@@ -1378,9 +1449,6 @@
 
         /* Telegram Web App Data Parser */
         function initTelegramApp() {
-            // Set mascot image safely
-            document.getElementById('mascot-img-elem').src = ANIME_MASCOT_SVG;
-
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
@@ -1396,7 +1464,6 @@
                     }
                     if (user.photo_url) {
                         document.getElementById('user-avatar').src = user.photo_url;
-                        document.getElementById('loader-avatar-img').src = user.photo_url;
                     }
                 }
             }
@@ -1431,7 +1498,7 @@
                 }
                 bar.style.width = percent + '%';
                 txt.textContent = `ĐANG TẢI ${percent}%`;
-            }, 45);
+            }, 40);
         }
 
         /* Ambient Sakura Canvas Effect */
@@ -1446,7 +1513,7 @@
                 h = canvas.height = window.innerHeight;
             });
 
-            const petals = Array.from({ length: 24 }, () => ({
+            const petals = Array.from({ length: 28 }, () => ({
                 x: Math.random() * w,
                 y: Math.random() * h,
                 r: Math.random() * 2.2 + 1.2,
@@ -1463,7 +1530,7 @@
                     ctx.beginPath();
                     ctx.translate(p.x, p.y);
                     ctx.rotate(p.angle);
-                    ctx.fillStyle = `rgba(255, 105, 180, ${p.opacity})`;
+                    ctx.fillStyle = `rgba(255, 42, 141, ${p.opacity})`;
                     ctx.ellipse(0, 0, p.r * 1.8, p.r * 0.8, 0, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.restore();
@@ -1489,7 +1556,7 @@
             });
         }
 
-        /* Shop Category Navigation */
+        /* Shop Category Navigation với LED Border */
         function openCategory(catKey) {
             document.getElementById('category-menu').style.display = 'none';
             document.getElementById('product-detail-view').style.display = 'block';
@@ -1498,24 +1565,27 @@
             container.innerHTML = '';
 
             (productsData[catKey] || []).forEach((item, idx) => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
+                const cardWrap = document.createElement('div');
+                cardWrap.className = 'led-border-wrap';
+                
                 let options = item.plans.map(p => `<option value="${p.p}">${p.t} - ${p.p.toLocaleString('vi-VN')}đ</option>`).join('');
 
-                card.innerHTML = `
-                    <div class="product-header">
-                        <div class="product-badge-icon"><i class="fa-solid ${item.icon || 'fa-box'}"></i></div>
-                        <div class="product-title">${item.name}</div>
-                    </div>
-                    <div class="product-desc">${item.desc}</div>
-                    <div class="product-controls">
-                        <div class="select-wrapper">
-                            <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                cardWrap.innerHTML = `
+                    <div class="led-content">
+                        <div class="product-header">
+                            <div class="product-badge-icon"><i class="fa-solid ${item.icon || 'fa-box'}"></i></div>
+                            <div class="product-title">${item.name}</div>
                         </div>
-                        <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
+                        <div class="product-desc">${item.desc}</div>
+                        <div class="product-controls">
+                            <div class="select-wrapper">
+                                <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                            </div>
+                            <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
+                        </div>
                     </div>
                 `;
-                container.appendChild(card);
+                container.appendChild(cardWrap);
             });
         }
 
