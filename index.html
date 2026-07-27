@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Huy Bảo Shop - Free Fire VIP</title>
+    <title>Huy Bảo Shop - Free Fire VIP Ultra</title>
     
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -17,21 +17,21 @@
 
     <style>
         :root {
-            --bg-dark: #07040f;
-            --card-bg: rgba(22, 14, 38, 0.85);
-            --card-inner: rgba(35, 22, 58, 0.7);
+            --bg-dark: #05020a;
+            --card-bg: rgba(18, 10, 32, 0.85);
+            --card-inner: rgba(28, 16, 48, 0.7);
             --pink-main: #ff2a8d;
-            --pink-glow: rgba(255, 42, 141, 0.4);
-            --purple-neon: #a855f7;
+            --pink-glow: rgba(255, 42, 141, 0.5);
+            --purple-neon: #9333ea;
             --green-glow: #10b981;
-            --cyan-neon: #06b6d4;
+            --cyan-neon: #00f2fe;
             --text-main: #ffffff;
-            --text-sub: #a393be;
+            --text-sub: #b3a1d1;
             --border-light: rgba(255, 255, 255, 0.08);
-            --border-pink: rgba(255, 42, 141, 0.35);
-            --radius-xl: 24px;
-            --radius-lg: 18px;
-            --radius-md: 14px;
+            --border-pink: rgba(255, 42, 141, 0.4);
+            --radius-xl: 20px;
+            --radius-lg: 14px;
+            --radius-md: 10px;
             --radius-pill: 50px;
         }
 
@@ -52,7 +52,7 @@
             position: relative;
         }
 
-        /* Sakura Canvas Background */
+        /* High-Definition 3D Sakura Canvas */
         #sakura-canvas {
             position: fixed;
             top: 0;
@@ -67,7 +67,7 @@
         #loading-screen {
             position: fixed;
             inset: 0;
-            background: #040208;
+            background: #030107;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -78,8 +78,8 @@
 
         .loader-box {
             position: relative;
-            width: 95px;
-            height: 95px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -97,30 +97,31 @@
 
         .loader-logo {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
+            box-shadow: 0 0 15px var(--pink-glow);
         }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         .progress-wrapper {
-            width: 240px;
-            height: 8px;
+            width: 220px;
+            height: 6px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-pill);
             margin-top: 25px;
             overflow: hidden;
             border: 1px solid rgba(255, 42, 141, 0.3);
-            box-shadow: 0 0 15px var(--pink-glow);
+            box-shadow: 0 0 12px var(--pink-glow);
         }
 
         .progress-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--pink-main), var(--purple-neon));
+            background: linear-gradient(90deg, var(--cyan-neon), var(--pink-main), var(--purple-neon));
             border-radius: var(--radius-pill);
             transition: width 0.1s linear;
         }
@@ -138,13 +139,14 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: rgba(7, 4, 15, 0.9);
+            background: rgba(5, 2, 10, 0.88);
             backdrop-filter: blur(18px);
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-pink);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(255, 42, 141, 0.15);
         }
 
         .user-profile {
@@ -154,8 +156,8 @@
         }
 
         .avatar-box img {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--pink-main);
@@ -164,7 +166,7 @@
 
         .user-info .username {
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             color: #fff;
             display: flex;
             align-items: center;
@@ -172,9 +174,10 @@
         }
 
         .user-info .telegram-id {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-sub);
             margin-top: 2px;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .header-actions {
@@ -186,27 +189,25 @@
         .lang-btn {
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
-            color: var(--pink-main);
-            padding: 6px 12px;
+            color: var(--cyan-neon);
+            padding: 5px 10px;
             border-radius: var(--radius-pill);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             transition: 0.2s;
         }
 
-        .lang-btn:active { transform: scale(0.95); }
-
         .wallet-badge {
-            background: linear-gradient(135deg, rgba(255, 42, 141, 0.18), rgba(168, 85, 247, 0.18));
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.2), rgba(0, 242, 254, 0.15));
             border: 1px solid var(--border-pink);
-            padding: 7px 14px;
+            padding: 6px 12px;
             border-radius: var(--radius-pill);
             text-align: right;
-            box-shadow: 0 0 12px var(--pink-glow);
+            box-shadow: 0 0 10px var(--pink-glow);
         }
 
         .wallet-badge .amount {
@@ -231,89 +232,104 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Category Grid */
-        .category-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .category-card {
+        /* Dynamic Light Border Effect (Snake Water Flow) */
+        .flow-border-card {
+            position: relative;
             background: var(--card-bg);
-            border: 1px solid var(--border-pink);
             border-radius: var(--radius-xl);
-            padding: 18px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            padding: 1px; /* Chiều rộng viền siêu nhỏ gọn */
+            overflow: hidden;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
         }
 
-        .category-card:active { transform: scale(0.97); }
+        .flow-border-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                transparent, 
+                transparent, 
+                transparent, 
+                var(--cyan-neon), 
+                var(--pink-main)
+            );
+            animation: rotateWaterFlow 4s linear infinite;
+        }
+
+        @keyframes rotateWaterFlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .flow-card-inner {
+            position: relative;
+            background: var(--card-bg);
+            border-radius: calc(var(--radius-xl) - 1px);
+            padding: 18px;
+            z-index: 1;
+            backdrop-filter: blur(14px);
+        }
+
+        /* Category Items */
+        .category-card-flow {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .category-card-flow:active { transform: scale(0.97); }
 
         .category-left {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .category-icon {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, rgba(255, 42, 141, 0.25), rgba(168, 85, 247, 0.35));
-            border: 1px solid var(--pink-main);
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.25), rgba(0, 242, 254, 0.2));
+            border: 1px solid var(--cyan-neon);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
-            color: var(--pink-main);
-            box-shadow: 0 0 14px var(--pink-glow);
+            font-size: 20px;
+            color: var(--cyan-neon);
+            box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
         }
 
-        .category-title { font-weight: 800; font-size: 14px; color: #fff; }
-        .category-sub { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
+        .category-title { font-weight: 800; font-size: 13.5px; color: #fff; }
+        .category-sub { font-size: 11px; color: var(--text-sub); margin-top: 3px; }
 
-        /* Buttons & Products */
+        /* Buttons & Controls */
         .btn-back {
             background: var(--card-inner);
             border: 1px solid var(--border-pink);
             color: #fff;
-            padding: 10px 18px;
+            padding: 8px 16px;
             border-radius: var(--radius-pill);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-pink);
-            border-radius: var(--radius-xl);
-            margin-bottom: 16px;
-            padding: 20px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+            gap: 6px;
         }
 
         .product-header {
             display: flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
         .product-badge-icon {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: rgba(255, 42, 141, 0.15);
             border: 1px solid var(--border-pink);
@@ -321,16 +337,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            box-shadow: 0 0 10px var(--pink-glow);
+            font-size: 16px;
+            box-shadow: 0 0 8px var(--pink-glow);
         }
 
-        .product-title { font-weight: 800; font-size: 16px; color: #fff; }
-        .product-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5; }
+        .product-title { font-weight: 800; font-size: 15px; color: #fff; }
+        .product-desc { font-size: 11.5px; color: var(--text-sub); margin-bottom: 14px; line-height: 1.4; }
 
         .product-controls {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
@@ -344,40 +360,40 @@
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
-            right: 14px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--pink-main);
-            font-size: 11px;
+            color: var(--cyan-neon);
+            font-size: 10px;
             pointer-events: none;
         }
 
         select.plan-select {
             width: 100%;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid var(--border-pink);
             border-radius: var(--radius-pill);
             color: #fff;
-            padding: 12px 35px 12px 16px;
-            font-size: 12px;
+            padding: 10px 30px 10px 14px;
+            font-size: 11.5px;
             font-weight: 600;
             outline: none;
             appearance: none;
             cursor: pointer;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
 
         .btn-buy {
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             color: #fff;
             border: none;
-            padding: 12px 22px;
+            padding: 10px 18px;
             border-radius: var(--radius-pill);
             font-weight: 800;
-            font-size: 12px;
+            font-size: 11.5px;
             cursor: pointer;
-            box-shadow: 0 4px 15px var(--pink-glow);
+            box-shadow: 0 4px 12px var(--pink-glow);
             transition: 0.2s;
+            white-space: nowrap;
         }
 
         .btn-buy:active { transform: scale(0.95); }
@@ -387,228 +403,187 @@
             background: var(--card-bg);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-xl);
-            padding: 18px;
-            margin-top: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            padding: 14px;
+            margin-top: 16px;
         }
 
         .live-tx-header {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #fff;
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
 
         .tx-scroll-container {
-            max-height: 260px;
+            max-height: 220px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            padding-right: 4px;
+            gap: 6px;
         }
-
-        .tx-scroll-container::-webkit-scrollbar { width: 4px; }
-        .tx-scroll-container::-webkit-scrollbar-thumb { background: var(--pink-main); border-radius: 4px; }
 
         .tx-item {
             background: var(--card-inner);
             border-radius: var(--radius-md);
-            padding: 10px 14px;
+            padding: 8px 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .tx-user { font-weight: 600; color: #fff; }
-        .tx-action { color: var(--text-sub); font-size: 11px; }
+        .tx-action { color: var(--text-sub); font-size: 10.5px; }
         .tx-amount { font-weight: 700; font-family: 'Orbitron', sans-serif; }
         .tx-amount.green { color: var(--green-glow); }
         .tx-amount.pink { color: var(--pink-main); }
 
-        /* Kho - History */
-        .kho-card {
-            background: var(--card-bg);
+        /* Compact Personal & Storage Section */
+        .personal-card-compact {
+            background: var(--card-inner);
             border: 1px solid var(--border-pink);
-            border-radius: var(--radius-xl);
-            padding: 18px;
-            margin-bottom: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        }
-
-        .kho-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
-        }
-
-        .kho-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 14px;
-            color: #fff;
-        }
-
-        .kho-count-badge {
-            background: var(--green-glow);
-            color: #000;
-            font-weight: 800;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: var(--radius-pill);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-        }
-
-        .key-row-item {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-lg);
             padding: 12px 14px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
-        .key-code-text {
-            color: var(--green-glow);
+        .kho-item-mini {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 42, 141, 0.2);
+            border-radius: var(--radius-md);
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .key-text-mini {
+            color: var(--cyan-neon);
             font-family: 'Orbitron', monospace;
             font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.8px;
+            font-size: 11.5px;
+            letter-spacing: 0.5px;
         }
 
-        .key-date-text {
-            font-size: 10px;
+        .key-sub-mini {
+            font-size: 9.5px;
             color: var(--text-sub);
-            margin-top: 3px;
+            margin-top: 2px;
         }
 
-        .btn-copy-icon {
+        .btn-copy-mini {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-pink);
             color: #fff;
-            width: 36px;
-            height: 36px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: 0.2s;
+            font-size: 11px;
         }
 
-        .btn-copy-icon:active { background: var(--pink-main); transform: scale(0.9); }
-
-        /* Top Recharge Section */
+        /* Leaderboard UI - Masked Privacy */
         .top-filter-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
+            gap: 6px;
+            margin-bottom: 14px;
         }
 
         .top-filter-btn {
             flex: 1;
-            padding: 9px;
+            padding: 8px;
             text-align: center;
             background: var(--card-inner);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-pill);
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 700;
             color: var(--text-sub);
             cursor: pointer;
-            transition: 0.2s;
         }
 
         .top-filter-btn.active {
             background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
             color: #fff;
             border-color: transparent;
-            box-shadow: 0 0 12px var(--pink-glow);
+            box-shadow: 0 0 10px var(--pink-glow);
         }
 
         .leader-item {
             background: var(--card-bg);
             border: 1px solid var(--border-light);
             border-radius: var(--radius-lg);
-            padding: 14px 16px;
-            margin-bottom: 10px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .rank-number {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 12px;
+            font-size: 11px;
             font-family: 'Orbitron';
         }
 
-        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 12px rgba(234, 179, 8, 0.6); }
+        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 10px rgba(234, 179, 8, 0.6); }
         .rank-2 { background: #94a3b8; color: #000; }
         .rank-3 { background: #b45309; color: #fff; }
         .rank-other { background: rgba(255,255,255,0.1); color: #fff; }
 
-        .leader-user {
-            flex: 1;
-            margin-left: 14px;
-        }
-
-        .leader-name { font-weight: 800; font-size: 13px; color: #fff; }
-        .leader-sub { font-size: 10px; color: var(--text-sub); }
-        .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 12px; }
+        .leader-user { flex: 1; margin-left: 12px; }
+        .leader-name { font-weight: 800; font-size: 12px; color: #fff; }
+        .leader-sub { font-size: 9.5px; color: var(--text-sub); font-family: 'Orbitron'; }
+        .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 11.5px; }
 
         /* Recharge UI */
         .quick-amounts {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .btn-quick {
             background: var(--card-inner);
             border: 1px solid var(--border-light);
             color: #fff;
-            padding: 12px;
+            padding: 10px;
             border-radius: var(--radius-pill);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
         }
-
-        .btn-quick:active { border-color: var(--pink-main); background: rgba(255, 42, 141, 0.2); }
 
         .input-round {
             width: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            border: 1px solid var(--border-light);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-pink);
             border-radius: var(--radius-pill);
-            padding: 14px 18px;
+            padding: 12px 16px;
             color: #fff;
-            font-size: 13px;
+            font-size: 12px;
             outline: none;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        /* Modal Key Display */
+        /* Modal Overlay */
         .modal {
             display: none;
             position: fixed;
@@ -622,73 +597,43 @@
         }
 
         .modal-body {
-            background: linear-gradient(160deg, #230f3c, #0a0416);
+            background: linear-gradient(160deg, #200a38, #070210);
             border: 2px solid var(--pink-main);
-            border-radius: 32px;
-            padding: 28px 24px;
+            border-radius: 28px;
+            padding: 24px 20px;
             width: 100%;
-            max-width: 360px;
+            max-width: 340px;
             text-align: center;
-            box-shadow: 0 0 50px var(--pink-glow);
-            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 40px var(--pink-glow);
+            animation: modalPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.6) translateY(30px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        .modal-icon-glow {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px auto;
-            font-size: 32px;
-            color: #fff;
-            box-shadow: 0 0 25px var(--pink-glow);
-            animation: pulseGlow 1.5s infinite;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px var(--pink-glow); }
-            50% { box-shadow: 0 0 35px var(--pink-main); transform: scale(1.05); }
-            100% { box-shadow: 0 0 15px var(--pink-glow); }
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .key-led-box {
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px dashed var(--cyan-neon);
+            background: rgba(0, 0, 0, 0.85);
+            border: 1.5px dashed var(--cyan-neon);
             border-radius: var(--radius-lg);
-            padding: 14px;
-            margin: 18px 0;
+            padding: 12px;
+            margin: 16px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.2);
         }
 
-        .key-led-text {
-            color: var(--cyan-neon);
-            font-family: 'Orbitron', monospace;
-            font-weight: 800;
-            font-size: 14px;
-            letter-spacing: 1px;
-        }
-
-        /* Bottom Nav Floating Bar */
+        /* Navbar Floating Bar */
         .navbar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 72px;
-            background: rgba(7, 4, 15, 0.95);
+            height: 68px;
+            background: rgba(5, 2, 10, 0.95);
             backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid var(--border-pink);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -699,22 +644,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             color: var(--text-sub);
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 600;
             cursor: pointer;
             width: 25%;
             transition: 0.2s;
         }
 
-        .nav-item i { font-size: 20px; }
-        .nav-item.active { color: var(--pink-main); text-shadow: 0 0 12px var(--pink-glow); }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: var(--pink-main); text-shadow: 0 0 10px var(--pink-glow); }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen Overlay -->
+    <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="loader-box">
             <div class="loader-circle"></div>
@@ -726,7 +671,7 @@
         <div class="loading-text" id="load-percent">ĐANG TẢI 0%</div>
     </div>
 
-    <!-- Falling Sakura Canvas -->
+    <!-- Enhanced 3D Sakura Canvas -->
     <canvas id="sakura-canvas"></canvas>
 
     <!-- Header Section -->
@@ -738,7 +683,7 @@
             <div class="user-info">
                 <div class="username">
                     <span id="user-name">Huy Bảo Cipher</span> 
-                    <i class="fa-solid fa-circle-check" style="color:var(--pink-main); font-size:12px;"></i>
+                    <i class="fa-solid fa-circle-check" style="color:var(--pink-main); font-size:11px;"></i>
                 </div>
                 <div class="telegram-id">ID: <span id="user-tg-id">8692475970</span></div>
             </div>
@@ -746,53 +691,68 @@
         <div class="header-actions">
             <button class="lang-btn" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> <span id="lang-label">VI</span></button>
             <div class="wallet-badge">
-                <div style="font-size:9px; color:var(--text-sub);" data-i18n="balance_label">SỐ DƯ</div>
+                <div style="font-size:8.5px; color:var(--text-sub);" data-i18n="balance_label">SỐ DƯ</div>
                 <div class="amount" id="balance-display">0đ</div>
             </div>
         </div>
     </div>
 
-    <!-- Main Dynamic Content Container -->
+    <!-- Main Container -->
     <div class="container">
         
-        <!-- Tab: Shop & Categories -->
+        <!-- Tab 1: Shop & Danh mục -->
         <div id="tab-shop" class="tab-content active">
             
-            <div id="category-menu" class="category-grid">
-                <div class="category-card" onclick="openCategory('ios')">
-                    <div class="category-left">
-                        <div class="category-icon"><i class="fa-brands fa-apple"></i></div>
-                        <div>
-                            <div class="category-title" data-i18n="cat_ios_title">MỤC IOS - IPAD</div>
-                            <div class="category-sub">Migul Pro/Lite, Fluorite, Sudo Hax, iOSViet</div>
+            <div id="category-menu">
+                <!-- Danh mục iOS -->
+                <div class="flow-border-card category-card-flow" onclick="openCategory('ios')">
+                    <div class="flow-card-inner">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="category-left">
+                                <div class="category-icon"><i class="fa-brands fa-apple"></i></div>
+                                <div>
+                                    <div class="category-title" data-i18n="cat_ios_title">MỤC IOS - IPAD</div>
+                                    <div class="category-sub">Migul Pro/Lite, Fluorite, Sudo Hax, iOSViet</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--pink-main); font-size:12px;"></i>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
                 </div>
 
-                <div class="category-card" onclick="openCategory('adr')">
-                    <div class="category-left">
-                        <div class="category-icon"><i class="fa-brands fa-android"></i></div>
-                        <div>
-                            <div class="category-title" data-i18n="cat_adr_title">MỤC ADR ROOT - NO ROOT</div>
-                            <div class="category-sub">NgotranVip, Drip VIP, Pato, LK Root, Proxy...</div>
+                <!-- Danh mục Android -->
+                <div class="flow-border-card category-card-flow" onclick="openCategory('adr')">
+                    <div class="flow-card-inner">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="category-left">
+                                <div class="category-icon"><i class="fa-brands fa-android"></i></div>
+                                <div>
+                                    <div class="category-title" data-i18n="cat_adr_title">MỤC ADR ROOT - NO ROOT</div>
+                                    <div class="category-sub">NgotranVip, Drip VIP, Pato, LK Root, Proxy...</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--pink-main); font-size:12px;"></i>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
                 </div>
 
-                <div class="category-card" onclick="openCategory('aim')">
-                    <div class="category-left">
-                        <div class="category-icon"><i class="fa-solid fa-crosshairs"></i></div>
-                        <div>
-                            <div class="category-title" data-i18n="cat_aim_title">MỤC AIM ADR VÀ IOS</div>
-                            <div class="category-sub">HuybaocheatVip, Proxy Adr-iOS, Aimlock</div>
+                <!-- Danh mục Aim -->
+                <div class="flow-border-card category-card-flow" onclick="openCategory('aim')">
+                    <div class="flow-card-inner">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="category-left">
+                                <div class="category-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                                <div>
+                                    <div class="category-title" data-i18n="cat_aim_title">MỤC AIM ADR VÀ IOS</div>
+                                    <div class="category-sub">HuybaocheatVip, Proxy Adr-iOS, Aimlock</div>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right" style="color:var(--pink-main); font-size:12px;"></i>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
                 </div>
 
-                <!-- Realtime Recent Transactions List -->
+                <!-- Live Transactions -->
                 <div class="live-tx-box">
                     <div class="live-tx-header">
                         <i class="fa-solid fa-bolt" style="color:var(--pink-main);"></i>
@@ -802,7 +762,7 @@
                 </div>
             </div>
 
-            <!-- Product Category Listing View -->
+            <!-- Detailed Products Listing -->
             <div id="product-detail-view" style="display:none;">
                 <button class="btn-back" onclick="backToCategories()"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">QUAY LẠI MỤC CHÍNH</span></button>
                 <div id="active-products-list"></div>
@@ -810,39 +770,41 @@
 
         </div>
 
-        <!-- Tab: Top Up / Recharge -->
+        <!-- Tab 2: Nạp Tiền (Recharge) -->
         <div id="tab-recharge" class="tab-content">
-            <div class="product-card">
-                <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MUỐN NẠP:</div>
-                
-                <div class="quick-amounts">
-                    <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
-                    <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
-                </div>
+            <div class="flow-border-card">
+                <div class="flow-card-inner">
+                    <div style="font-size:12px; font-weight:700; color:#fff; margin-bottom:10px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MUỐN NẠP:</div>
+                    
+                    <div class="quick-amounts">
+                        <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
+                        <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
+                    </div>
 
-                <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
-                <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
-                
-                <button class="btn-buy" style="width:100%; padding:14px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
+                    <div style="font-size:11px; color:var(--text-sub); margin-bottom:6px;">Nhập số tiền (Tối thiểu 10.000đ):</div>
+                    <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
+                    
+                    <button class="btn-buy" style="width:100%; padding:12px; margin-bottom:12px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
 
-                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-xl); border:1px solid var(--border-pink); text-align:center;">
-                    <div style="font-weight:bold; color:var(--pink-main); font-size:13px; margin-bottom:10px;">CỔNG THANH TOÁN QR AUTO 24/7</div>
-                    <img id="qr-img" src="" alt="QR" style="width:180px; height:180px; border-radius:12px; border:2px solid #fff;">
-                    <div style="margin-top:12px; font-size:12px; text-align:left; line-height:1.7;">
-                        <div>Ngân Hàng: <strong>MB BANK (Quân Đội)</strong></div>
-                        <div>Số Tài Khoản: <strong>2660566922</strong></div>
-                        <div>Chủ Tài Khoản: <strong>LE HUY BAO</strong></div>
-                        <div>Nội dung CK: <strong id="qr-memo" style="color:var(--cyan-neon);">...</strong></div>
+                    <div id="qr-result" style="display:none; background:var(--card-inner); padding:14px; border-radius:var(--radius-lg); border:1px solid var(--border-pink); text-align:center;">
+                        <div style="font-weight:bold; color:var(--pink-main); font-size:12px; margin-bottom:8px;">CỔNG THANH TOÁN QR AUTO 24/7</div>
+                        <img id="qr-img" src="" alt="QR" style="width:160px; height:160px; border-radius:10px; border:2px solid #fff;">
+                        <div style="margin-top:10px; font-size:11px; text-align:left; line-height:1.6;">
+                            <div>Ngân Hàng: <strong>MB BANK</strong></div>
+                            <div>Số Tài Khoản: <strong>2660566922</strong></div>
+                            <div>Chủ Tài Khoản: <strong>LE HUY BAO</strong></div>
+                            <div>Nội dung CK: <strong id="qr-memo" style="color:var(--cyan-neon);">...</strong></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tab: Leaderboard / Top Recharge -->
+        <!-- Tab 3: Top Nạp (Leaderboard - Che ID Bảo Mật) -->
         <div id="tab-leaderboard" class="tab-content">
             <div class="top-filter-bar">
                 <button class="top-filter-btn active" onclick="switchTopTab('month', this)">THÁNG NÀY</button>
@@ -852,9 +814,25 @@
             <div id="leaderboard-list"></div>
         </div>
 
-        <!-- Tab: Storage / Inventory Key History -->
+        <!-- Tab 4: Cá Nhân & Kho Key (Thiết Kế Nhỏ Gọn) -->
         <div id="tab-history" class="tab-content">
-            <div style="font-weight:800; font-size:15px; color:#fff; margin-bottom:14px;"><i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
+            <div class="personal-card-compact">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fa-solid fa-user-shield" style="color:var(--cyan-neon); font-size:18px;"></i>
+                    <div>
+                        <div style="font-weight:800; font-size:12px; color:#fff;" id="profile-card-name">Huy Bảo Cipher</div>
+                        <div style="font-size:10px; color:var(--text-sub);">Thành viên VIP</div>
+                    </div>
+                </div>
+                <div style="text-align:right;">
+                    <div style="font-size:9px; color:var(--text-sub);">KEY ĐÃ MUA</div>
+                    <div style="font-size:12px; font-weight:800; color:var(--pink-main); font-family:'Orbitron';" id="total-keys-bought">0</div>
+                </div>
+            </div>
+
+            <div style="font-weight:800; font-size:13px; color:#fff; margin:12px 0 8px 4px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO KEY DỊCH VỤ
+            </div>
             <div id="kho-container"></div>
         </div>
 
@@ -863,18 +841,18 @@
     <!-- Purchase Key Modal Overlay -->
     <div id="key-modal" class="modal">
         <div class="modal-body">
-            <div class="modal-icon-glow">
+            <div style="width:50px; height:50px; background:linear-gradient(135deg, var(--pink-main), var(--cyan-neon)); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto; font-size:22px; color:#fff; box-shadow:0 0 20px var(--pink-glow);">
                 <i class="fa-solid fa-award"></i>
             </div>
-            <h3 id="modal-title" style="color:#fff; font-size:18px; font-weight:900; letter-spacing:0.5px;">GIAO DỊCH THÀNH CÔNG!</h3>
-            <p id="modal-desc" style="font-size:12px; color:var(--text-sub); margin-top:6px; line-height:1.4;"></p>
+            <h3 id="modal-title" style="color:#fff; font-size:16px; font-weight:900;">GIAO DỊCH THÀNH CÔNG!</h3>
+            <p id="modal-desc" style="font-size:11px; color:var(--text-sub); margin-top:4px; line-height:1.4;"></p>
             
             <div class="key-led-box">
-                <span class="key-led-text" id="key-display">HB-XXXX-XXXX</span>
-                <i class="fa-regular fa-copy" style="color:var(--pink-main); cursor:pointer; font-size:18px;" onclick="copyCurrentKey()"></i>
+                <span style="color:var(--cyan-neon); font-family:'Orbitron', monospace; font-weight:800; font-size:13px;" id="key-display">HB-XXXX-XXXX</span>
+                <i class="fa-regular fa-copy" style="color:var(--pink-main); cursor:pointer; font-size:16px;" onclick="copyCurrentKey()"></i>
             </div>
 
-            <button class="btn-buy" style="width:100%; padding:12px;" onclick="closeKeyModal()" data-i18n="btn_close">ĐÓNG & TIẾP TỤC</button>
+            <button class="btn-buy" style="width:100%; padding:10px;" onclick="closeKeyModal()" data-i18n="btn_close">ĐÓNG & TIẾP TỤC</button>
         </div>
     </div>
 
@@ -898,238 +876,60 @@
         </div>
     </div>
 
-    <!-- Scripting Execution -->
     <script>
-        /* Product Database Configuration - UPDATED TO YOUR EXACT LIST */
+        /* Product Database Configuration */
         const productsData = {
             ios: [
-                { 
-                    name: "🌟 Migul Pro", 
-                    desc: "Bản Hack VIP Full chức năng cho iOS", 
-                    icon: "fa-crown", 
-                    plans: [
-                        {t: "1 Ngày", p: 100000}, 
-                        {t: "7 Ngày", p: 215000}, 
-                        {t: "30 Ngày", p: 450000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Migul Lite", 
-                    desc: "Phiên bản rút gọn mượt nhẹ, chống lag", 
-                    icon: "fa-feather", 
-                    plans: [
-                        {t: "1 Ngày", p: 50000}, 
-                        {t: "7 Ngày", p: 150000}, 
-                        {t: "30 Ngày", p: 350000}
-                    ] 
-                },
-                { 
-                    name: "🪼 Fluorite iOS", 
-                    desc: "Cheat mượt mà, hỗ trợ iOS/iPad an toàn", 
-                    icon: "fa-gem", 
-                    plans: [
-                        {t: "1 Ngày", p: 90000}, 
-                        {t: "7 Ngày", p: 230000}, 
-                        {t: "30 Ngày", p: 370000}
-                    ] 
-                },
-                { 
-                    name: "Sudo Hax", 
-                    desc: "Menu hack iOS ổn định lâu dài", 
-                    icon: "fa-terminal", 
-                    plans: [
-                        {t: "33 Ngày", p: 250000}
-                    ] 
-                },
-                { 
-                    name: "iOSViet", 
-                    desc: "Bản Hack Việt Hóa siêu tiện lợi", 
-                    icon: "fa-shield-halved", 
-                    plans: [
-                        {t: "30 Ngày", p: 220000}
-                    ] 
-                }
+                { name: "🌟 Migul Pro", desc: "Bản Hack VIP Full chức năng cho iOS", icon: "fa-crown", plans: [{t: "1 Ngày", p: 100000}, {t: "7 Ngày", p: 215000}, {t: "30 Ngày", p: 450000}] },
+                { name: "🌟 Migul Lite", desc: "Phiên bản rút gọn mượt nhẹ, chống lag", icon: "fa-feather", plans: [{t: "1 Ngày", p: 50000}, {t: "7 Ngày", p: 150000}, {t: "30 Ngày", p: 350000}] },
+                { name: "🪼 Fluorite iOS", desc: "Cheat mượt mà, hỗ trợ iOS/iPad an toàn", icon: "fa-gem", plans: [{t: "1 Ngày", p: 90000}, {t: "7 Ngày", p: 230000}, {t: "30 Ngày", p: 370000}] },
+                { name: "Sudo Hax", desc: "Menu hack iOS ổn định lâu dài", icon: "fa-terminal", plans: [{t: "33 Ngày", p: 250000}] },
+                { name: "iOSViet", desc: "Bản Hack Việt Hóa siêu tiện lợi", icon: "fa-shield-halved", plans: [{t: "30 Ngày", p: 220000}] }
             ],
             adr: [
-                { 
-                    name: "NgotranVip No Root", 
-                    desc: "Dùng trực tiếp không cần Root máy", 
-                    icon: "fa-shield-cat", 
-                    plans: [
-                        {t: "35 Ngày", p: 320000}
-                    ] 
-                },
-                { 
-                    name: "Zygame", 
-                    desc: "Bypass an toàn, không giật lag", 
-                    icon: "fa-gamepad", 
-                    plans: [
-                        {t: "30 Ngày", p: 150000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Drip VIP", 
-                    desc: "Free Fire Macro Pro đỉnh cao", 
-                    icon: "fa-skull", 
-                    plans: [
-                        {t: "15 Ngày", p: 150000}, 
-                        {t: "30 Ngày", p: 240000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Prime Cook", 
-                    desc: "Menu VIP hỗ trợ leo rank cực nhanh", 
-                    icon: "fa-fire", 
-                    plans: [
-                        {t: "7 Ngày", p: 80000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Strick Cheat", 
-                    desc: "Tối ưu hóa độ nhạy, bắn mượt", 
-                    icon: "fa-bolt", 
-                    plans: [
-                        {t: "15 Ngày", p: 150000}, 
-                        {t: "30 Ngày", p: 220000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Br Mods", 
-                    desc: "Bản mod Android tổng hợp tính năng", 
-                    icon: "fa-cubes", 
-                    plans: [
-                        {t: "15 Ngày", p: 160000}, 
-                        {t: "30 Ngày", p: 220000}
-                    ] 
-                },
-                { 
-                    name: "🌟 LK Root", 
-                    desc: "Dành riêng cho máy Android đã Root", 
-                    icon: "fa-unlock", 
-                    plans: [
-                        {t: "10 Ngày", p: 120000}, 
-                        {t: "30 Ngày", p: 200000}
-                    ] 
-                },
-                { 
-                    name: "🛒 Pato Cam + Xanh 🌟", 
-                    desc: "Bản màu Pato Cam & Xanh cực đẹp", 
-                    icon: "fa-eye", 
-                    plans: [
-                        {t: "7 Ngày", p: 85000}, 
-                        {t: "30 Ngày", p: 190000}
-                    ] 
-                },
-                { 
-                    name: "🌟 Hg Cheat", 
-                    desc: "Mod Android leo rank mượt mà", 
-                    icon: "fa-crosshair", 
-                    plans: [
-                        {t: "10 Ngày", p: 100000}, 
-                        {t: "30 Ngày", p: 190000}
-                    ] 
-                },
-                { 
-                    name: "Proxy Drip 🌟", 
-                    desc: "Proxy chống giật lag, tăng độ nhạy", 
-                    icon: "fa-network-wired", 
-                    plans: [
-                        {t: "7 Ngày", p: 80000}, 
-                        {t: "30 Ngày", p: 200000}
-                    ] 
-                }
+                { name: "NgotranVip No Root", desc: "Dùng trực tiếp không cần Root máy", icon: "fa-shield-cat", plans: [{t: "35 Ngày", p: 320000}] },
+                { name: "Zygame", desc: "Bypass an toàn, không giật lag", icon: "fa-gamepad", plans: [{t: "30 Ngày", p: 150000}] },
+                { name: "🌟 Drip VIP", desc: "Free Fire Macro Pro đỉnh cao", icon: "fa-skull", plans: [{t: "15 Ngày", p: 150000}, {t: "30 Ngày", p: 240000}] },
+                { name: "🌟 Prime Cook", desc: "Menu VIP hỗ trợ leo rank cực nhanh", icon: "fa-fire", plans: [{t: "7 Ngày", p: 80000}] },
+                { name: "🌟 Strick Cheat", desc: "Tối ưu hóa độ nhạy, bắn mượt", icon: "fa-bolt", plans: [{t: "15 Ngày", p: 150000}, {t: "30 Ngày", p: 220000}] },
+                { name: "🌟 Br Mods", desc: "Bản mod Android tổng hợp tính năng", icon: "fa-cubes", plans: [{t: "15 Ngày", p: 160000}, {t: "30 Ngày", p: 220000}] },
+                { name: "🌟 LK Root", desc: "Dành riêng cho máy Android đã Root", icon: "fa-unlock", plans: [{t: "10 Ngày", p: 120000}, {t: "30 Ngày", p: 200000}] },
+                { name: "🛒 Pato Cam + Xanh 🌟", desc: "Bản màu Pato Cam & Xanh cực đẹp", icon: "fa-eye", plans: [{t: "7 Ngày", p: 85000}, {t: "30 Ngày", p: 190000}] },
+                { name: "🌟 Hg Cheat", desc: "Mod Android leo rank mượt mà", icon: "fa-crosshair", plans: [{t: "10 Ngày", p: 100000}, {t: "30 Ngày", p: 190000}] },
+                { name: "Proxy Drip 🌟", desc: "Proxy chống giật lag, tăng độ nhạy", icon: "fa-network-wired", plans: [{t: "7 Ngày", p: 80000}, {t: "30 Ngày", p: 200000}] }
             ],
             aim: [
-                { 
-                    name: "HuybaocheatVip", 
-                    desc: "Khóa mục tiêu chuẩn xác 100%", 
-                    icon: "fa-crosshairs", 
-                    plans: [
-                        {t: "Vĩnh Viễn", p: 450000}
-                    ] 
-                },
-                { 
-                    name: "Proxy Adr-iOS", 
-                    desc: "Hỗ trợ ghim tâm cả Android lẫn iOS", 
-                    icon: "fa-globe", 
-                    plans: [
-                        {t: "30 Ngày", p: 240000}, 
-                        {t: "Vĩnh Viễn", p: 360000}
-                    ] 
-                },
-                { 
-                    name: "Aimlock", 
-                    desc: "Tự động khóa đầu cực nhạy", 
-                    icon: "fa-bullseye", 
-                    plans: [
-                        {t: "30 Ngày", p: 180000}, 
-                        {t: "Vĩnh Viễn", p: 280000}
-                    ] 
-                }
+                { name: "HuybaocheatVip", desc: "Khóa mục tiêu chuẩn xác 100%", icon: "fa-crosshairs", plans: [{t: "Vĩnh Viễn", p: 450000}] },
+                { name: "Proxy Adr-iOS", desc: "Hỗ trợ ghim tâm cả Android lẫn iOS", icon: "fa-globe", plans: [{t: "30 Ngày", p: 240000}, {t: "Vĩnh Viễn", p: 360000}] },
+                { name: "Aimlock", desc: "Tự động khóa đầu cực nhạy", icon: "fa-bullseye", plans: [{t: "30 Ngày", p: 180000}, {t: "Vĩnh Viễn", p: 280000}] }
             ]
         };
 
         const sampleLiveTx = [
-            { u: "Trần Trúc", a: "nạp 500.000đ", t: "00:40", type: "green" },
-            { u: "Zang Nam", a: "nạp 150.000đ", t: "00:23", type: "green" },
-            { u: "Kagero", a: "nạp 10.000đ", t: "23:43", type: "green" },
-            { u: "Vũ Tạp Hóa IOS", a: "mua Migul Pro - 30day", t: "00:55", type: "pink" },
-            { u: "lad", a: "mua Aimlock - Vĩnh Viễn", t: "00:30", type: "pink" }
+            { u: "Trần T***", a: "nạp 500.000đ", t: "00:40", type: "green" },
+            { u: "Zang N***", a: "nạp 150.000đ", t: "00:23", type: "green" },
+            { u: "Vũ T***", a: "mua Migul Pro - 30day", t: "00:55", type: "pink" },
+            { u: "Phạm K***", a: "mua Aimlock - Vĩnh Viễn", t: "00:30", type: "pink" }
         ];
 
-        /* Anonymous Top Recharge Leaderboard */
+        /* Top Recharge Masked Data (Che ID Bảo Mật) */
         const topData = [
-            { r: 1, u: "Lê H***ng Phong", id: "@phong_vip", val: "7.500.000đ" },
-            { r: 2, u: "Nguyễn C*** Diệu", id: "@dieu_hax", val: "6.200.000đ" },
-            { r: 3, u: "Vũ Đ*** Trọng", id: "@trong_freefire", val: "5.150.000đ" },
-            { r: 4, u: "Đức K***", id: "@kienducc", val: "4.435.000đ" },
-            { r: 5, u: "Vanth***", id: "@vanthienios", val: "4.115.000đ" },
-            { r: 6, u: "Đoàn G***", id: "@DVgiau", val: "4.058.000đ" },
-            { r: 7, u: "K3V N**", id: "@whitebanfile11", val: "3.930.000đ" },
-            { r: 8, u: "Dat N****", id: "@ddatcheat", val: "3.430.000đ" },
-            { r: 9, u: "QIOS***", id: "@nquangios", val: "3.000.000đ" }
+            { r: 1, u: "Lê H***ng Phong", id: "@pho***_vip", val: "7.500.000đ" },
+            { r: 2, u: "Nguyễn C*** Diệu", id: "@die***_hax", val: "6.200.000đ" },
+            { r: 3, u: "Vũ Đ*** Trọng", id: "@tro***_ff", val: "5.150.000đ" },
+            { r: 4, u: "Đức K***", id: "@kie***ucc", val: "4.435.000đ" },
+            { r: 5, u: "Vanth***", id: "@van***ios", val: "4.115.000đ" },
+            { r: 6, u: "Đoàn G***", id: "@DVg***u", val: "4.058.000đ" },
+            { r: 7, u: "K3V N**", id: "@whi***11", val: "3.930.000đ" }
         ];
 
         const defaultKhoItems = [
-            {
-                prodTitle: "Migul Lite - 7 Ngày",
-                count: 1,
-                keys: [{ code: "RTPIK1ALSW7VQ4LC", date: "2026-07-04 23:21" }]
-            }
+            { prodTitle: "Migul Lite - 7 Ngày", count: 1, keys: [{ code: "HB-RTPIK1-ALSW7V", date: "2026-07-27 08:30" }] }
         ];
 
-        /* i18n Translation Dictionary */
         const i18n = {
-            vi: {
-                balance_label: "SỐ DƯ",
-                cat_ios_title: "MỤC IOS - IPAD",
-                cat_adr_title: "MỤC ADR ROOT - NO ROOT",
-                cat_aim_title: "MỤC AIM ADR VÀ IOS",
-                recent_tx_header: "GIAO DỊCH MỚI NHẤT SHOP",
-                btn_back: "QUAY LẠI MỤC CHÍNH",
-                recharge_prompt: "CHỌN NHANH SỐ TIỀN MUỐN NẠP:",
-                btn_create_qr: "TẠO MÃ QR NẠP TIỀN",
-                btn_close: "ĐÓNG",
-                nav_shop: "Cửa Hàng",
-                nav_recharge: "Nạp Tiền",
-                nav_top: "Top Nạp",
-                nav_history: "Cá Nhân"
-            },
-            en: {
-                balance_label: "BALANCE",
-                cat_ios_title: "IOS - IPAD CATEGORY",
-                cat_adr_title: "ANDROID (ROOT - NO ROOT)",
-                cat_aim_title: "AIM CATEGORY (ADR & IOS)",
-                recent_tx_header: "RECENT TRANSACTIONS",
-                btn_back: "BACK TO MAIN MENU",
-                recharge_prompt: "QUICK SELECT AMOUNT TO TOP UP:",
-                btn_create_qr: "GENERATE PAYMENT QR",
-                btn_close: "CLOSE",
-                nav_shop: "Store",
-                nav_recharge: "Top Up",
-                nav_top: "Ranking",
-                nav_history: "Account"
-            }
+            vi: { balance_label: "SỐ DƯ", cat_ios_title: "MỤC IOS - IPAD", cat_adr_title: "MỤC ADR ROOT - NO ROOT", cat_aim_title: "MỤC AIM ADR VÀ IOS", recent_tx_header: "GIAO DỊCH MỚI NHẤT SHOP", btn_back: "QUAY LẠI MỤC CHÍNH", recharge_prompt: "CHỌN NHANH SỐ TIỀN MUỐN NẠP:", btn_create_qr: "TẠO MÃ QR NẠP TIỀN", btn_close: "ĐÓNG", nav_shop: "Cửa Hàng", nav_recharge: "Nạp Tiền", nav_top: "Top Nạp", nav_history: "Cá Nhân" },
+            en: { balance_label: "BALANCE", cat_ios_title: "IOS - IPAD CATEGORY", cat_adr_title: "ANDROID (ROOT - NO ROOT)", cat_aim_title: "AIM CATEGORY (ADR & IOS)", recent_tx_header: "RECENT TRANSACTIONS", btn_back: "BACK TO MAIN MENU", recharge_prompt: "QUICK SELECT AMOUNT TO TOP UP:", btn_create_qr: "GENERATE PAYMENT QR", btn_close: "CLOSE", nav_shop: "Store", nav_recharge: "Top Up", nav_top: "Ranking", nav_history: "Account" }
         };
 
         let currentLang = 'vi';
@@ -1138,7 +938,6 @@
         let tgUserId = "8692475970";
         let currentGeneratedKey = "";
 
-        /* Telegram Web App Data Parser */
         function initTelegramApp() {
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
@@ -1147,12 +946,12 @@
 
                 const user = tg.initDataUnsafe?.user;
                 if (user) {
-                    document.getElementById('user-name').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo Cipher";
+                    const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo Cipher";
+                    document.getElementById('user-name').textContent = fullName;
+                    document.getElementById('profile-card-name').textContent = fullName;
                     document.getElementById('user-tg-id').textContent = user.id;
                     tgUserId = user.id;
-                    if (user.username) {
-                        tgUsername = user.username.toLowerCase();
-                    }
+                    if (user.username) tgUsername = user.username.toLowerCase();
                     if (user.photo_url) {
                         document.getElementById('user-avatar').src = user.photo_url;
                         document.getElementById('loader-avatar-img').src = user.photo_url;
@@ -1160,7 +959,6 @@
                 }
             }
 
-            // Admin VIP Access Verification
             if (tgUsername === 'cipherseller' || tgUserId === '8692475970' || window.location.search.includes('cipherseller')) {
                 userBalance = 999999999;
                 tgUsername = 'cipherseller';
@@ -1168,14 +966,13 @@
             updateBalanceUI();
         }
 
-        /* Loading Screen Logic */
         function startLoading() {
             let percent = 0;
             const bar = document.getElementById('load-bar');
             const txt = document.getElementById('load-percent');
             
             const timer = setInterval(() => {
-                percent += Math.floor(Math.random() * 4) + 2;
+                percent += Math.floor(Math.random() * 5) + 3;
                 if (percent >= 100) {
                     percent = 100;
                     clearInterval(timer);
@@ -1183,15 +980,15 @@
                         const screen = document.getElementById('loading-screen');
                         screen.style.opacity = '0';
                         setTimeout(() => screen.style.display = 'none', 500);
-                    }, 350);
+                    }, 300);
                 }
                 bar.style.width = percent + '%';
                 txt.textContent = `ĐANG TẢI ${percent}%`;
-            }, 45);
+            }, 35);
         }
 
-        /* Ambient Sakura Canvas Effect */
-        function initSoftSakura() {
+        /* Enhanced High-Definition 3D Sakura Effect */
+        function initHD3DSakura() {
             const canvas = document.getElementById('sakura-canvas');
             const ctx = canvas.getContext('2d');
             let w = canvas.width = window.innerWidth;
@@ -1202,40 +999,47 @@
                 h = canvas.height = window.innerHeight;
             });
 
-            const petals = Array.from({ length: 24 }, () => ({
+            const petals = Array.from({ length: 28 }, () => ({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                r: Math.random() * 2.2 + 1.2,
-                speedY: Math.random() * 0.6 + 0.3,
-                speedX: Math.random() * 0.4 - 0.2,
-                angle: Math.random() * Math.PI * 2,
-                opacity: Math.random() * 0.35 + 0.15
+                rx: Math.random() * 4 + 2,
+                ry: Math.random() * 2 + 1,
+                speedY: Math.random() * 0.7 + 0.4,
+                speedX: Math.random() * 0.5 - 0.25,
+                rot: Math.random() * Math.PI * 2,
+                rotSpeed: Math.random() * 0.02 - 0.01,
+                opacity: Math.random() * 0.4 + 0.3
             }));
 
             function draw() {
                 ctx.clearRect(0, 0, w, h);
                 petals.forEach(p => {
                     ctx.save();
-                    ctx.beginPath();
                     ctx.translate(p.x, p.y);
-                    ctx.rotate(p.angle);
-                    ctx.fillStyle = `rgba(255, 105, 180, ${p.opacity})`;
-                    ctx.ellipse(0, 0, p.r * 1.8, p.r * 0.8, 0, 0, Math.PI * 2);
+                    ctx.rotate(p.rot);
+                    
+                    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, p.rx);
+                    grad.addColorStop(0, `rgba(255, 182, 193, ${p.opacity})`);
+                    grad.addColorStop(0.8, `rgba(255, 42, 141, ${p.opacity * 0.8})`);
+                    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.rx, p.ry, Math.PI / 4, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.restore();
 
                     p.y += p.speedY;
                     p.x += p.speedX;
-                    p.angle += 0.01;
+                    p.rot += p.rotSpeed;
 
-                    if (p.y > h) { p.y = -10; p.x = Math.random() * w; }
+                    if (p.y > h + 10) { p.y = -10; p.x = Math.random() * w; }
                 });
                 requestAnimationFrame(draw);
             }
             draw();
         }
 
-        /* Language Switcher */
         function toggleLanguage() {
             currentLang = currentLang === 'vi' ? 'en' : 'vi';
             document.getElementById('lang-label').textContent = currentLang.toUpperCase();
@@ -1245,7 +1049,6 @@
             });
         }
 
-        /* Shop Category Navigation */
         function openCategory(catKey) {
             document.getElementById('category-menu').style.display = 'none';
             document.getElementById('product-detail-view').style.display = 'block';
@@ -1255,20 +1058,22 @@
 
             (productsData[catKey] || []).forEach((item, idx) => {
                 const card = document.createElement('div');
-                card.className = 'product-card';
+                card.className = 'flow-border-card';
                 let options = item.plans.map(p => `<option value="${p.p}">${p.t} - ${p.p.toLocaleString('vi-VN')}đ</option>`).join('');
 
                 card.innerHTML = `
-                    <div class="product-header">
-                        <div class="product-badge-icon"><i class="fa-solid ${item.icon || 'fa-box'}"></i></div>
-                        <div class="product-title">${item.name}</div>
-                    </div>
-                    <div class="product-desc">${item.desc}</div>
-                    <div class="product-controls">
-                        <div class="select-wrapper">
-                            <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                    <div class="flow-card-inner">
+                        <div class="product-header">
+                            <div class="product-badge-icon"><i class="fa-solid ${item.icon || 'fa-box'}"></i></div>
+                            <div class="product-title">${item.name}</div>
                         </div>
-                        <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
+                        <div class="product-desc">${item.desc}</div>
+                        <div class="product-controls">
+                            <div class="select-wrapper">
+                                <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                            </div>
+                            <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
+                        </div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -1276,11 +1081,10 @@
         }
 
         function backToCategories() {
-            document.getElementById('category-menu').style.display = 'flex';
+            document.getElementById('category-menu').style.display = 'block';
             document.getElementById('product-detail-view').style.display = 'none';
         }
 
-        /* Purchasing Engine */
         function buyProduct(prodName, selectId) {
             const selectElem = document.getElementById(`sel-${selectId}`);
             const price = parseInt(selectElem.value);
@@ -1290,7 +1094,7 @@
 
             if (!isCipherSeller) {
                 if (userBalance < price) {
-                    alert(`Số dư của bạn không đủ (${userBalance.toLocaleString('vi-VN')}đ)! Vui lòng nạp thêm tiền để tiếp tục.`);
+                    alert(`Số dư không đủ (${userBalance.toLocaleString('vi-VN')}đ)! Vui lòng nạp thêm tiền.`);
                     return;
                 }
                 userBalance -= price;
@@ -1304,18 +1108,12 @@
                 currentGeneratedKey += chars.charAt(Math.floor(Math.random() * chars.length));
             }
 
-            /* Celebration FX Trigger */
-            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
-            setTimeout(() => {
-                confetti({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 } });
-            }, 250);
+            confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
 
             openKeyModal(currentGeneratedKey, "🎉 GIAO DỊCH THÀNH CÔNG!", `${prodName} - ${planText}`);
             addKeyToKho(`${prodName} - ${planText}`, currentGeneratedKey);
         }
 
-        /* Local Storage Management for Inventory */
         function addKeyToKho(prodTitle, keyString) {
             let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
             const now = new Date();
@@ -1326,11 +1124,7 @@
                 existingGroup.count += 1;
                 existingGroup.keys.unshift({ code: keyString, date: dateStr });
             } else {
-                kho.unshift({
-                    prodTitle: prodTitle,
-                    count: 1,
-                    keys: [{ code: keyString, date: dateStr }]
-                });
+                kho.unshift({ prodTitle: prodTitle, count: 1, keys: [{ code: keyString, date: dateStr }] });
             }
 
             localStorage.setItem('shop_kho_data', JSON.stringify(kho));
@@ -1341,35 +1135,37 @@
             const container = document.getElementById('kho-container');
             let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
 
+            let totalBought = 0;
+            kho.forEach(k => totalBought += k.count);
+            document.getElementById('total-keys-bought').textContent = totalBought;
+
             if (kho.length === 0) {
-                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Kho của bạn chưa có sản phẩm nào.</div>';
+                container.innerHTML = '<div style="font-size:11px; color:var(--text-sub); text-align:center; padding:20px;">Kho của bạn chưa có key nào.</div>';
                 return;
             }
 
             container.innerHTML = '';
             kho.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'kho-card';
-
                 let keysHtml = item.keys.map(k => `
-                    <div class="key-row-item">
+                    <div class="kho-item-mini">
                         <div>
-                            <div class="key-code-text">${k.code}</div>
-                            <div class="key-date-text">Ngày mua: ${k.date}</div>
+                            <div class="key-text-mini">${k.code}</div>
+                            <div class="key-sub-mini">${k.date}</div>
                         </div>
-                        <button class="btn-copy-icon" onclick="copyText('${k.code}')"><i class="fa-regular fa-copy"></i></button>
+                        <button class="btn-copy-mini" onclick="copyText('${k.code}')"><i class="fa-regular fa-copy"></i></button>
                     </div>
                 `).join('');
 
+                const card = document.createElement('div');
+                card.className = 'flow-border-card';
                 card.innerHTML = `
-                    <div class="kho-header">
-                        <div class="kho-title">
-                            <i class="fa-solid fa-box" style="color:var(--green-glow);"></i>
-                            <span>${item.prodTitle}</span>
+                    <div class="flow-card-inner" style="padding:12px;">
+                        <div style="font-weight:800; font-size:12px; color:#fff; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <span><i class="fa-solid fa-key" style="color:var(--pink-main); margin-right:5px;"></i>${item.prodTitle}</span>
+                            <span style="background:var(--green-glow); color:#000; padding:2px 8px; border-radius:10px; font-size:10px;">${item.count} Key</span>
                         </div>
-                        <div class="kho-count-badge">${item.count}</div>
+                        <div>${keysHtml}</div>
                     </div>
-                    <div>${keysHtml}</div>
                 `;
                 container.appendChild(card);
             });
@@ -1382,7 +1178,6 @@
             topData.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'leader-item';
-
                 let rankClass = item.r === 1 ? 'rank-1' : (item.r === 2 ? 'rank-2' : (item.r === 3 ? 'rank-3' : 'rank-other'));
 
                 div.innerHTML = `
@@ -1420,17 +1215,12 @@
             });
         }
 
-        function setQuickAmount(amt) {
-            document.getElementById('recharge-amount').value = amt;
-        }
+        function setQuickAmount(amt) { document.getElementById('recharge-amount').value = amt; }
 
         function generateQR() {
             const amount = parseInt(document.getElementById('recharge-amount').value);
-            if (!amount || amount < 10000) { 
-                alert("Vui lòng nạp tối thiểu 10.000đ!"); 
-                return; 
-            }
-            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021138570010A00000072701270006970422011126605669220208QRIBFTTA53037045405${amount}5802VN62180814HuyBaoShop%20${tgUserId}6304`;
+            if (!amount || amount < 10000) { alert("Vui lòng nạp tối thiểu 10.000đ!"); return; }
+            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020101021138570010A00000072701270006970422011126605669220208QRIBFTTA53037045405${amount}5802VN62180814HuyBaoShop%20${tgUserId}6304`;
             document.getElementById('qr-memo').textContent = `NAP${tgUserId}`;
             document.getElementById('qr-result').style.display = 'block';
         }
@@ -1448,7 +1238,7 @@
 
         function copyText(txt) {
             navigator.clipboard.writeText(txt).then(() => {
-                alert("Đã sao chép mã Key thành công!");
+                alert("Đã sao chép mã Key!");
             }).catch(() => {
                 alert("Mã Key: " + txt);
             });
@@ -1465,11 +1255,10 @@
             document.getElementById('balance-display').textContent = userBalance.toLocaleString('vi-VN') + 'đ';
         }
 
-        /* Entry Orchestrator */
         window.onload = function() {
             initTelegramApp();
             startLoading();
-            initSoftSakura();
+            initHD3DSakura();
             renderLiveTx();
             renderKhoUI();
             renderTopNap();
