@@ -905,7 +905,7 @@
     <div class="anime-mascot-container">
         <div class="mascot-speech-bubble" id="mascot-speech">Huy Bảo Shop xin chào bạn! 🌸</div>
         <div class="mascot-avatar-wrapper" onclick="triggerMascotInteraction()">
-            <img class="mascot-img" src="https://i.ibb.co/3ykG4L5/anime-mascot.jpg" alt="Mascot Anime" id="mascot-img-elem">
+            <img class="mascot-img" id="mascot-img-elem" alt="Mascot Anime">
             <div class="mascot-online-dot"></div>
         </div>
     </div>
@@ -1112,8 +1112,8 @@
 
     <!-- Scripting Execution -->
     <script>
-        /* Embedded Image Data for Mascot */
-        const ANIME_MASCOT_IMAGE_SRC = "https://i.imgur.com/8Q9Z5bX.png"; // Dự phòng link mẫu nếu load xài trực tiếp
+        /* Embedded Image Data for Mascot (Direct SVG Avatar Generator to Ensure ZERO Broken Link) */
+        const ANIME_MASCOT_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%233a1c5c"/><stop offset="100%" stop-color="%230b0518"/></radialGradient><linearGradient id="hair" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23ffffff"/><stop offset="100%" stop-color="%23e2d5f8"/></linearGradient></defs><rect width="200" height="200" rx="100" fill="url(%23bg)"/><path d="M40 180 Q100 130 160 180" fill="%23f2d2c4"/><path d="M50 110 Q40 50 100 20 Q160 50 150 110 Q160 160 100 180 Q40 160 50 110 Z" fill="url(%23hair)"/><ellipse cx="75" cy="105" rx="12" ry="16" fill="%232b1040"/><ellipse cx="125" cy="105" rx="12" ry="16" fill="%232b1040"/><circle cx="78" cy="100" r="5" fill="%23ff2a8d"/><circle cx="128" cy="100" r="5" fill="%23ff2a8d"/><path d="M92 125 Q100 133 108 125" stroke="%23ff2a8d" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 40 Q100 10 140 40 Q150 90 140 110 Q100 85 60 110 Q50 90 60 40" fill="url(%23hair)"/><path d="M120 45 L150 25 L140 55 Z" fill="%23ff2a8d"/></svg>`;
 
         /* Product Database Configuration */
         const productsData = {
@@ -1378,6 +1378,9 @@
 
         /* Telegram Web App Data Parser */
         function initTelegramApp() {
+            // Set mascot image safely
+            document.getElementById('mascot-img-elem').src = ANIME_MASCOT_SVG;
+
             if (window.Telegram && window.Telegram.WebApp) {
                 const tg = window.Telegram.WebApp;
                 tg.ready();
@@ -1422,7 +1425,6 @@
                         screen.style.opacity = '0';
                         setTimeout(() => {
                             screen.style.display = 'none';
-                            // Chào mừng từ mascot khi mở ứng dụng thành công
                             setTimeout(triggerMascotInteraction, 600);
                         }, 500);
                     }, 350);
@@ -1666,7 +1668,7 @@
             document.getElementById('recharge-amount').value = amt;
         }
 
-        /* Fixed & Upgraded VietQR Generation Function */
+        /* VietQR Generation Function */
         function generateQR() {
             const amountInput = document.getElementById('recharge-amount');
             const amount = parseInt(amountInput.value);
@@ -1681,7 +1683,6 @@
             const accountName = "LE HUY BAO";
             const memo = `NAP${tgUserId}`;
 
-            // Chuẩn API VietQR chính thức
             const vietQrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(memo)}&accountName=${encodeURIComponent(accountName)}`;
 
             document.getElementById('qr-img').src = vietQrUrl;
@@ -1689,7 +1690,6 @@
             document.getElementById('amt-val').textContent = amount.toLocaleString('vi-VN') + 'đ';
             document.getElementById('qr-result').style.display = 'block';
 
-            // Tự động cuộn mượt xuống khung QR
             document.getElementById('qr-result').scrollIntoView({ behavior: 'smooth' });
         }
 
