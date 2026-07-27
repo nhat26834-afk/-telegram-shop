@@ -2,679 +2,1478 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Giá Dịch Vụ - Game Mods & Cheats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Huy Bảo Shop - Free Fire VIP</title>
     
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
-        /* ==================== CẤU HÌNH TỔNG QUAN & MÀU SẮC ==================== */
         :root {
-            --bg-color: #0b0d19;
-            --card-bg: rgba(22, 27, 46, 0.75);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --bg-dark: #07040f;
+            --card-bg: rgba(22, 14, 38, 0.85);
+            --card-inner: rgba(35, 22, 58, 0.7);
+            --pink-main: #ff2a8d;
+            --pink-glow: rgba(255, 42, 141, 0.4);
+            --purple-neon: #a855f7;
+            --green-glow: #10b981;
+            --cyan-neon: #06b6d4;
             --text-main: #ffffff;
-            --text-sub: #a0aec0;
-            
-            /* Màu Gradient theo từng Mục */
-            --ios-grad: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            --ios-glow: rgba(79, 172, 254, 0.4);
-            
-            --adr-grad: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
-            --adr-glow: rgba(0, 176, 155, 0.4);
-            
-            --aim-grad: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
-            --aim-glow: rgba(255, 8, 68, 0.4);
-            
-            --price-color: #ffdd59;
+            --text-sub: #a393be;
+            --border-light: rgba(255, 255, 255, 0.08);
+            --border-pink: rgba(255, 42, 141, 0.35);
+            --radius-xl: 24px;
+            --radius-lg: 18px;
+            --radius-md: 14px;
+            --radius-pill: 50px;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 10% 10%, rgba(79, 172, 254, 0.15) 0px, transparent 50%),
-                radial-gradient(at 90% 90%, rgba(255, 8, 68, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(0, 176, 155, 0.15) 0px, transparent 50%);
-            background-attachment: fixed;
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            padding: 40px 20px;
             min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        /* ==================== TIÊU ĐỀ TRANG ==================== */
-        .page-header {
-            text-align: center;
-            margin-bottom: 50px;
+            padding-bottom: 95px;
+            overflow-x: hidden;
             position: relative;
         }
 
-        .page-header h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, #00f2fe, #4facfe, #00b09b, #ff0844);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 6s ease infinite;
-        }
-
-        .page-header p {
-            color: var(--text-sub);
-            font-size: 1.1rem;
-            margin-top: 10px;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* ==================== DANH MỤC SẢN PHẨM ==================== */
-        .category-section {
-            margin-bottom: 60px;
-        }
-
-        .category-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--border-color);
-            position: relative;
-        }
-
-        .category-title::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
+        /* Sakura Canvas Background */
+        #sakura-canvas {
+            position: fixed;
+            top: 0;
             left: 0;
-            height: 2px;
-            width: 120px;
-        }
-
-        /* Chi tiết màu tiêu đề từng danh mục */
-        .cat-ios .category-title { color: #4facfe; }
-        .cat-ios .category-title::after { background: var(--ios-grad); box-shadow: 0 0 10px var(--ios-glow); }
-
-        .cat-adr .category-title { color: #00b09b; }
-        .cat-adr .category-title::after { background: var(--adr-grad); box-shadow: 0 0 10px var(--adr-glow); }
-
-        .cat-aim .category-title { color: #ff0844; }
-        .cat-aim .category-title::after { background: var(--aim-grad); box-shadow: 0 0 10px var(--aim-glow); }
-
-        /* ==================== LƯỚI SẢN PHẨM (GRID) ==================== */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        /* ==================== CARD SẢN PHẨM ==================== */
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Hiệu ứng viền phát sáng khi Hover */
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            transition: 0.3s;
-        }
-
-        .cat-ios .product-card::before { background: var(--ios-grad); }
-        .cat-adr .product-card::before { background: var(--adr-grad); }
-        .cat-aim .product-card::before { background: var(--aim-grad); }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .cat-ios .product-card:hover { box-shadow: 0 10px 30px -10px var(--ios-glow); }
-        .cat-adr .product-card:hover { box-shadow: 0 10px 30px -10px var(--adr-glow); }
-        .cat-aim .product-card:hover { box-shadow: 0 10px 30px -10px var(--aim-glow); }
-
-        /* Tên sản phẩm */
-        .product-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .product-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .product-name i {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-
-        .cat-ios .product-name i { color: #00f2fe; }
-        .cat-adr .product-name i { color: #96c93d; }
-        .cat-aim .product-name i { color: #ff0844; }
-
-        /* Badge Nổi Bật / VIP */
-        .badge {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .badge-vip {
-            background: linear-gradient(45deg, #ffe000, #799f0c);
-            color: #000;
-            border: none;
-            box-shadow: 0 0 10px rgba(255, 224, 0, 0.5);
-        }
-
-        /* Danh sách Giá */
-        .price-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .price-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: 0.2s;
-        }
-
-        .price-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            transform: scale(1.02);
-        }
-
-        .duration {
-            font-size: 0.95rem;
-            color: var(--text-sub);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .duration i {
-            font-size: 0.85rem;
-        }
-
-        .price-value {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--price-color);
-            text-shadow: 0 0 8px rgba(255, 221, 89, 0.3);
-        }
-
-        .price-value span {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #888;
-            margin-left: 2px;
-        }
-
-        /* Nút Mua Hàng */
-        .btn-buy {
             width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: #fff;
-            cursor: pointer;
-            transition: 0.3s;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Loading Screen Overlay */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #040208;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+
+        .loader-box {
+            position: relative;
+            width: 95px;
+            height: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .loader-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 42, 141, 0.15);
+            border-top-color: var(--pink-main);
+            border-right-color: var(--cyan-neon);
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .loader-logo {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--pink-main);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .progress-wrapper {
+            width: 240px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-pill);
+            margin-top: 25px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 42, 141, 0.3);
+            box-shadow: 0 0 15px var(--pink-glow);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--pink-main), var(--purple-neon));
+            border-radius: var(--radius-pill);
+            transition: width 0.1s linear;
+        }
+
+        .loading-text {
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-sub);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1.5px;
+        }
+
+        /* Header UI */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(7, 4, 15, 0.9);
+            backdrop-filter: blur(18px);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-box img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--pink-main);
+            box-shadow: 0 0 12px var(--pink-glow);
+        }
+
+        .user-info .username {
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .user-info .telegram-id {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            text-decoration: none;
         }
 
-        .cat-ios .btn-buy { background: var(--ios-grad); }
-        .cat-adr .btn-buy { background: var(--adr-grad); }
-        .cat-aim .btn-buy { background: var(--aim-grad); }
-
-        .btn-buy:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        .lang-btn {
+            background: var(--card-inner);
+            border: 1px solid var(--border-pink);
+            color: var(--pink-main);
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
         }
 
-        /* Responsive cho Mobile */
-        @media (max-width: 768px) {
-            body { padding: 20px 10px; }
-            .page-header h1 { font-size: 2rem; }
-            .category-title { font-size: 1.4rem; }
-            .product-grid { grid-template-columns: 1fr; }
+        .lang-btn:active { transform: scale(0.95); }
+
+        .wallet-badge {
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.18), rgba(168, 85, 247, 0.18));
+            border: 1px solid var(--border-pink);
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            text-align: right;
+            box-shadow: 0 0 12px var(--pink-glow);
         }
+
+        .wallet-badge .amount {
+            color: var(--green-glow);
+            font-weight: 800;
+            font-size: 12px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Container & Tabs */
+        .container {
+            padding: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.35s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Category Grid */
+        .category-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-card:active { transform: scale(0.97); }
+
+        .category-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .category-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, rgba(255, 42, 141, 0.25), rgba(168, 85, 247, 0.35));
+            border: 1px solid var(--pink-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--pink-main);
+            box-shadow: 0 0 14px var(--pink-glow);
+        }
+
+        .category-title { font-weight: 800; font-size: 14px; color: #fff; }
+        .category-sub { font-size: 12px; color: var(--text-sub); margin-top: 3px; }
+
+        /* Buttons & Products */
+        .btn-back {
+            background: var(--card-inner);
+            border: 1px solid var(--border-pink);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl);
+            margin-bottom: 16px;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        }
+
+        .product-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-badge-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 42, 141, 0.15);
+            border: 1px solid var(--border-pink);
+            color: var(--pink-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 0 10px var(--pink-glow);
+        }
+
+        .product-title { font-weight: 800; font-size: 16px; color: #fff; }
+        .product-desc { font-size: 12px; color: var(--text-sub); margin-bottom: 16px; line-height: 1.5; }
+
+        .product-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .select-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--pink-main);
+            font-size: 11px;
+            pointer-events: none;
+        }
+
+        select.plan-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-pill);
+            color: #fff;
+            padding: 12px 35px 12px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
+            color: #fff;
+            border: none;
+            padding: 12px 22px;
+            border-radius: var(--radius-pill);
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px var(--pink-glow);
+            transition: 0.2s;
+        }
+
+        .btn-buy:active { transform: scale(0.95); }
+
+        /* Live Transactions */
+        .live-tx-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .live-tx-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tx-scroll-container {
+            max-height: 260px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        .tx-scroll-container::-webkit-scrollbar { width: 4px; }
+        .tx-scroll-container::-webkit-scrollbar-thumb { background: var(--pink-main); border-radius: 4px; }
+
+        .tx-item {
+            background: var(--card-inner);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+
+        .tx-user { font-weight: 600; color: #fff; }
+        .tx-action { color: var(--text-sub); font-size: 11px; }
+        .tx-amount { font-weight: 700; font-family: 'Orbitron', sans-serif; }
+        .tx-amount.green { color: var(--green-glow); }
+        .tx-amount.pink { color: var(--pink-main); }
+
+        /* Kho - History */
+        .kho-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-pink);
+            border-radius: var(--radius-xl);
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+        }
+
+        .kho-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+        }
+
+        .kho-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .kho-count-badge {
+            background: var(--green-glow);
+            color: #000;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .key-row-item {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .key-code-text {
+            color: var(--green-glow);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.8px;
+        }
+
+        .key-date-text {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 3px;
+        }
+
+        .btn-copy-icon {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-pink);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy-icon:active { background: var(--pink-main); transform: scale(0.9); }
+
+        /* Top Recharge Section */
+        .top-filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .top-filter-btn {
+            flex: 1;
+            padding: 9px;
+            text-align: center;
+            background: var(--card-inner);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .top-filter-btn.active {
+            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 0 12px var(--pink-glow);
+        }
+
+        .leader-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rank-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            font-family: 'Orbitron';
+        }
+
+        .rank-1 { background: #eab308; color: #000; box-shadow: 0 0 12px rgba(234, 179, 8, 0.6); }
+        .rank-2 { background: #94a3b8; color: #000; }
+        .rank-3 { background: #b45309; color: #fff; }
+        .rank-other { background: rgba(255,255,255,0.1); color: #fff; }
+
+        .leader-user {
+            flex: 1;
+            margin-left: 14px;
+        }
+
+        .leader-name { font-weight: 800; font-size: 13px; color: #fff; }
+        .leader-sub { font-size: 10px; color: var(--text-sub); }
+        .leader-val { font-weight: 800; color: var(--green-glow); font-family: 'Orbitron'; font-size: 12px; }
+
+        /* Recharge UI */
+        .quick-amounts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .btn-quick {
+            background: var(--card-inner);
+            border: 1px solid var(--border-light);
+            color: #fff;
+            padding: 12px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-quick:active { border-color: var(--pink-main); background: rgba(255, 42, 141, 0.2); }
+
+        .input-round {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-pill);
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 14px;
+        }
+
+        /* Modal Key Display */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-body {
+            background: linear-gradient(160deg, #230f3c, #0a0416);
+            border: 2px solid var(--pink-main);
+            border-radius: 32px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 0 50px var(--pink-glow);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.6) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-icon-glow {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+            font-size: 32px;
+            color: #fff;
+            box-shadow: 0 0 25px var(--pink-glow);
+            animation: pulseGlow 1.5s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 15px var(--pink-glow); }
+            50% { box-shadow: 0 0 35px var(--pink-main); transform: scale(1.05); }
+            100% { box-shadow: 0 0 15px var(--pink-glow); }
+        }
+
+        .key-led-box {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px dashed var(--cyan-neon);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            margin: 18px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.2);
+        }
+
+        .key-led-text {
+            color: var(--cyan-neon);
+            font-family: 'Orbitron', monospace;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* Bottom Nav Floating Bar */
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: rgba(7, 4, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 25%;
+            transition: 0.2s;
+        }
+
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { color: var(--pink-main); text-shadow: 0 0 12px var(--pink-glow); }
     </style>
 </head>
 <body>
 
+    <!-- Loading Screen Overlay -->
+    <div id="loading-screen">
+        <div class="loader-box">
+            <div class="loader-circle"></div>
+            <img class="loader-logo" id="loader-avatar-img" src="https://i.imgur.com/8Q9Z5bX.png" alt="Logo">
+        </div>
+        <div class="progress-wrapper">
+            <div class="progress-bar" id="load-bar"></div>
+        </div>
+        <div class="loading-text" id="load-percent">ĐANG TẢI 0%</div>
+    </div>
+
+    <!-- Falling Sakura Canvas -->
+    <canvas id="sakura-canvas"></canvas>
+
+    <!-- Header Section -->
+    <div class="header">
+        <div class="user-profile">
+            <div class="avatar-box">
+                <img id="user-avatar" src="https://i.imgur.com/8Q9Z5bX.png" alt="Avatar">
+            </div>
+            <div class="user-info">
+                <div class="username">
+                    <span id="user-name">Huy Bảo Cipher</span> 
+                    <i class="fa-solid fa-circle-check" style="color:var(--pink-main); font-size:12px;"></i>
+                </div>
+                <div class="telegram-id">ID: <span id="user-tg-id">8692475970</span></div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="lang-btn" onclick="toggleLanguage()"><i class="fa-solid fa-globe"></i> <span id="lang-label">VI</span></button>
+            <div class="wallet-badge">
+                <div style="font-size:9px; color:var(--text-sub);" data-i18n="balance_label">SỐ DƯ</div>
+                <div class="amount" id="balance-display">0đ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dynamic Content Container -->
     <div class="container">
         
-        <header class="page-header">
-            <h1><i class="fa-solid fa-gamepad"></i> BẢNG GIÁ DỊCH VỤ MOD & CHEAT</h1>
-            <p>Hệ thống tự động - Uy tín - Hỗ trợ nhanh chóng</p>
-        </header>
-
-        <section class="category-section cat-ios">
-            <h2 class="category-title">
-                <i class="fa-brands fa-apple"></i> MỤC IOS - IPAD
-            </h2>
+        <!-- Tab: Shop & Categories -->
+        <div id="tab-shop" class="tab-content active">
             
-            <div class="product-grid">
+            <div id="category-menu" class="category-grid">
+                <div class="category-card" onclick="openCategory('ios')">
+                    <div class="category-left">
+                        <div class="category-icon"><i class="fa-brands fa-apple"></i></div>
+                        <div>
+                            <div class="category-title" data-i18n="cat_ios_title">MỤC IOS - IPAD</div>
+                            <div class="category-sub">Migul Pro/Lite, Fluorite, Sudo Hax, iOSViet</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
+                </div>
+
+                <div class="category-card" onclick="openCategory('adr')">
+                    <div class="category-left">
+                        <div class="category-icon"><i class="fa-brands fa-android"></i></div>
+                        <div>
+                            <div class="category-title" data-i18n="cat_adr_title">MỤC ADR ROOT - NO ROOT</div>
+                            <div class="category-sub">NgotranVip, Drip VIP, Pato, LK Root, Proxy...</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
+                </div>
+
+                <div class="category-card" onclick="openCategory('aim')">
+                    <div class="category-left">
+                        <div class="category-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                        <div>
+                            <div class="category-title" data-i18n="cat_aim_title">MỤC AIM ADR VÀ IOS</div>
+                            <div class="category-sub">HuybaocheatVip, Proxy Adr-iOS, Aimlock</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right" style="color:var(--pink-main)"></i>
+                </div>
+
+                <!-- Realtime Recent Transactions List -->
+                <div class="live-tx-box">
+                    <div class="live-tx-header">
+                        <i class="fa-solid fa-bolt" style="color:var(--pink-main);"></i>
+                        <span data-i18n="recent_tx_header">GIAO DỊCH MỚI NHẤT SHOP</span>
+                    </div>
+                    <div class="tx-scroll-container" id="live-tx-list"></div>
+                </div>
+            </div>
+
+            <!-- Product Category Listing View -->
+            <div id="product-detail-view" style="display:none;">
+                <button class="btn-back" onclick="backToCategories()"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">QUAY LẠI MỤC CHÍNH</span></button>
+                <div id="active-products-list"></div>
+            </div>
+
+        </div>
+
+        <!-- Tab: Top Up / Recharge -->
+        <div id="tab-recharge" class="tab-content">
+            <div class="product-card">
+                <div style="font-size:13px; font-weight:700; color:#fff; margin-bottom:12px;" data-i18n="recharge_prompt">CHỌN NHANH SỐ TIỀN MUỐN NẠP:</div>
                 
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-crown"></i> Migul Pro</span>
-                            <span class="badge badge-vip">HOT</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 1 Ngày</span>
-                                <span class="price-value">100<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">215<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">450<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
+                <div class="quick-amounts">
+                    <button class="btn-quick" onclick="setQuickAmount(10000)">10.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(20000)">20.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(50000)">50.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(100000)">100.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(200000)">200.000đ</button>
+                    <button class="btn-quick" onclick="setQuickAmount(500000)">500.000đ</button>
                 </div>
 
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-bolt"></i> Migul Lite</span>
-                            <span class="badge">HOT</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 1 Ngày</span>
-                                <span class="price-value">50<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">150<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">350<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
+                <div style="font-size:12px; color:var(--text-sub); margin-bottom:6px;">Hoặc nhập số tiền (Tối thiểu 10.000đ):</div>
+                <input type="number" id="recharge-amount" class="input-round" placeholder="Nhập số tiền..." value="50000" style="font-family:'Orbitron'; font-weight:bold;">
+                
+                <button class="btn-buy" style="width:100%; padding:14px; margin-bottom:14px;" onclick="generateQR()" data-i18n="btn_create_qr">TẠO MÃ QR NẠP TIỀN</button>
 
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-gem"></i> Fluorite iOS</span>
-                            <span class="badge">PRO</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 1 Ngày</span>
-                                <span class="price-value">90<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">230<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">370<span>k</span></span>
-                            </li>
-                        </ul>
+                <div id="qr-result" style="display:none; background:var(--card-inner); padding:16px; border-radius:var(--radius-xl); border:1px solid var(--border-pink); text-align:center;">
+                    <div style="font-weight:bold; color:var(--pink-main); font-size:13px; margin-bottom:10px;">CỔNG THANH TOÁN QR AUTO 24/7</div>
+                    <img id="qr-img" src="" alt="QR" style="width:180px; height:180px; border-radius:12px; border:2px solid #fff;">
+                    <div style="margin-top:12px; font-size:12px; text-align:left; line-height:1.7;">
+                        <div>Ngân Hàng: <strong>MB BANK (Quân Đội)</strong></div>
+                        <div>Số Tài Khoản: <strong>2660566922</strong></div>
+                        <div>Chủ Tài Khoản: <strong>LE HUY BAO</strong></div>
+                        <div>Nội dung CK: <strong id="qr-memo" style="color:var(--cyan-neon);">...</strong></div>
                     </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
                 </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-shield-halved"></i> Sudo Hax</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 33 Ngày</span>
-                                <span class="price-value">250<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-flag"></i> iOS Viet</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">220<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
             </div>
-        </section>
+        </div>
 
-        <section class="category-section cat-adr">
-            <h2 class="category-title">
-                <i class="fa-brands fa-android"></i> MỤC ANDROID (ROOT - NO ROOT)
-            </h2>
-            
-            <div class="product-grid">
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-star"></i> NgotranVip</span>
-                            <span class="badge">No Root</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 35 Ngày</span>
-                                <span class="price-value">320<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-gamepad"></i> Zygame</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">150<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-fire"></i> Drip VIP</span>
-                            <span class="badge badge-vip">VIP</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 15 Ngày</span>
-                                <span class="price-value">150<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">240<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-utensils"></i> Prime Cook</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">80<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-skull"></i> Strick Cheat</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 15 Ngày</span>
-                                <span class="price-value">150<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">220<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-gear"></i> BR Mods</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 15 Ngày</span>
-                                <span class="price-value">160<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">220<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-unlock"></i> LK Root</span>
-                            <span class="badge">Root</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 10 Ngày</span>
-                                <span class="price-value">120<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">200<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-eye"></i> Pato Cam + Xanh</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">85<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">190<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-crosshair"></i> HG Cheat</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 10 Ngày</span>
-                                <span class="price-value">100<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">190<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-network-wired"></i> Proxy Drip</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 7 Ngày</span>
-                                <span class="price-value">80<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">200<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
+        <!-- Tab: Leaderboard / Top Recharge -->
+        <div id="tab-leaderboard" class="tab-content">
+            <div class="top-filter-bar">
+                <button class="top-filter-btn active" onclick="switchTopTab('month', this)">THÁNG NÀY</button>
+                <button class="top-filter-btn" onclick="switchTopTab('week', this)">TUẦN NÀY</button>
+                <button class="top-filter-btn" onclick="switchTopTab('all', this)">TẤT CẢ</button>
             </div>
-        </section>
+            <div id="leaderboard-list"></div>
+        </div>
 
-        <section class="category-section cat-aim">
-            <h2 class="category-title">
-                <i class="fa-solid fa-bullseye"></i> MỤC CÁC LOẠI AIM ADR VÀ IOS
-            </h2>
-            
-            <div class="product-grid">
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-wand-magic-sparkles"></i> HuybaocheatVip</span>
-                            <span class="badge badge-vip">VĨNH VIỄN</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-solid fa-infinity"></i> Vĩnh Viễn</span>
-                                <span class="price-value">450<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-globe"></i> Proxy Adr-iOS</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">240<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-solid fa-infinity"></i> Vĩnh Viễn</span>
-                                <span class="price-value">360<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-                <div class="product-card">
-                    <div>
-                        <div class="product-header">
-                            <span class="product-name"><i class="fa-solid fa-crosshair"></i> Aimlock</span>
-                            <span class="badge badge-vip">HOT</span>
-                        </div>
-                        <ul class="price-list">
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-regular fa-clock"></i> 30 Ngày</span>
-                                <span class="price-value">180<span>k</span></span>
-                            </li>
-                            <li class="price-item">
-                                <span class="duration"><i class="fa-solid fa-infinity"></i> Vĩnh Viễn</span>
-                                <span class="price-value">280<span>k</span></span>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" class="btn-buy"><i class="fa-solid fa-cart-shopping"></i> Mua Ngay</a>
-                </div>
-
-            </div>
-        </section>
+        <!-- Tab: Storage / Inventory Key History -->
+        <div id="tab-history" class="tab-content">
+            <div style="font-weight:800; font-size:15px; color:#fff; margin-bottom:14px;"><i class="fa-solid fa-box-archive" style="color:var(--pink-main);"></i> KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
+            <div id="kho-container"></div>
+        </div>
 
     </div>
 
+    <!-- Purchase Key Modal Overlay -->
+    <div id="key-modal" class="modal">
+        <div class="modal-body">
+            <div class="modal-icon-glow">
+                <i class="fa-solid fa-award"></i>
+            </div>
+            <h3 id="modal-title" style="color:#fff; font-size:18px; font-weight:900; letter-spacing:0.5px;">GIAO DỊCH THÀNH CÔNG!</h3>
+            <p id="modal-desc" style="font-size:12px; color:var(--text-sub); margin-top:6px; line-height:1.4;"></p>
+            
+            <div class="key-led-box">
+                <span class="key-led-text" id="key-display">HB-XXXX-XXXX</span>
+                <i class="fa-regular fa-copy" style="color:var(--pink-main); cursor:pointer; font-size:18px;" onclick="copyCurrentKey()"></i>
+            </div>
+
+            <button class="btn-buy" style="width:100%; padding:12px;" onclick="closeKeyModal()" data-i18n="btn_close">ĐÓNG & TIẾP TỤC</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="navbar">
+        <div class="nav-item active" onclick="switchTab('shop', this)">
+            <i class="fa-solid fa-store"></i>
+            <span data-i18n="nav_shop">Cửa Hàng</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('recharge', this)">
+            <i class="fa-solid fa-wallet"></i>
+            <span data-i18n="nav_recharge">Nạp Tiền</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)">
+            <i class="fa-solid fa-trophy"></i>
+            <span data-i18n="nav_top">Top Nạp</span>
+        </div>
+        <div class="nav-item" onclick="switchTab('history', this)">
+            <i class="fa-solid fa-user"></i>
+            <span data-i18n="nav_history">Cá Nhân</span>
+        </div>
+    </div>
+
+    <!-- Scripting Execution -->
+    <script>
+        /* Product Database Configuration - UPDATED TO YOUR EXACT LIST */
+        const productsData = {
+            ios: [
+                { 
+                    name: "🌟 Migul Pro", 
+                    desc: "Bản Hack VIP Full chức năng cho iOS", 
+                    icon: "fa-crown", 
+                    plans: [
+                        {t: "1 Ngày", p: 100000}, 
+                        {t: "7 Ngày", p: 215000}, 
+                        {t: "30 Ngày", p: 450000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Migul Lite", 
+                    desc: "Phiên bản rút gọn mượt nhẹ, chống lag", 
+                    icon: "fa-feather", 
+                    plans: [
+                        {t: "1 Ngày", p: 50000}, 
+                        {t: "7 Ngày", p: 150000}, 
+                        {t: "30 Ngày", p: 350000}
+                    ] 
+                },
+                { 
+                    name: "🪼 Fluorite iOS", 
+                    desc: "Cheat mượt mà, hỗ trợ iOS/iPad an toàn", 
+                    icon: "fa-gem", 
+                    plans: [
+                        {t: "1 Ngày", p: 90000}, 
+                        {t: "7 Ngày", p: 230000}, 
+                        {t: "30 Ngày", p: 370000}
+                    ] 
+                },
+                { 
+                    name: "Sudo Hax", 
+                    desc: "Menu hack iOS ổn định lâu dài", 
+                    icon: "fa-terminal", 
+                    plans: [
+                        {t: "33 Ngày", p: 250000}
+                    ] 
+                },
+                { 
+                    name: "iOSViet", 
+                    desc: "Bản Hack Việt Hóa siêu tiện lợi", 
+                    icon: "fa-shield-halved", 
+                    plans: [
+                        {t: "30 Ngày", p: 220000}
+                    ] 
+                }
+            ],
+            adr: [
+                { 
+                    name: "NgotranVip No Root", 
+                    desc: "Dùng trực tiếp không cần Root máy", 
+                    icon: "fa-shield-cat", 
+                    plans: [
+                        {t: "35 Ngày", p: 320000}
+                    ] 
+                },
+                { 
+                    name: "Zygame", 
+                    desc: "Bypass an toàn, không giật lag", 
+                    icon: "fa-gamepad", 
+                    plans: [
+                        {t: "30 Ngày", p: 150000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Drip VIP", 
+                    desc: "Free Fire Macro Pro đỉnh cao", 
+                    icon: "fa-skull", 
+                    plans: [
+                        {t: "15 Ngày", p: 150000}, 
+                        {t: "30 Ngày", p: 240000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Prime Cook", 
+                    desc: "Menu VIP hỗ trợ leo rank cực nhanh", 
+                    icon: "fa-fire", 
+                    plans: [
+                        {t: "7 Ngày", p: 80000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Strick Cheat", 
+                    desc: "Tối ưu hóa độ nhạy, bắn mượt", 
+                    icon: "fa-bolt", 
+                    plans: [
+                        {t: "15 Ngày", p: 150000}, 
+                        {t: "30 Ngày", p: 220000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Br Mods", 
+                    desc: "Bản mod Android tổng hợp tính năng", 
+                    icon: "fa-cubes", 
+                    plans: [
+                        {t: "15 Ngày", p: 160000}, 
+                        {t: "30 Ngày", p: 220000}
+                    ] 
+                },
+                { 
+                    name: "🌟 LK Root", 
+                    desc: "Dành riêng cho máy Android đã Root", 
+                    icon: "fa-unlock", 
+                    plans: [
+                        {t: "10 Ngày", p: 120000}, 
+                        {t: "30 Ngày", p: 200000}
+                    ] 
+                },
+                { 
+                    name: "🛒 Pato Cam + Xanh 🌟", 
+                    desc: "Bản màu Pato Cam & Xanh cực đẹp", 
+                    icon: "fa-eye", 
+                    plans: [
+                        {t: "7 Ngày", p: 85000}, 
+                        {t: "30 Ngày", p: 190000}
+                    ] 
+                },
+                { 
+                    name: "🌟 Hg Cheat", 
+                    desc: "Mod Android leo rank mượt mà", 
+                    icon: "fa-crosshair", 
+                    plans: [
+                        {t: "10 Ngày", p: 100000}, 
+                        {t: "30 Ngày", p: 190000}
+                    ] 
+                },
+                { 
+                    name: "Proxy Drip 🌟", 
+                    desc: "Proxy chống giật lag, tăng độ nhạy", 
+                    icon: "fa-network-wired", 
+                    plans: [
+                        {t: "7 Ngày", p: 80000}, 
+                        {t: "30 Ngày", p: 200000}
+                    ] 
+                }
+            ],
+            aim: [
+                { 
+                    name: "HuybaocheatVip", 
+                    desc: "Khóa mục tiêu chuẩn xác 100%", 
+                    icon: "fa-crosshairs", 
+                    plans: [
+                        {t: "Vĩnh Viễn", p: 450000}
+                    ] 
+                },
+                { 
+                    name: "Proxy Adr-iOS", 
+                    desc: "Hỗ trợ ghim tâm cả Android lẫn iOS", 
+                    icon: "fa-globe", 
+                    plans: [
+                        {t: "30 Ngày", p: 240000}, 
+                        {t: "Vĩnh Viễn", p: 360000}
+                    ] 
+                },
+                { 
+                    name: "Aimlock", 
+                    desc: "Tự động khóa đầu cực nhạy", 
+                    icon: "fa-bullseye", 
+                    plans: [
+                        {t: "30 Ngày", p: 180000}, 
+                        {t: "Vĩnh Viễn", p: 280000}
+                    ] 
+                }
+            ]
+        };
+
+        const sampleLiveTx = [
+            { u: "Trần Trúc", a: "nạp 500.000đ", t: "00:40", type: "green" },
+            { u: "Zang Nam", a: "nạp 150.000đ", t: "00:23", type: "green" },
+            { u: "Kagero", a: "nạp 10.000đ", t: "23:43", type: "green" },
+            { u: "Vũ Tạp Hóa IOS", a: "mua Migul Pro - 30day", t: "00:55", type: "pink" },
+            { u: "lad", a: "mua Aimlock - Vĩnh Viễn", t: "00:30", type: "pink" }
+        ];
+
+        /* Anonymous Top Recharge Leaderboard */
+        const topData = [
+            { r: 1, u: "Lê H***ng Phong", id: "@phong_vip", val: "7.500.000đ" },
+            { r: 2, u: "Nguyễn C*** Diệu", id: "@dieu_hax", val: "6.200.000đ" },
+            { r: 3, u: "Vũ Đ*** Trọng", id: "@trong_freefire", val: "5.150.000đ" },
+            { r: 4, u: "Đức K***", id: "@kienducc", val: "4.435.000đ" },
+            { r: 5, u: "Vanth***", id: "@vanthienios", val: "4.115.000đ" },
+            { r: 6, u: "Đoàn G***", id: "@DVgiau", val: "4.058.000đ" },
+            { r: 7, u: "K3V N**", id: "@whitebanfile11", val: "3.930.000đ" },
+            { r: 8, u: "Dat N****", id: "@ddatcheat", val: "3.430.000đ" },
+            { r: 9, u: "QIOS***", id: "@nquangios", val: "3.000.000đ" }
+        ];
+
+        const defaultKhoItems = [
+            {
+                prodTitle: "Migul Lite - 7 Ngày",
+                count: 1,
+                keys: [{ code: "RTPIK1ALSW7VQ4LC", date: "2026-07-04 23:21" }]
+            }
+        ];
+
+        /* i18n Translation Dictionary */
+        const i18n = {
+            vi: {
+                balance_label: "SỐ DƯ",
+                cat_ios_title: "MỤC IOS - IPAD",
+                cat_adr_title: "MỤC ADR ROOT - NO ROOT",
+                cat_aim_title: "MỤC AIM ADR VÀ IOS",
+                recent_tx_header: "GIAO DỊCH MỚI NHẤT SHOP",
+                btn_back: "QUAY LẠI MỤC CHÍNH",
+                recharge_prompt: "CHỌN NHANH SỐ TIỀN MUỐN NẠP:",
+                btn_create_qr: "TẠO MÃ QR NẠP TIỀN",
+                btn_close: "ĐÓNG",
+                nav_shop: "Cửa Hàng",
+                nav_recharge: "Nạp Tiền",
+                nav_top: "Top Nạp",
+                nav_history: "Cá Nhân"
+            },
+            en: {
+                balance_label: "BALANCE",
+                cat_ios_title: "IOS - IPAD CATEGORY",
+                cat_adr_title: "ANDROID (ROOT - NO ROOT)",
+                cat_aim_title: "AIM CATEGORY (ADR & IOS)",
+                recent_tx_header: "RECENT TRANSACTIONS",
+                btn_back: "BACK TO MAIN MENU",
+                recharge_prompt: "QUICK SELECT AMOUNT TO TOP UP:",
+                btn_create_qr: "GENERATE PAYMENT QR",
+                btn_close: "CLOSE",
+                nav_shop: "Store",
+                nav_recharge: "Top Up",
+                nav_top: "Ranking",
+                nav_history: "Account"
+            }
+        };
+
+        let currentLang = 'vi';
+        let userBalance = 0;
+        let tgUsername = "";
+        let tgUserId = "8692475970";
+        let currentGeneratedKey = "";
+
+        /* Telegram Web App Data Parser */
+        function initTelegramApp() {
+            if (window.Telegram && window.Telegram.WebApp) {
+                const tg = window.Telegram.WebApp;
+                tg.ready();
+                tg.expand();
+
+                const user = tg.initDataUnsafe?.user;
+                if (user) {
+                    document.getElementById('user-name').textContent = `${user.first_name || ''} ${user.last_name || ''}`.trim() || user.username || "Huy Bảo Cipher";
+                    document.getElementById('user-tg-id').textContent = user.id;
+                    tgUserId = user.id;
+                    if (user.username) {
+                        tgUsername = user.username.toLowerCase();
+                    }
+                    if (user.photo_url) {
+                        document.getElementById('user-avatar').src = user.photo_url;
+                        document.getElementById('loader-avatar-img').src = user.photo_url;
+                    }
+                }
+            }
+
+            // Admin VIP Access Verification
+            if (tgUsername === 'cipherseller' || tgUserId === '8692475970' || window.location.search.includes('cipherseller')) {
+                userBalance = 999999999;
+                tgUsername = 'cipherseller';
+            }
+            updateBalanceUI();
+        }
+
+        /* Loading Screen Logic */
+        function startLoading() {
+            let percent = 0;
+            const bar = document.getElementById('load-bar');
+            const txt = document.getElementById('load-percent');
+            
+            const timer = setInterval(() => {
+                percent += Math.floor(Math.random() * 4) + 2;
+                if (percent >= 100) {
+                    percent = 100;
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        const screen = document.getElementById('loading-screen');
+                        screen.style.opacity = '0';
+                        setTimeout(() => screen.style.display = 'none', 500);
+                    }, 350);
+                }
+                bar.style.width = percent + '%';
+                txt.textContent = `ĐANG TẢI ${percent}%`;
+            }, 45);
+        }
+
+        /* Ambient Sakura Canvas Effect */
+        function initSoftSakura() {
+            const canvas = document.getElementById('sakura-canvas');
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            });
+
+            const petals = Array.from({ length: 24 }, () => ({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 2.2 + 1.2,
+                speedY: Math.random() * 0.6 + 0.3,
+                speedX: Math.random() * 0.4 - 0.2,
+                angle: Math.random() * Math.PI * 2,
+                opacity: Math.random() * 0.35 + 0.15
+            }));
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                petals.forEach(p => {
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.angle);
+                    ctx.fillStyle = `rgba(255, 105, 180, ${p.opacity})`;
+                    ctx.ellipse(0, 0, p.r * 1.8, p.r * 0.8, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.angle += 0.01;
+
+                    if (p.y > h) { p.y = -10; p.x = Math.random() * w; }
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        /* Language Switcher */
+        function toggleLanguage() {
+            currentLang = currentLang === 'vi' ? 'en' : 'vi';
+            document.getElementById('lang-label').textContent = currentLang.toUpperCase();
+            document.querySelectorAll('[data-i18n]').forEach(elem => {
+                const key = elem.getAttribute('data-i18n');
+                if (i18n[currentLang][key]) elem.textContent = i18n[currentLang][key];
+            });
+        }
+
+        /* Shop Category Navigation */
+        function openCategory(catKey) {
+            document.getElementById('category-menu').style.display = 'none';
+            document.getElementById('product-detail-view').style.display = 'block';
+
+            const container = document.getElementById('active-products-list');
+            container.innerHTML = '';
+
+            (productsData[catKey] || []).forEach((item, idx) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                let options = item.plans.map(p => `<option value="${p.p}">${p.t} - ${p.p.toLocaleString('vi-VN')}đ</option>`).join('');
+
+                card.innerHTML = `
+                    <div class="product-header">
+                        <div class="product-badge-icon"><i class="fa-solid ${item.icon || 'fa-box'}"></i></div>
+                        <div class="product-title">${item.name}</div>
+                    </div>
+                    <div class="product-desc">${item.desc}</div>
+                    <div class="product-controls">
+                        <div class="select-wrapper">
+                            <select class="plan-select" id="sel-${catKey}-${idx}">${options}</select>
+                        </div>
+                        <button class="btn-buy" onclick="buyProduct('${item.name}', '${catKey}-${idx}')">MUA NGAY</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function backToCategories() {
+            document.getElementById('category-menu').style.display = 'flex';
+            document.getElementById('product-detail-view').style.display = 'none';
+        }
+
+        /* Purchasing Engine */
+        function buyProduct(prodName, selectId) {
+            const selectElem = document.getElementById(`sel-${selectId}`);
+            const price = parseInt(selectElem.value);
+            const planText = selectElem.options[selectElem.selectedIndex].text.split(' - ')[0];
+
+            const isCipherSeller = (tgUsername === 'cipherseller' || tgUserId === '8692475970');
+
+            if (!isCipherSeller) {
+                if (userBalance < price) {
+                    alert(`Số dư của bạn không đủ (${userBalance.toLocaleString('vi-VN')}đ)! Vui lòng nạp thêm tiền để tiếp tục.`);
+                    return;
+                }
+                userBalance -= price;
+                updateBalanceUI();
+            }
+
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            currentGeneratedKey = 'HB-';
+            for (let i = 0; i < 12; i++) {
+                if (i > 0 && i % 4 === 0) currentGeneratedKey += '-';
+                currentGeneratedKey += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            /* Celebration FX Trigger */
+            confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
+            setTimeout(() => {
+                confetti({ particleCount: 60, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 } });
+            }, 250);
+
+            openKeyModal(currentGeneratedKey, "🎉 GIAO DỊCH THÀNH CÔNG!", `${prodName} - ${planText}`);
+            addKeyToKho(`${prodName} - ${planText}`, currentGeneratedKey);
+        }
+
+        /* Local Storage Management for Inventory */
+        function addKeyToKho(prodTitle, keyString) {
+            let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+            let existingGroup = kho.find(x => x.prodTitle === prodTitle);
+            if (existingGroup) {
+                existingGroup.count += 1;
+                existingGroup.keys.unshift({ code: keyString, date: dateStr });
+            } else {
+                kho.unshift({
+                    prodTitle: prodTitle,
+                    count: 1,
+                    keys: [{ code: keyString, date: dateStr }]
+                });
+            }
+
+            localStorage.setItem('shop_kho_data', JSON.stringify(kho));
+            renderKhoUI();
+        }
+
+        function renderKhoUI() {
+            const container = document.getElementById('kho-container');
+            let kho = JSON.parse(localStorage.getItem('shop_kho_data')) || defaultKhoItems;
+
+            if (kho.length === 0) {
+                container.innerHTML = '<div style="font-size:12px; color:var(--text-sub); text-align:center; padding:30px;">Kho của bạn chưa có sản phẩm nào.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            kho.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'kho-card';
+
+                let keysHtml = item.keys.map(k => `
+                    <div class="key-row-item">
+                        <div>
+                            <div class="key-code-text">${k.code}</div>
+                            <div class="key-date-text">Ngày mua: ${k.date}</div>
+                        </div>
+                        <button class="btn-copy-icon" onclick="copyText('${k.code}')"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="kho-header">
+                        <div class="kho-title">
+                            <i class="fa-solid fa-box" style="color:var(--green-glow);"></i>
+                            <span>${item.prodTitle}</span>
+                        </div>
+                        <div class="kho-count-badge">${item.count}</div>
+                    </div>
+                    <div>${keysHtml}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderTopNap() {
+            const container = document.getElementById('leaderboard-list');
+            container.innerHTML = '';
+
+            topData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'leader-item';
+
+                let rankClass = item.r === 1 ? 'rank-1' : (item.r === 2 ? 'rank-2' : (item.r === 3 ? 'rank-3' : 'rank-other'));
+
+                div.innerHTML = `
+                    <div class="rank-number ${rankClass}">${item.r}</div>
+                    <div class="leader-user">
+                        <div class="leader-name">${item.u}</div>
+                        <div class="leader-sub">${item.id}</div>
+                    </div>
+                    <div class="leader-val">${item.val}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function switchTopTab(type, elem) {
+            document.querySelectorAll('.top-filter-btn').forEach(b => b.classList.remove('active'));
+            elem.classList.add('active');
+            renderTopNap();
+        }
+
+        function renderLiveTx() {
+            const container = document.getElementById('live-tx-list');
+            container.innerHTML = '';
+            sampleLiveTx.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'tx-item';
+                div.innerHTML = `
+                    <div>
+                        <span class="tx-user">${item.u}</span>
+                        <span class="tx-action">${item.a}</span>
+                    </div>
+                    <span class="tx-amount ${item.type}">${item.t}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function setQuickAmount(amt) {
+            document.getElementById('recharge-amount').value = amt;
+        }
+
+        function generateQR() {
+            const amount = parseInt(document.getElementById('recharge-amount').value);
+            if (!amount || amount < 10000) { 
+                alert("Vui lòng nạp tối thiểu 10.000đ!"); 
+                return; 
+            }
+            document.getElementById('qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021138570010A00000072701270006970422011126605669220208QRIBFTTA53037045405${amount}5802VN62180814HuyBaoShop%20${tgUserId}6304`;
+            document.getElementById('qr-memo').textContent = `NAP${tgUserId}`;
+            document.getElementById('qr-result').style.display = 'block';
+        }
+
+        function openKeyModal(key, title, desc) {
+            currentGeneratedKey = key;
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-desc').textContent = desc;
+            document.getElementById('key-display').textContent = key;
+            document.getElementById('key-modal').style.display = 'flex';
+        }
+
+        function closeKeyModal() { document.getElementById('key-modal').style.display = 'none'; }
+        function copyCurrentKey() { copyText(currentGeneratedKey); }
+
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => {
+                alert("Đã sao chép mã Key thành công!");
+            }).catch(() => {
+                alert("Mã Key: " + txt);
+            });
+        }
+
+        function switchTab(tabId, elem) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            elem.classList.add('active');
+        }
+
+        function updateBalanceUI() {
+            document.getElementById('balance-display').textContent = userBalance.toLocaleString('vi-VN') + 'đ';
+        }
+
+        /* Entry Orchestrator */
+        window.onload = function() {
+            initTelegramApp();
+            startLoading();
+            initSoftSakura();
+            renderLiveTx();
+            renderKhoUI();
+            renderTopNap();
+        };
+    </script>
 </body>
 </html>
