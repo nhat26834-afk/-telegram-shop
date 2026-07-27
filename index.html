@@ -63,6 +63,87 @@
             z-index: 1;
         }
 
+        /* Anime Mascot Widget Floating UI */
+        .anime-mascot-container {
+            position: fixed;
+            bottom: 82px;
+            right: 14px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            pointer-events: none;
+        }
+
+        .mascot-speech-bubble {
+            background: rgba(18, 10, 32, 0.92);
+            border: 1.5px solid var(--pink-main);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 16px 16px 4px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 18px var(--pink-glow);
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 170px;
+            text-align: right;
+            backdrop-filter: blur(8px);
+            pointer-events: auto;
+        }
+
+        .mascot-speech-bubble.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .mascot-avatar-wrapper {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--pink-main), var(--purple-neon), var(--cyan-neon));
+            box-shadow: 0 0 20px var(--pink-glow);
+            cursor: pointer;
+            pointer-events: auto;
+            animation: mascotFloat 3.5s ease-in-out infinite;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .mascot-avatar-wrapper:active {
+            transform: scale(0.92);
+        }
+
+        .mascot-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            border-radius: 50%;
+            border: 2px solid #07040f;
+            display: block;
+        }
+
+        .mascot-online-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            background: var(--green-glow);
+            border: 2px solid #07040f;
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--green-glow);
+        }
+
+        @keyframes mascotFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
         /* Loading Screen Overlay */
         #loading-screen {
             position: fixed;
@@ -820,6 +901,15 @@
     <!-- Falling Sakura Canvas -->
     <canvas id="sakura-canvas"></canvas>
 
+    <!-- Interactive Anime Mascot Widget -->
+    <div class="anime-mascot-container">
+        <div class="mascot-speech-bubble" id="mascot-speech">Huy Bảo Shop xin chào bạn! 🌸</div>
+        <div class="mascot-avatar-wrapper" onclick="triggerMascotInteraction()">
+            <img class="mascot-img" src="https://i.ibb.co/3ykG4L5/anime-mascot.jpg" alt="Mascot Anime" id="mascot-img-elem">
+            <div class="mascot-online-dot"></div>
+        </div>
+    </div>
+
     <!-- Header Section -->
     <div class="header">
         <div class="user-profile">
@@ -1022,6 +1112,9 @@
 
     <!-- Scripting Execution -->
     <script>
+        /* Embedded Image Data for Mascot */
+        const ANIME_MASCOT_IMAGE_SRC = "https://i.imgur.com/8Q9Z5bX.png"; // Dự phòng link mẫu nếu load xài trực tiếp
+
         /* Product Database Configuration */
         const productsData = {
             ios: [
@@ -1220,6 +1313,16 @@
             }
         ];
 
+        /* Mascot Speech Dialog Array */
+        const mascotDialogs = [
+            "Chào mừng bạn đến với Huy Bảo Shop! 🌸",
+            "Cần hỗ trợ lấy Key hay nạp tiền nhắn em nhé~ ✨",
+            "Chúc sếp kéo rank Free Fire cực đỉnh hôm nay! 🎮",
+            "Mã VietQR nạp tự động cực nhanh luôn nha! 💳",
+            "Nhấn vào mục Cửa Hàng để xem full bản Hack VIP nha 👑"
+        ];
+        let mascotDialogIdx = 0;
+
         /* i18n Translation Dictionary */
         const i18n = {
             vi: {
@@ -1259,6 +1362,19 @@
         let tgUsername = "";
         let tgUserId = "8692475970";
         let currentGeneratedKey = "";
+
+        /* Mascot Dialog Trigger Function */
+        function triggerMascotInteraction() {
+            const bubble = document.getElementById('mascot-speech');
+            bubble.textContent = mascotDialogs[mascotDialogIdx];
+            mascotDialogIdx = (mascotDialogIdx + 1) % mascotDialogs.length;
+            
+            bubble.classList.add('active');
+            clearTimeout(window.mascotBubbleTimer);
+            window.mascotBubbleTimer = setTimeout(() => {
+                bubble.classList.remove('active');
+            }, 3800);
+        }
 
         /* Telegram Web App Data Parser */
         function initTelegramApp() {
@@ -1304,7 +1420,11 @@
                     setTimeout(() => {
                         const screen = document.getElementById('loading-screen');
                         screen.style.opacity = '0';
-                        setTimeout(() => screen.style.display = 'none', 500);
+                        setTimeout(() => {
+                            screen.style.display = 'none';
+                            // Chào mừng từ mascot khi mở ứng dụng thành công
+                            setTimeout(triggerMascotInteraction, 600);
+                        }, 500);
                     }, 350);
                 }
                 bar.style.width = percent + '%';
