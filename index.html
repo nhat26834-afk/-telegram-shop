@@ -2,8 +2,10 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huy Bảo Shop - Mini App Full Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Huy Bảo Shop - Mini App</title>
+    <!-- SDK Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
             --bg-color: #0b050f;
@@ -19,8 +21,9 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -31,67 +34,82 @@
             position: relative;
         }
 
-        /* Hiệu ứng hoa rơi */
-        .sakura-container {
+        /* Loading Screen giống Video */
+        #loader-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0b050f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
 
-        .petal {
-            position: absolute;
-            background: linear-gradient(135deg, #fff0f8 0%, #ff75bc 100%);
-            border-radius: 150% 0 150% 0;
-            animation: fall linear infinite;
-            opacity: 0.8;
-            box-shadow: 0 0 6px rgba(255, 117, 188, 0.7);
+        .loader-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: var(--primary-pink);
+            border-bottom-color: var(--secondary-pink);
+            animation: spin 1.2s linear infinite;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes fall {
-            0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) translateX(140px) rotate(360deg); opacity: 0.15; }
+        .loader-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            margin-top: 15px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--secondary-pink);
+            letter-spacing: 1px;
+        }
+
+        /* Container Chính */
         .app-container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 14px;
-            padding-bottom: 110px;
+            padding: 12px;
+            padding-bottom: 90px;
             position: relative;
             z-index: 2;
         }
 
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Profile Header */
+        /* Profile Card có LED Nước chạy viền */
         .profile-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 14px;
+            border-radius: 18px;
+            padding: 10px 14px;
             position: relative;
             z-index: 1;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .profile-card::after {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(90deg, var(--primary-pink), #fff, var(--secondary-pink), var(--primary-pink));
+            top: -1.5px; left: -1.5px; right: -1.5px; bottom: -1.5px;
+            background: linear-gradient(90deg, #ff2a85, #00ffaa, #ff75bc, #ff2a85);
             background-size: 300% 300%;
             z-index: -1;
-            border-radius: 22px;
-            animation: ledWater 5s linear infinite;
+            border-radius: 20px;
+            animation: ledWater 4s linear infinite;
         }
 
         @keyframes ledWater {
@@ -110,88 +128,141 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            min-width: 0;
-            flex: 1;
         }
 
         .avatar {
-            width: 46px;
-            height: 46px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             border: 2px solid var(--secondary-pink);
             object-fit: cover;
-            box-shadow: 0 0 10px var(--accent-glow);
-            flex-shrink: 0;
         }
 
         .user-details h3 {
             font-size: 13px;
             font-weight: bold;
-            text-shadow: 0 0 8px var(--accent-glow);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .verified-badge {
+            color: #00ffaa;
+            font-size: 11px;
         }
 
         .user-details p {
-            font-size: 11px;
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-top: 1px;
+        }
+
+        .balance-badge {
+            background: rgba(0, 255, 170, 0.1);
+            border: 1px solid rgba(0, 255, 170, 0.4);
+            padding: 4px 8px;
+            border-radius: 10px;
+            text-align: right;
+        }
+
+        .balance-title {
+            font-size: 8px;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+
+        .balance-text {
+            font-size: 12px;
+            font-weight: bold;
+            color: #00ffaa;
+        }
+
+        /* Menu Mục Chính (Category Buttons) */
+        .category-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cat-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 117, 188, 0.25);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cat-btn:active {
+            transform: scale(0.98);
+        }
+
+        .cat-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 42, 133, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .cat-info h4 {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .cat-info p {
+            font-size: 10px;
             color: var(--text-sub);
             margin-top: 2px;
         }
 
-        .profile-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
-        }
-
-        .balance-text {
+        .arrow-icon {
+            color: var(--secondary-pink);
             font-size: 14px;
-            font-weight: bold;
-            color: #00ffaa;
-            text-shadow: 0 0 8px rgba(0, 255, 170, 0.4);
         }
 
-        /* Custom Categories & Items */
-        .category-header {
-            font-size: 13px;
-            color: #ff99d8;
-            margin: 16px 0 8px 0;
+        /* Danh Sách Sản Phẩm Trong Category */
+        .back-btn {
+            background: rgba(255, 42, 133, 0.2);
+            border: 1px solid var(--primary-pink);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
             font-weight: bold;
-            border-left: 4px solid var(--primary-pink);
-            padding-left: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .product-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+            cursor: pointer;
         }
 
         .product-card {
             background: var(--card-bg);
             border-radius: 14px;
             padding: 12px;
-            border: 1px solid rgba(255, 117, 188, 0.25);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: all 0.25s ease;
+            border: 1px solid rgba(255, 117, 188, 0.2);
+            margin-bottom: 10px;
         }
 
-        .product-card:hover {
-            border-color: var(--primary-pink);
-            box-shadow: 0 4px 18px rgba(255, 42, 133, 0.35);
-        }
-
-        .product-title-row {
+        .product-header {
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .product-icon {
-            font-size: 16px;
+            margin-bottom: 6px;
         }
 
         .product-title {
@@ -200,10 +271,15 @@
             color: #fff;
         }
 
-        .product-action-row {
+        .product-desc {
+            font-size: 10px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .product-action {
             display: flex;
             gap: 8px;
-            align-items: center;
         }
 
         .price-select {
@@ -211,9 +287,9 @@
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 117, 188, 0.4);
             color: #00ffaa;
-            padding: 7px;
+            padding: 8px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             outline: none;
         }
@@ -226,221 +302,60 @@
         .btn-buy {
             background: linear-gradient(135deg, #ff2a85, #c71585);
             border: none;
-            padding: 7px 14px;
+            padding: 8px 14px;
             border-radius: 8px;
             font-weight: bold;
             font-size: 11px;
-            cursor: pointer;
             color: white;
-            white-space: nowrap;
-            box-shadow: 0 3px 10px rgba(255, 42, 133, 0.3);
+            cursor: pointer;
         }
 
-        .btn-buy:active {
-            transform: scale(0.96);
-        }
-
-        /* Section Title */
+        /* Section Giao Dịch Mới Nhất */
         .section-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin: 18px 0 8px 0;
-            color: var(--secondary-pink);
-        }
-
-        /* Nạp tiền & VietQR */
-        .deposit-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 14px;
-            border: 1px solid rgba(255, 117, 188, 0.3);
-            margin-bottom: 14px;
-        }
-
-        .amount-quick-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-
-        .btn-amount {
-            background: rgba(255, 42, 133, 0.15);
-            border: 1px solid rgba(255, 117, 188, 0.4);
-            padding: 8px 4px;
-            border-radius: 8px;
             font-size: 11px;
             font-weight: bold;
-            color: var(--text-main);
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .btn-amount.active {
-            background: var(--primary-pink);
-            border-color: #fff;
-        }
-
-        .input-custom {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 117, 188, 0.3);
-            padding: 9px;
-            border-radius: 8px;
-            color: white;
-            font-size: 13px;
-            margin-bottom: 10px;
-            outline: none;
-        }
-
-        .btn-qr {
-            width: 100%;
-            background: linear-gradient(135deg, #ff2a85, #ff75bc);
-            border: none;
-            padding: 9px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            cursor: pointer;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 42, 133, 0.4);
-        }
-
-        .qr-display-box {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 117, 188, 0.5);
-            margin-top: 12px;
-        }
-
-        .qr-image-wrapper img {
-            width: 150px;
-            height: 150px;
-            background: white;
-            padding: 6px;
-            border-radius: 10px;
-            margin: 8px 0;
-        }
-
-        .bank-details {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            text-align: left;
-            margin-top: 8px;
-            border: 1px dashed rgba(255, 117, 188, 0.4);
-        }
-
-        .bank-details p {
-            margin: 4px 0;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .bank-details span {
-            color: var(--secondary-pink);
-            font-weight: bold;
-        }
-
-        /* Top Nạp */
-        .top-nap-container {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 10px;
-            border: 1px solid rgba(255, 117, 188, 0.3);
-        }
-
-        .top-nap-item {
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 12px;
-            padding: 8px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .top-rank-badge {
-            width: 22px;
-            height: 22px;
-            background: linear-gradient(135deg, #ff2a85, #ff75bc);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 11px;
-            margin-right: 8px;
-        }
-
-        .top-user-info {
-            flex-grow: 1;
-        }
-
-        .top-user-info .name {
-            font-size: 12px;
-            font-weight: bold;
-            display: block;
-        }
-
-        .top-user-info .sub-id {
-            font-size: 10px;
             color: var(--text-sub);
+            margin: 14px 0 8px 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
         }
 
-        .top-amount {
-            font-size: 12px;
-            font-weight: bold;
-            color: #00ffaa;
-        }
-
-        /* History */
-        .history-container {
+        .recent-tx-list {
             background: var(--card-bg);
             border-radius: 14px;
-            padding: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            border: 1px solid rgba(255, 117, 188, 0.2);
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 117, 188, 0.15);
         }
 
-        .history-item {
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        .tx-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             font-size: 11px;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
-        }
+        .tx-item:last-child { border-bottom: none; }
 
-        .key-code {
-            background: rgba(0,0,0,0.5);
-            padding: 4px 6px;
-            border-radius: 6px;
-            margin-top: 4px;
-            font-family: monospace;
-            color: #00ffaa;
-            font-size: 10px;
-        }
+        .tx-user { font-weight: 500; }
+        .tx-action { color: #00ffaa; font-weight: bold; }
+        .tx-time { color: #888; font-size: 9px; }
 
         /* Navigation Bar */
         .nav-bar {
             position: fixed;
-            bottom: 0;
-            left: 50%;
+            bottom: 0; left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
+            width: 100%; max-width: 480px;
             background: rgba(11, 5, 15, 0.95);
             backdrop-filter: blur(12px);
             display: flex;
             justify-content: space-around;
             padding: 8px 0;
-            border-top: 1px solid rgba(255, 117, 188, 0.25);
+            border-top: 1px solid rgba(255, 117, 188, 0.2);
             z-index: 1000;
         }
 
@@ -454,99 +369,143 @@
             flex: 1;
         }
 
-        .nav-item.active, .nav-item:hover {
+        .nav-item.active {
             color: var(--primary-pink);
-            text-shadow: 0 0 8px var(--accent-glow);
+            font-weight: bold;
         }
 
-        .nav-item div {
-            font-size: 16px;
-            margin-bottom: 1px;
-        }
+        .nav-item div { font-size: 16px; margin-bottom: 2px; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="sakura-container" id="sakuraContainer"></div>
+    <!-- Màn hình Loading khi mở App -->
+    <div id="loader-screen">
+        <div class="loader-circle">
+            <img id="loader-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" class="loader-avatar" alt="Avatar">
+        </div>
+        <div class="loader-text">ĐANG TẢI <span id="load-percent">0%</span></div>
+    </div>
 
     <div class="app-container">
-        <!-- Profile Header -->
+        <!-- Header Profile Cá Nhân (Đồng bộ từ Telegram) -->
         <div class="profile-card">
             <div class="profile-top">
                 <div class="user-info">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar" class="avatar">
+                    <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar" class="avatar">
                     <div class="user-details">
-                        <h3>Huy Bảo Cipher</h3>
-                        <p>ID: 8692475970</p>
+                        <h3><span id="user-fullname">Huy Bảo Cipher</span> <span class="verified-badge">✔</span></h3>
+                        <p>ID: <span id="user-id">8692475970</span></p>
                     </div>
                 </div>
-                <div class="profile-right">
-                    <div class="balance-text">0đ</div>
+                <div class="balance-badge">
+                    <div class="balance-title">Số dư</div>
+                    <div class="balance-text" id="user-balance">999.999.999đ</div>
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 1: CỬA HÀNG (SẢN PHẨM) ================= -->
-        <div id="tab-buy" class="tab-content active">
+        <!-- TAB 1: CỬA HÀNG -->
+        <div id="tab-shop" class="tab-content active">
+            
+            <!-- Danh mục chính (Main Menu View) -->
+            <div id="main-menu" class="category-menu">
+                <div class="cat-btn" onclick="openCategory('cat-ios')">
+                    <div class="cat-left">
+                        <div class="cat-icon">🍎</div>
+                        <div class="cat-info">
+                            <h4>MỤC IOS - IPAD</h4>
+                            <p>Migul, Fluorite, Sudo Hax, iOSViet</p>
+                        </div>
+                    </div>
+                    <span class="arrow-icon">❯</span>
+                </div>
 
-            <!-- MỤC IOS - IPAD -->
-            <div class="category-header">📱 MỤC IOS - IPAD</div>
-            <div class="product-list">
-                <!-- Migul Pro -->
+                <div class="cat-btn" onclick="openCategory('cat-adr')">
+                    <div class="cat-left">
+                        <div class="cat-icon">🤖</div>
+                        <div class="cat-info">
+                            <h4>MỤC ANDROID (ROOT / NO ROOT)</h4>
+                            <p>NgotranVip, Drip, LK, Pato Mod...</p>
+                        </div>
+                    </div>
+                    <span class="arrow-icon">❯</span>
+                </div>
+
+                <div class="cat-btn" onclick="openCategory('cat-aim')">
+                    <div class="cat-left">
+                        <div class="cat-icon">🎯</div>
+                        <div class="cat-info">
+                            <h4>MỤC AIM (ADR & IOS)</h4>
+                            <p>Aimlock, Proxy ADR-iOS, HuybaocheatVip</p>
+                        </div>
+                    </div>
+                    <span class="arrow-icon">❯</span>
+                </div>
+            </div>
+
+            <!-- Chi tiết Mục IOS -->
+            <div id="cat-ios" class="category-detail-view" style="display: none;">
+                <button class="back-btn" onclick="backToMainMenu()">❮ QUAY LAI MỤC CHÍNH</button>
+
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
+                    <div class="product-header">
+                        <span>🌟</span>
                         <span class="product-title">Migul Pro</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Kèm chứng chỉ ESIGN 1 năm cao cấp</p>
+                    <div class="product-action">
                         <select class="price-select" id="migul-pro">
                             <option value="100">1 Ngày - 100.000đ</option>
                             <option value="215">7 Ngày - 215.000đ</option>
-                            <option value="450" selected>30 Ngày - 450.000đ</option>
+                            <option value="450" selected>1 Tháng - 450.000đ</option>
                         </select>
                         <button class="btn-buy" onclick="buyItem('Migul Pro', 'migul-pro')">MUA NGAY</button>
                     </div>
                 </div>
 
-                <!-- Migul Lite -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
+                    <div class="product-header">
+                        <span>🌟</span>
                         <span class="product-title">Migul Lite</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Bản rút gọn mượt nhẹ, tối ưu pin</p>
+                    <div class="product-action">
                         <select class="price-select" id="migul-lite">
                             <option value="50">1 Ngày - 50.000đ</option>
                             <option value="150">7 Ngày - 150.000đ</option>
-                            <option value="350" selected>30 Ngày - 350.000đ</option>
+                            <option value="350" selected>1 Tháng - 350.000đ</option>
                         </select>
                         <button class="btn-buy" onclick="buyItem('Migul Lite', 'migul-lite')">MUA NGAY</button>
                     </div>
                 </div>
 
-                <!-- Fluorite iOS -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🪼</span>
+                    <div class="product-header">
+                        <span>🪼</span>
                         <span class="product-title">Fluorite iOS</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Chứng chỉ ESIGN 1 năm bảo hành đầy đủ</p>
+                    <div class="product-action">
                         <select class="price-select" id="fluorite-ios">
                             <option value="90">1 Ngày - 90.000đ</option>
                             <option value="230">7 Ngày - 230.000đ</option>
-                            <option value="370" selected>30 Ngày - 370.000đ</option>
+                            <option value="370" selected>1 Tháng - 370.000đ</option>
                         </select>
                         <button class="btn-buy" onclick="buyItem('Fluorite iOS', 'fluorite-ios')">MUA NGAY</button>
                     </div>
                 </div>
 
-                <!-- Sudo hax -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">⚡</span>
+                    <div class="product-header">
+                        <span>⚡</span>
                         <span class="product-title">Sudo Hax</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Chứng chỉ ESIGN không bảo hành</p>
+                    <div class="product-action">
                         <select class="price-select" id="sudo-hax">
                             <option value="250" selected>33 Ngày - 250.000đ</option>
                         </select>
@@ -554,59 +513,46 @@
                     </div>
                 </div>
 
-                <!-- iOSViet -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🛡️</span>
+                    <div class="product-header">
+                        <span>🛡️</span>
                         <span class="product-title">iOSViet</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Kèm TrollStore cài nhanh</p>
+                    <div class="product-action">
                         <select class="price-select" id="iosviet">
-                            <option value="220" selected>30 Ngày - 220.000đ</option>
+                            <option value="220" selected>1 Tháng - 220.000đ</option>
                         </select>
                         <button class="btn-buy" onclick="buyItem('iOSViet', 'iosviet')">MUA NGAY</button>
                     </div>
                 </div>
             </div>
 
-            <!-- MỤC ADR ROOT & NO ROOT -->
-            <div class="category-header">🤖 MỤC ADR ROOT & NO ROOT</div>
-            <div class="product-list">
-                <!-- NgotranVip no root -->
+            <!-- Chi tiết Mục Android -->
+            <div id="cat-adr" class="category-detail-view" style="display: none;">
+                <button class="back-btn" onclick="backToMainMenu()">❮ QUAY LAI MỤC CHÍNH</button>
+
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">👑</span>
-                        <span class="product-title">NgotranVip No Root</span>
+                    <div class="product-header">
+                        <span>👑</span>
+                        <span class="product-title">NgotranVip</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Dùng cho cả Android & iOS</p>
+                    <div class="product-action">
                         <select class="price-select" id="ngotran-vip">
                             <option value="320" selected>35 Ngày - 320.000đ</option>
                         </select>
-                        <button class="btn-buy" onclick="buyItem('NgotranVip No Root', 'ngotran-vip')">MUA NGAY</button>
+                        <button class="btn-buy" onclick="buyItem('NgotranVip', 'ngotran-vip')">MUA NGAY</button>
                     </div>
                 </div>
 
-                <!-- Zygame -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">⚡</span>
-                        <span class="product-title">Zygame</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="zygame">
-                            <option value="150" selected>30 Ngày - 150.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Zygame', 'zygame')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Drip VIP -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
+                    <div class="product-header">
+                        <span>💀</span>
                         <span class="product-title">Drip VIP</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Free Fire Macro Pro</p>
+                    <div class="product-action">
                         <select class="price-select" id="drip-vip">
                             <option value="150">15 Ngày - 150.000đ</option>
                             <option value="240" selected>30 Ngày - 240.000đ</option>
@@ -615,121 +561,32 @@
                     </div>
                 </div>
 
-                <!-- Prime Cook -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Prime Cook</span>
+                    <div class="product-header">
+                        <span>⚡</span>
+                        <span class="product-title">Zygame</span>
                     </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="prime-cook">
-                            <option value="80" selected>7 Ngày - 80.000đ</option>
+                    <p class="product-desc">Bypass Anticheat an toàn tuyệt đối</p>
+                    <div class="product-action">
+                        <select class="price-select" id="zygame">
+                            <option value="150" selected>1 Tháng - 150.000đ</option>
                         </select>
-                        <button class="btn-buy" onclick="buyItem('Prime Cook', 'prime-cook')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Strick Cheat -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Strick Cheat</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="strick-cheat">
-                            <option value="150">15 Ngày - 150.000đ</option>
-                            <option value="220" selected>30 Ngày - 220.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Strick Cheat', 'strick-cheat')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Br Mods -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Br Mods</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="br-mods">
-                            <option value="160">15 Ngày - 160.000đ</option>
-                            <option value="220" selected>30 Ngày - 220.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Br Mods', 'br-mods')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Lk Root -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Lk Root</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="lk-root">
-                            <option value="120">10 Ngày - 120.000đ</option>
-                            <option value="200" selected>30 Ngày - 200.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Lk Root', 'lk-root')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Pato Cam + Xanh -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🛒</span>
-                        <span class="product-title">Pato Cam + Xanh 🌟</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="pato-mod">
-                            <option value="85">7 Ngày - 85.000đ</option>
-                            <option value="190" selected>30 Ngày - 190.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Pato Cam + Xanh', 'pato-mod')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Hg Cheat -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Hg Cheat</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="hg-cheat">
-                            <option value="100">10 Ngày - 100.000đ</option>
-                            <option value="190" selected>30 Ngày - 190.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Hg Cheat', 'hg-cheat')">MUA NGAY</button>
-                    </div>
-                </div>
-
-                <!-- Proxy Drip -->
-                <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌟</span>
-                        <span class="product-title">Proxy Drip</span>
-                    </div>
-                    <div class="product-action-row">
-                        <select class="price-select" id="proxy-drip">
-                            <option value="80">7 Ngày - 80.000đ</option>
-                            <option value="200" selected>30 Ngày - 200.000đ</option>
-                        </select>
-                        <button class="btn-buy" onclick="buyItem('Proxy Drip', 'proxy-drip')">MUA NGAY</button>
+                        <button class="btn-buy" onclick="buyItem('Zygame', 'zygame')">MUA NGAY</button>
                     </div>
                 </div>
             </div>
 
-            <!-- MỤC CÁC LOẠI AIM ADR VÀ IOS -->
-            <div class="category-header">🎯 MỤC AIM (ADR & IOS)</div>
-            <div class="product-list">
-                <!-- HuybaocheatVip -->
+            <!-- Chi tiết Mục Aim -->
+            <div id="cat-aim" class="category-detail-view" style="display: none;">
+                <button class="back-btn" onclick="backToMainMenu()">❮ QUAY LAI MỤC CHÍNH</button>
+
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🔥</span>
+                    <div class="product-header">
+                        <span>🔥</span>
                         <span class="product-title">HuybaocheatVip</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Cấu hình Aim lock vĩnh viễn</p>
+                    <div class="product-action">
                         <select class="price-select" id="huybao-cheat">
                             <option value="450" selected>Vĩnh Viễn - 450.000đ</option>
                         </select>
@@ -737,13 +594,13 @@
                     </div>
                 </div>
 
-                <!-- Proxy adr-ios -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🌐</span>
+                    <div class="product-header">
+                        <span>🌐</span>
                         <span class="product-title">Proxy ADR - iOS</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Hỗ trợ đa nền tảng Android & iOS</p>
+                    <div class="product-action">
                         <select class="price-select" id="proxy-adr-ios">
                             <option value="240">30 Ngày - 240.000đ</option>
                             <option value="360" selected>Vĩnh Viễn - 360.000đ</option>
@@ -752,13 +609,13 @@
                     </div>
                 </div>
 
-                <!-- Aimlock -->
                 <div class="product-card">
-                    <div class="product-title-row">
-                        <span class="product-icon">🎯</span>
+                    <div class="product-header">
+                        <span>🎯</span>
                         <span class="product-title">Aimlock</span>
                     </div>
-                    <div class="product-action-row">
+                    <p class="product-desc">Tự động khóa mục tiêu chuẩn xác</p>
+                    <div class="product-action">
                         <select class="price-select" id="aimlock">
                             <option value="180">30 Ngày - 180.000đ</option>
                             <option value="280" selected>Vĩnh Viễn - 280.000đ</option>
@@ -767,119 +624,55 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Bảng Giao Dịch Mới Nhất (Video) -->
+            <div id="recent-tx-section">
+                <div class="section-title">⚡ GIAO DỊCH MỚI NHẤT SHOP</div>
+                <div class="recent-tx-list">
+                    <div class="tx-item">
+                        <span class="tx-user">Trần Trúc</span>
+                        <span class="tx-action">nạp 500.000đ</span>
+                        <span class="tx-time">00:40</span>
+                    </div>
+                    <div class="tx-item">
+                        <span class="tx-user">Zang Nam</span>
+                        <span class="tx-action">nạp 150.000đ</span>
+                        <span class="tx-time">00:23</span>
+                    </div>
+                    <div class="tx-item">
+                        <span class="tx-user">Kagero</span>
+                        <span class="tx-action">nạp 10.000đ</span>
+                        <span class="tx-time">23:43</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- ================= TAB 2: NẠP TIỀN ================= -->
+        <!-- TAB 2: NẠP TIỀN -->
         <div id="tab-deposit" class="tab-content">
-            <div class="section-title">⚡ Nạp Tiền Tự Động VietQR</div>
-            <div class="deposit-card">
-                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px;">Chọn nhanh số tiền nạp:</p>
-                <div class="amount-quick-grid">
-                    <button class="btn-amount" onclick="setAmount(20000, this)">20.000đ</button>
-                    <button class="btn-amount" onclick="setAmount(50000, this)">50.000đ</button>
-                    <button class="btn-amount" onclick="setAmount(100000, this)">100.000đ</button>
-                    <button class="btn-amount" onclick="setAmount(200000, this)">200.000đ</button>
-                    <button class="btn-amount" onclick="setAmount(500000, this)">500.000đ</button>
-                    <button class="btn-amount" onclick="setAmount(1000000, this)">1.000.000đ</button>
-                </div>
-                <input type="number" id="customAmount" class="input-custom" placeholder="Nhập số tiền cần nạp...">
-                <button class="btn-qr" onclick="generateQR()">TẠO MÃ QR NẠP TIỀN</button>
-            </div>
-
-            <div id="qrResultArea" class="qr-display-box" style="display: none;">
-                <p style="font-size: 12px; font-weight: bold; color: var(--secondary-pink);">QUÉT MÃ QR ĐỂ THANH TOÁN</p>
-                <div class="qr-image-wrapper">
-                    <img id="dynamicQRImg" src="" alt="VietQR">
-                </div>
-                <div class="bank-details">
-                    <p>Ngân hàng: <span>MB Bank (Quân Đội)</span></p>
-                    <p>Số tài khoản: <span>2660566922</span></p>
-                    <p>Chủ tài khoản: <span>LE HUY BAO</span></p>
-                    <p>Nội dung CK: <span>NAP8692475970</span></p>
-                </div>
-            </div>
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px;">NẠP TIỀN TỰ ĐỘNG VIETQR</div>
+            <p style="font-size: 11px; color: #aaa;">Hệ thống tự động duyệt tiền trong 1 - 30 giây.</p>
         </div>
 
-        <!-- ================= TAB 3: TOP NẠP ================= -->
+        <!-- TAB 3: TOP NẠP -->
         <div id="tab-topnap" class="tab-content">
-            <div class="section-title">🏆 Bảng Xếp Hạng Nạp Tiền</div>
-            <div class="top-nap-container">
-                <div class="top-nap-item">
-                    <div class="top-rank-badge" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000;">1</div>
-                    <div class="top-user-info">
-                        <span class="name">Lê H***ng Ph***g</span>
-                        <span class="sub-id">@phong_vip</span>
-                    </div>
-                    <span class="top-amount">7.500.000đ</span>
-                </div>
-                <div class="top-nap-item">
-                    <div class="top-rank-badge" style="background: linear-gradient(135deg, #c0c0c0, #808080); color: #000;">2</div>
-                    <div class="top-user-info">
-                        <span class="name">Nguyễn C***u Diệu</span>
-                        <span class="sub-id">@dieu_hax</span>
-                    </div>
-                    <span class="top-amount">6.200.000đ</span>
-                </div>
-                <div class="top-nap-item">
-                    <div class="top-rank-badge" style="background: linear-gradient(135deg, #cd7f32, #8b4513); color: #fff;">3</div>
-                    <div class="top-user-info">
-                        <span class="name">Vũ Đ*** Trọng</span>
-                        <span class="sub-id">@trong_freefire</span>
-                    </div>
-                    <span class="top-amount">5.150.000đ</span>
-                </div>
-                <div class="top-nap-item">
-                    <div class="top-rank-badge">4</div>
-                    <div class="top-user-info">
-                        <span class="name">Đức K***</span>
-                        <span class="sub-id">@kientucc</span>
-                    </div>
-                    <span class="top-amount">4.435.000đ</span>
-                </div>
-                <div class="top-nap-item">
-                    <div class="top-rank-badge">5</div>
-                    <div class="top-user-info">
-                        <span class="name">Vanth***</span>
-                        <span class="sub-id">@vanthienios</span>
-                    </div>
-                    <span class="top-amount">4.115.000đ</span>
-                </div>
-            </div>
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px;">BANG XẾP HẠNG THÁNG</div>
+            <p style="font-size: 11px; color: #aaa;">Đua top nhận phần thưởng quà tặng cuối tháng.</p>
         </div>
 
-        <!-- ================= TAB 4: CÁ NHÂN ================= -->
+        <!-- TAB 4: CÁ NHÂN -->
         <div id="tab-profile" class="tab-content">
-            <div class="section-title">📦 KHO CỦA BẠN (LỊCH SỬ CHI TIẾT)</div>
-            <div class="history-container">
-                <div class="history-item">
-                    <div style="display:flex; justify-shadow:space-between; justify-content:space-between;">
-                        <span style="color:var(--secondary-pink); font-weight:bold;">Aimlock - 1 Tháng</span>
-                        <span style="color:#aaa;">2026-07-27</span>
-                    </div>
-                    <div class="key-code">7SN11GZE73B0YXE</div>
-                </div>
-                <div class="history-item">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span style="color:var(--secondary-pink); font-weight:bold;">ThanhDieuCheat - Vĩnh Viễn</span>
-                        <span style="color:#aaa;">2026-07-27</span>
-                    </div>
-                    <div class="key-code">83WX46X4I3TGKBXJ</div>
-                </div>
-                <div class="history-item">
-                    <div style="display:flex; justify-content:space-between;">
-                        <span style="color:var(--secondary-pink); font-weight:bold;">Proxy ADR - iOS - 1 Tháng</span>
-                        <span style="color:#aaa;">2026-07-27</span>
-                    </div>
-                    <div class="key-code">263P0GGRF9B600SQ</div>
-                </div>
-            </div>
+            <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px;">KHO QUÀ CỦA BẠN</div>
+            <p style="font-size: 11px; color: #aaa;">Danh sách các Key đã mua gần đây.</p>
         </div>
+
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Navigation Footer -->
     <div class="nav-bar">
-        <button class="nav-item active" onclick="switchTab('tab-buy', this)">
-            <div>🏪</div>Cửa Hàng
+        <button class="nav-item active" onclick="switchTab('tab-shop', this)">
+            <div>🛍️</div>Cửa Hàng
         </button>
         <button class="nav-item" onclick="switchTab('tab-deposit', this)">
             <div>💳</div>Nạp Tiền
@@ -893,7 +686,55 @@
     </div>
 
     <script>
-        // Switch tab
+        // 1. Tự động đồng bộ tài khoản từ SDK Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand(); // Mở rộng full màn hình Telegram Mini App
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const user = tg.initDataUnsafe.user;
+            document.getElementById('user-fullname').innerText = `${user.first_name} ${user.last_name || ''}`;
+            document.getElementById('user-id').innerText = user.id;
+            
+            if (user.photo_url) {
+                document.getElementById('user-avatar').src = user.photo_url;
+                document.getElementById('loader-avatar-img').src = user.photo_url;
+            }
+        }
+
+        // 2. Màn hình Loading phần trăm mượt mà giống video
+        let percent = 0;
+        const loadInterval = setInterval(() => {
+            percent += Math.floor(Math.random() * 15) + 5;
+            if (percent >= 100) {
+                percent = 100;
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    document.getElementById('loader-screen').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loader-screen').style.display = 'none';
+                    }, 500);
+                }, 200);
+            }
+            document.getElementById('load-percent').innerText = `${percent}%`;
+        }, 80);
+
+        // 3. Xử lý Chuyển Mục Sản Phẩm (Category View)
+        function openCategory(catId) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('recent-tx-section').style.display = 'none';
+            
+            document.querySelectorAll('.category-detail-view').forEach(view => view.style.display = 'none');
+            document.getElementById(catId).style.display = 'block';
+        }
+
+        function backToMainMenu() {
+            document.querySelectorAll('.category-detail-view').forEach(view => view.style.display = 'none');
+            document.getElementById('main-menu').style.display = 'flex';
+            document.getElementById('recent-tx-section').style.display = 'block';
+        }
+
+        // 4. Xử lý Chuyển Tab Navigation
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
@@ -902,44 +743,16 @@
             element.classList.add('active');
         }
 
-        // Action Mua Sản Phẩm
+        // 5. Xử lý Mua Hàng
         function buyItem(productName, selectId) {
             const selectElem = document.getElementById(selectId);
-            const selectedOptionText = selectElem.options[selectElem.selectedIndex].text;
-            alert(`Xác nhận mua: ${productName}\nGói: ${selectedOptionText}\n\nHệ thống sẽ trừ tiền và cấp Key ngay sau khi xác nhận.`);
-        }
-
-        // Chọn nhanh số tiền nạp
-        function setAmount(amount, btnElement) {
-            document.getElementById('customAmount').value = amount;
-            document.querySelectorAll('.btn-amount').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
-
-        // Tạo VietQR tự động
-        function generateQR() {
-            let amount = document.getElementById('customAmount').value;
-            if(!amount || amount < 10000) {
-                alert('Vui lòng nhập số tiền hợp lệ (Tối thiểu 10.000đ)');
-                return;
-            }
-            let qrUrl = `https://api.vietqr.io/image/970422-2660566922-compact2.jpg?amount=${amount}&accountName=LE%20HUY%20BAO&addInfo=NAP8692475970`;
-            document.getElementById('dynamicQRImg').src = qrUrl;
-            document.getElementById('qrResultArea').style.display = 'block';
-        }
-
-        // Sakura Effect
-        const sakuraContainer = document.getElementById('sakuraContainer');
-        for (let i = 0; i < 20; i++) {
-            const petal = document.createElement('div');
-            petal.classList.add('petal');
-            const size = Math.random() * 7 + 5;
-            petal.style.width = `${size}px`;
-            petal.style.height = `${size * 1.3}px`;
-            petal.style.left = `${Math.random() * 100}vw`;
-            petal.style.animationDuration = `${Math.random() * 5 + 4}s`;
-            petal.style.animationDelay = `${Math.random() * 6}s`;
-            sakuraContainer.appendChild(petal);
+            const selectedText = selectElem.options[selectElem.selectedIndex].text;
+            
+            tg.showConfirm(`Xác nhận mua gói:\n${productName} - ${selectedText}?`, (confirmed) => {
+                if (confirmed) {
+                    tg.showAlert("Đã gửi yêu cầu mua! Hệ thống đang xử lý...");
+                }
+            });
         }
     </script>
 </body>
